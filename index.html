@@ -178,18 +178,22 @@
     /* ===== MAIN GRID ===== */
     .main-grid {
       display: grid;
-      grid-template-columns: 1fr 1.4fr 1fr;
+      grid-template-columns: 1fr 1.2fr 1fr; /* Slightly more balanced */
       gap: 1.2rem;
       padding: 1.2rem 5vw 0;
 
-      align-items: start;
-    }
+      align-items: start; /* Prevents panels from stretching */
+}
 
     .panel {
       background: rgba(107,68,35,0.18);
       border: 1px solid rgba(200,154,106,0.18);
       border-radius: var(--radius);
       padding: 1.3rem;
+
+      align-self: start;
+      height: fit-content;
+}
     }
 
     .panel-title {
