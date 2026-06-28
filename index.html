@@ -596,7 +596,7 @@
 
       <!-- ✏️ CHANGE THIS: Replace each card with your real work. Copy any block to add more. -->
 
-      <div class="portfolio-card"
+ <div class="portfolio-card"
      data-title="The National Shrine of Our Lady of Guadalupe"
      data-category="Feature Article"
      data-date="December 2025"
@@ -609,14 +609,9 @@
     </div>
 
     <div class="port-content">
+        <div class="port-category">ARTICLES</div>
 
-        <div class="port-category">
-            ARTICLES
-        </div>
-
-        <h3>
-            The National Shrine of Our Lady of Guadalupe
-        </h3>
+        <h3>The National Shrine of Our Lady of Guadalupe</h3>
 
         <p>
             Feature article covering the parish's 74th anniversary celebration and the significance of Christ the King Sunday.
@@ -625,38 +620,25 @@
         <button class="port-link" onclick="openProject(this)">
             View Project →
         </button>
-
     </div>
-
 </div>
 
       <script>
-      function openProject(button){
-
+function openProject(button) {
     const card = button.closest(".portfolio-card");
 
-    document.getElementById("modalTitle").textContent =
-        card.dataset.title;
+    const modal = document.getElementById("portfolioModal");
 
-    document.getElementById("modalCategory").textContent =
-        card.dataset.category;
+    document.getElementById("modalTitle").textContent = card.dataset.title;
+    document.getElementById("modalCategory").textContent = card.dataset.category;
+    document.getElementById("modalDate").textContent = card.dataset.date;
+    document.getElementById("modalDescription").textContent = card.dataset.description;
+    document.getElementById("modalSkills").textContent = card.dataset.skills;
+    document.getElementById("modalImage").src = card.dataset.image;
 
-    document.getElementById("modalDate").textContent =
-        card.dataset.date;
-
-    document.getElementById("modalDescription").textContent =
-        card.dataset.description;
-
-    document.getElementById("modalSkills").textContent =
-        card.dataset.skills;
-
-    document.getElementById("modalImage").src =
-        card.dataset.image;
-
-    document.getElementById("portfolioModal").classList.add("active");
-
+    modal.classList.add("active");
 }
-      </script>
+</script>
 
       
       <div class="port-card" data-cat="articles">
