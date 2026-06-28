@@ -175,37 +175,33 @@
 
     .hero-dot.active { background: var(--tan); width: 40px; }
 
-    /* ===== MAIN GRID ===== */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr; /* Slightly more balanced */
-      gap: 1.2rem;
-      padding: 1.2rem 5vw 0;
-
-      align-items: start; /* Prevents panels from stretching */
+.main-grid {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.2rem 5vw 0;
+    align-items: flex-start;
 }
 
-    .panel {
-      background: rgba(107,68,35,0.18);
-      border: 1px solid rgba(200,154,106,0.18);
-      border-radius: var(--radius);
-      padding: 1.3rem;
-
-      align-self: start;
-      height: fit-content;
-
-      /* Width of each column */
-    .main-grid > .panel:nth-child(1) {
-      flex: 1;
-    }
-
-    .main-grid > .panel:nth-child(2) {
-      flex: 1.4;
-    }
-
-    .main-grid > .panel:nth-child(3) {
-      flex: 1;
+/* Individual panels */
+.panel {
+    background: rgba(107,68,35,0.18);
+    border: 1px solid rgba(200,154,106,0.18);
+    border-radius: var(--radius);
+    padding: 1.3rem;
+    height: fit-content;
 }
+
+/* Column widths */
+.main-grid > .panel:nth-child(1) {
+    flex: 1.1;
+}
+
+.main-grid > .panel:nth-child(2) {
+    flex: 1.2;
+}
+
+.main-grid > .panel:nth-child(3) {
+    flex: 1.1;
 }
     }
 
