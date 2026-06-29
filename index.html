@@ -98,332 +98,402 @@
 
     .hero-photo-placeholder {
       width: 100%; height: 100%;
-      background: rgba(200,154,106,0.08);
-      border-radius: 12px;
+      border-radius: 12px 12px 0 0;
+      background: linear-gradient(180deg, rgba(107,68,35,0.3) 0%, rgba(107,68,35,0.6) 100%);
+      border: 1px solid rgba(200,154,106,0.2); border-bottom: none;
       display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
-      color: rgba(200,154,106,0.25);
+      font-family: var(--serif); font-style: italic;
+      font-size: 0.85rem; color: var(--text-dim);
+      text-align: center; padding: 1rem;
     }
 
     .hero-content {
-      position: relative; z-index: 10;
-      padding: 0 4rem 2rem;
-      max-width: 550px;
+      position: relative; z-index: 2;
+      padding: 2rem 2.2rem 2.4rem; max-width: 55%;
     }
 
-    .hero-content h1 {
+    .hero-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1rem; opacity: 0.6;
+    }
+
+    .hero-brand-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--tan); opacity: 0.7; }
+
+    .hero-brand span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tan); }
+
+    .hero-name {
       font-family: var(--serif);
-      font-size: 2.8rem;
-      font-weight: 600;
-      line-height: 1.1;
-      margin-bottom: 0.8rem;
-      color: var(--cream);
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--cream); margin-bottom: 0.9rem;
     }
 
-    .hero-content p {
-      font-size: 0.95rem;
-      color: var(--text-dim);
-      line-height: 1.7;
+    .hero-desc {
+      font-size: 0.92rem; color: var(--text-dim);
+      line-height: 1.75; font-weight: 300;
+      margin-bottom: 1.4rem; max-width: 420px;
     }
 
-    /* ===== PORTFOLIO GRID ===== */
-    .portfolio-section {
-      padding: 3rem 5vw;
-    }
-
-    .section-header {
-      margin-bottom: 2.5rem;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 0.5rem;
-    }
-
-    .section-subtitle {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-
-    .filter-tabs {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 0.6rem 1.2rem;
-      border: 1px solid rgba(200,154,106,0.3);
-      background: transparent;
-      color: var(--text-dim);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: var(--sans);
-    }
-
-    .filter-btn:hover {
-      border-color: rgba(200,154,106,0.6);
-      color: var(--tan);
-    }
-
-    .filter-btn.active {
-      background: var(--crimson);
-      color: var(--cream);
-      border-color: var(--crimson);
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.8rem;
-    }
-
-    .portfolio-card {
-      background: rgba(107,68,35,0.15);
-      border: 1px solid rgba(200,154,106,0.15);
-      border-radius: var(--radius);
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .portfolio-card:hover {
-      border-color: rgba(200,154,106,0.4);
-      background: rgba(107,68,35,0.25);
-      transform: translateY(-4px);
-    }
-
-    .portfolio-image {
-      width: 100%;
-      height: 180px;
-      background: linear-gradient(135deg, rgba(139,0,0,0.2), rgba(200,154,106,0.1));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      color: rgba(200,154,106,0.25);
-      overflow: hidden;
-    }
-
-    .portfolio-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .portfolio-content {
-      padding: 1.5rem;
-    }
-
-    .portfolio-cat {
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: var(--tan);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.5rem;
-    }
-
-    .portfolio-title {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 0.8rem;
-      line-height: 1.3;
-    }
-
-    .portfolio-text {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-
-    .portfolio-date {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      opacity: 0.8;
-    }
-
-    /* ===== MODAL ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      overflow-y: auto;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--maroon);
-      border: 1px solid rgba(200,154,106,0.25);
-      border-radius: 16px;
-      padding: 2.5rem;
-      max-width: 700px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-close {
-      float: right;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: var(--text-dim);
-      background: none;
-      border: none;
+    .hero-read-more {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.85rem; font-weight: 500; color: var(--cream);
+      background: none; border: none; border-bottom: 1px solid var(--tan);
+      padding-bottom: 2px; cursor: pointer; font-family: var(--sans);
       transition: color 0.2s;
     }
 
-    .modal-close:hover {
-      color: var(--tan);
+    .hero-read-more:hover { color: var(--tan); }
+
+    /* ===== MAIN GRID ===== */
+    .main-grid {
+      display: grid; grid-template-columns: 1.1fr 1.2fr 1.1fr;
+      gap: 1.2rem; padding: 1.2rem 5vw 0;
     }
 
-    .modal-header {
-      margin-bottom: 1.5rem;
+    .panel {
+      background: rgba(107,68,35,0.18);
+      border: 1px solid rgba(200,154,106,0.18);
+      border-radius: var(--radius); padding: 1.3rem;
+    }
+
+    .panel-title {
+      font-size: 1rem; font-weight: 500;
+      color: var(--cream); margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .panel-title button {
+      font-size: 0.78rem; color: var(--tan);
+      background: none; border: none; cursor: pointer;
+      font-family: var(--sans); padding: 0;
+    }
+
+    .panel-title button:hover { text-decoration: underline; }
+
+    .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.9rem; }
+
+    .highlight-card {
+      border-radius: 8px; overflow: hidden;
+      position: relative; aspect-ratio: 1 / 0.8;
+      background: var(--bark); border: 1px solid rgba(200,154,106,0.15);
+      cursor: pointer; transition: transform 0.18s;
+    }
+
+    .highlight-card:hover { transform: scale(1.03); }
+    .highlight-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .highlight-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; color: var(--text-dim);
+      font-style: italic; text-align: center; padding: 0.5rem;
+    }
+
+    .highlight-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.5rem 0.6rem;
+      background: linear-gradient(0deg, rgba(26,0,5,0.85) 0%, transparent 100%);
+      font-size: 0.68rem; color: var(--tan); font-weight: 500;
+    }
+
+    .view-more-btn {
+      display: block; width: 100%; text-align: center; padding: 0.7rem;
+      border: 1px solid rgba(200,154,106,0.3); border-radius: 8px;
+      color: var(--tan); font-size: 0.85rem; font-weight: 500;
+      background: none; cursor: pointer; font-family: var(--sans); transition: background 0.18s;
+    }
+
+    .view-more-btn:hover { background: rgba(200,154,106,0.1); }
+
+    .account-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .account-row {
+      display: flex; align-items: center; gap: 0.7rem;
+      background: rgba(26,0,5,0.35); border: 1px solid rgba(200,154,106,0.12);
+      border-radius: 8px; padding: 0.75rem 0.8rem;
+      text-decoration: none; transition: background 0.18s, border-color 0.18s;
+    }
+
+    .account-row:hover { background: rgba(139,0,0,0.25); border-color: rgba(200,154,106,0.3); }
+
+    .acc-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: rgba(139,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; flex-shrink: 0;
+    }
+
+    .acc-label { font-size: 0.88rem; color: var(--text-main); }
+    .acc-url { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); opacity: 0.7; }
+
+    .info-cards { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .info-card {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: rgba(26,0,5,0.4); border: 1px solid rgba(200,154,106,0.15);
+      border-radius: 10px; padding: 0.85rem 1rem;
+    }
+
+    .info-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(139,0,0,0.45); border: 1px solid rgba(200,154,106,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+
+    .info-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
+    .info-text p  { font-size: 0.75rem; color: var(--text-dim); font-weight: 300; line-height: 1.5; }
+
+    /* ===== SECTION HEADING ===== */
+    .section-heading {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--cream);
+      display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem;
+    }
+
+    .section-heading::after { content: ''; flex: 1; height: 1px; background: rgba(200,154,106,0.2); }
+
+    /* ===== PORTFOLIO SECTION ===== */
+    #portfolio { padding: 3rem 5vw 0; }
+
+    .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+
+    .ftab {
+      background: rgba(26,0,5,0.5); border: 1px solid rgba(200,154,106,0.2);
+      color: var(--text-dim); border-radius: 100px;
+      padding: 0.4rem 1rem; font-size: 0.82rem;
+      font-family: var(--sans); cursor: pointer; transition: all 0.18s;
+    }
+
+    .ftab.active, .ftab:hover { background: var(--crimson); border-color: var(--crimson); color: var(--cream); }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ===== PORTFOLIO CARD ===== */
+    .port-card {
+      background: rgba(107,68,35,0.2);
+      border: 1px solid rgba(200,154,106,0.16);
+      border-radius: var(--radius); overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .port-card:hover { transform: translateY(-3px); border-color: rgba(200,154,106,0.4); }
+    .port-card.hidden { display: none; }
+
+    .port-thumb {
+      width: 100%; aspect-ratio: 16/9; background: var(--bark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--text-dim); font-style: italic; overflow: hidden;
+    }
+
+    .port-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .port-body { padding: 1rem 1.1rem 1.2rem; }
+
+    .port-cat {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--tan); margin-bottom: 0.3rem;
+    }
+
+    .port-title {
+      font-family: var(--serif); font-size: 1.05rem;
+      font-weight: 600; color: var(--cream); margin-bottom: 0.4rem;
+    }
+
+    .port-desc { font-size: 0.8rem; color: var(--text-dim); font-weight: 300; line-height: 1.6; }
+
+    .port-read-more {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      margin-top: 0.9rem; font-size: 0.78rem; font-weight: 500;
+      color: var(--tan); background: none; border: none;
+      font-family: var(--sans); cursor: pointer; padding: 0;
+      transition: color 0.18s;
+    }
+
+    .port-read-more:hover { color: var(--cream); }
+
+    /* ===== NOTION-STYLE MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(10,0,2,0.75);
+      backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #220008;
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 16px;
+      width: 70%;
+      max-width: 860px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.22s ease;
+      scrollbar-width: thin;
+      scrollbar-color: var(--bark) transparent;
+    }
+
+    .modal::-webkit-scrollbar { width: 6px; }
+    .modal::-webkit-scrollbar-thumb { background: var(--bark); border-radius: 3px; }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: sticky; top: 1rem;
+      float: right; margin: 1rem 1rem 0 0;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.07); border: none;
+      color: var(--text-dim); font-size: 1.1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s;
+      z-index: 10;
+    }
+
+    .modal-close:hover { background: rgba(139,0,0,0.5); color: var(--cream); }
+
+    .modal-cover {
+      width: 100%; aspect-ratio: 16/7; overflow: hidden;
+      background: var(--bark);
+      display: flex; align-items: center; justify-content: center;
+      font-style: italic; color: var(--text-dim); font-size: 0.85rem;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .modal-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-body { padding: 2rem 2.4rem 3rem; }
+
+    .modal-meta {
+      display: flex; align-items: center; gap: 0.8rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
     }
 
     .modal-cat {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--tan);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.5rem;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--tan); background: rgba(139,0,0,0.3);
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 100px; padding: 0.25rem 0.75rem;
     }
+
+    .modal-date { font-size: 0.78rem; color: var(--text-dim); }
 
     .modal-title {
-      font-family: var(--serif);
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
+      font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 1.2rem;
     }
 
-    .modal-meta {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
+    .modal-divider { height: 1px; background: rgba(200,154,106,0.15); margin-bottom: 1.4rem; }
+
+    .modal-desc {
+      font-size: 0.92rem; color: var(--text-dim);
+      font-weight: 300; line-height: 1.85; margin-bottom: 1.4rem;
+      text-align: justify;
     }
 
-    .modal-body {
-      margin: 2rem 0;
-      color: var(--text-main);
-      line-height: 1.8;
-      font-size: 0.95rem;
-    }
+    .modal-desc p { margin-bottom: 1.1rem; }
+    .modal-desc p:last-child { margin-bottom: 0; }
 
-    .modal-body p {
-      margin-bottom: 1rem;
+    .port-article { display: none; }
+
+    .modal-skills-label {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--tan); margin-bottom: 0.6rem;
     }
 
     .modal-skills {
-      margin: 1.5rem 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.6rem;
     }
+
+    .modal-skill-tag {
+      background: rgba(107,68,35,0.35);
+      border: 1px solid rgba(200,154,106,0.2);
+      color: var(--text-main); border-radius: 100px;
+      padding: 0.25rem 0.75rem; font-size: 0.78rem;
+    }
+
+    .modal-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--crimson); color: var(--cream);
+      text-decoration: none; border-radius: 8px;
+      padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 500;
+      transition: background 0.18s;
+    }
+
+    .modal-link:hover { background: #6d0000; }
+
+    /* ===== ABOUT ===== */
+    #about { padding: 3rem 5vw 0; }
+
+    .about-panel {
+      background: rgba(107,68,35,0.15);
+      border: 1px solid rgba(200,154,106,0.15);
+      border-radius: var(--radius); padding: 2rem 2.4rem;
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 3rem; align-items: start;
+    }
+
+    .about-photo {
+      aspect-ratio: 3/4; border-radius: 10px;
+      background: var(--bark); border: 1px solid rgba(200,154,106,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-style: italic; font-size: 0.82rem;
+      color: var(--text-dim); text-align: center; padding: 1rem; overflow: hidden;
+    }
+
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+
+    .about-body h2 {
+      font-family: var(--serif); font-size: 1.8rem;
+      font-weight: 600; color: var(--cream); margin-bottom: 1rem;
+    }
+
+    .about-body p { font-size: 0.92rem; color: var(--text-dim); font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem; }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
 
     .skill-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      padding: 0.4rem 0.8rem;
-      background: rgba(200,154,106,0.15);
-      border: 1px solid rgba(200,154,106,0.3);
-      border-radius: 100px;
-      color: var(--tan);
+      background: rgba(139,0,0,0.3);
+      border: 1px solid rgba(200,154,106,0.25);
+      color: var(--tan); border-radius: 100px;
+      padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500;
     }
 
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .modal-btn {
-      flex: 1;
-      padding: 0.9rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: var(--sans);
-      transition: all 0.2s;
-    }
-
-    .modal-btn-primary {
-      background: var(--crimson);
-      color: var(--cream);
-    }
-
-    .modal-btn-primary:hover {
-      background: #6d0000;
-    }
-
-    .modal-btn-secondary {
-      background: rgba(139,0,0,0.2);
-      color: var(--tan);
-      border: 1px solid rgba(200,154,106,0.3);
-    }
-
-    .modal-btn-secondary:hover {
-      background: rgba(139,0,0,0.35);
-      border-color: rgba(200,154,106,0.5);
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid rgba(200,154,106,0.12);
+      text-align: center; margin-top: 4rem;
+      padding: 1.4rem 5vw; font-size: 0.78rem; color: var(--text-dim);
     }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .hero-content {
-        padding: 0 2rem 1.5rem;
-      }
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr 1fr; }
+      .main-grid > .panel:last-child { grid-column: 1 / -1; }
+      .modal { width: 90%; }
+    }
 
-      .hero-content h1 {
-        font-size: 2rem;
-      }
-
-      .hero-photo-slot {
-        width: 150px;
-        height: 200px;
-        right: 2%;
-      }
-
-      .portfolio-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .modal-content {
-        padding: 1.5rem;
-      }
-
-      .modal-title {
-        font-size: 1.5rem;
-      }
+    @media (max-width: 600px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .hero-content { max-width: 100%; }
+      .hero-photo-slot { display: none; }
+      .about-panel { grid-template-columns: 1fr; gap: 1.5rem; }
+      .nav-links { display: none; }
+      .modal { width: 95%; max-height: 90vh; }
+      .modal-body { padding: 1.4rem 1.4rem 2rem; }
     }
   </style>
 </head>
@@ -433,192 +503,396 @@
   <nav>
     <div class="nav-left">
       <div class="nav-avatar">CJ</div>
-      <ul class="nav-links">
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
     </div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
     <span class="nav-handle">@cjoftherosary</span>
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section class="hero-banner">
+  <div class="hero-banner">
     <div class="hero-photo-slot">
-      <div class="hero-photo-placeholder">📷</div>
+      <div class="hero-photo-placeholder">
+        <!-- ✏️ Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> -->
+        Your photo<br>goes here
+      </div>
     </div>
     <div class="hero-content">
-      <h1>Hello, I'm CJ</h1>
-      <p>Faith-centered journalist, writer, and creative professional. Exploring the intersection of storytelling, spirituality, and culture.</p>
+      <div class="hero-brand">
+        <div class="hero-brand-dot"></div>
+        <!-- ✏️ CHANGE THIS: Your school and course -->
+        <span>University Name · Journalism</span>
+      </div>
+      <h1 class="hero-name">Christine Jade Del Rosario</h1>
+      <p class="hero-desc">
+        Journalism student, student leader, and maker of things. I write stories, design materials, lead teams, and build trackers — sometimes all before noon.
+      </p>
+      <button class="hero-read-more" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+        Read More →
+      </button>
     </div>
-  </section>
+  </div>
 
-  <!-- ===== PORTFOLIO ===== -->
-  <section id="portfolio" class="portfolio-section">
-    <div class="section-header">
-      <h2 class="section-title">Portfolio</h2>
-      <p class="section-subtitle">Selected work across articles, design, and projects</p>
-    </div>
+  <!-- ===== 3-COL GRID ===== -->
+  <div class="main-grid">
 
-    <div class="filter-tabs">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="articles">Articles</button>
-      <button class="filter-btn" data-filter="pubmats">Pubmats</button>
-      <button class="filter-btn" data-filter="projects">Projects</button>
-      <button class="filter-btn" data-filter="excel">Excel & Data</button>
-    </div>
-
-    <div id="portfolioGrid" class="portfolio-grid"></div>
-  </section>
-
-  <!-- ===== MODAL ===== -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <div class="modal-header">
-        <div class="modal-cat" id="modalCat"></div>
-        <h2 class="modal-title" id="modalTitle"></h2>
-        <div class="modal-meta">
-          <span id="modalDate"></span>
-          <span id="modalCategory"></span>
+    <!-- LEFT: Highlights -->
+    <div class="panel">
+      <div class="panel-title">
+        Highlights
+        <button onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View All ›</button>
+      </div>
+      <div class="highlights-grid">
+        <!-- ✏️ Replace highlight-placeholder contents with <img src="..."> for real images -->
+        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+          <div class="highlight-placeholder">Pubmat</div>
+          <div class="highlight-overlay">Pubmat</div>
+        </div>
+        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+          <div class="highlight-placeholder">Article</div>
+          <div class="highlight-overlay">Article</div>
+        </div>
+        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+          <div class="highlight-placeholder">Project</div>
+          <div class="highlight-overlay">Project</div>
+        </div>
+        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+          <div class="highlight-placeholder">Excel</div>
+          <div class="highlight-overlay">Excel</div>
         </div>
       </div>
-      <div class="modal-body" id="modalBody"></div>
-      <div class="modal-skills" id="modalSkills"></div>
-      <div class="modal-actions">
-        <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Close</button>
-        <a id="modalLink" href="#" class="modal-btn modal-btn-primary" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Open ↗</a>
+      <button class="view-more-btn" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+        See all work →
+      </button>
+    </div>
+
+    <!-- MIDDLE: Contact -->
+    <div class="panel">
+      <div class="panel-title">Contact</div>
+      <div class="account-list">
+        <a class="account-row" href="mailto:christinejade1234@gmail.com">
+          <div class="acc-icon">✉️</div>
+          <span class="acc-label">Email</span>
+          <span class="acc-url">christinejade1234@gmail.com</span>
+        </a>
+        <a class="account-row" href="https://linkedin.com/in/cjoftherosary" target="_blank">
+          <div class="acc-icon">💼</div>
+          <span class="acc-label">LinkedIn</span>
+          <span class="acc-url">linkedin.com/in/cjoftherosary</span>
+        </a>
+        <a class="account-row" href="#" target="_blank">
+          <div class="acc-icon">ⓕ</div>
+          <span class="acc-label">Facebook</span>
+          <span class="acc-url">@cjoftherosary</span>
+        </a>
+        <a class="account-row" href="#" target="_blank">
+          <div class="acc-icon">📷</div>
+          <span class="acc-label">Instagram</span>
+          <span class="acc-url">@cjoftherosary</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Quick Info -->
+    <div class="panel">
+      <div class="panel-title">About Me</div>
+      <div class="info-cards">
+        <!-- ✏️ CHANGE THIS: Update to reflect your actual roles -->
+        <div class="info-card">
+          <div class="info-icon">📰</div>
+          <div class="info-text">
+            <h4>Journalism Student</h4>
+            <p>Writing and reporting for [Publication]. Covers campus news and features.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🏛️</div>
+          <div class="info-text">
+            <h4>Student Leader</h4>
+            <p>Held positions in [Org Name]. Led events, teams, and admin projects.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📊</div>
+          <div class="info-text">
+            <h4>Excel & Admin</h4>
+            <p>Built trackers and dashboards for events and org operations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== PORTFOLIO ===== -->
+  <section id="portfolio">
+    <h3 class="section-heading">All Work</h3>
+    <div class="filter-tabs">
+      <button class="ftab active" data-filter="all">All</button>
+      <button class="ftab" data-filter="articles">Articles</button>
+      <button class="ftab" data-filter="pubmats">Pubmats</button>
+      <button class="ftab" data-filter="projects">Projects</button>
+      <button class="ftab" data-filter="excel">Excel & Data</button>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <!--
+        HOW TO ADD A CARD:
+        Copy one block below. Fill in:
+          data-cat       → articles | pubmats | projects | excel
+          data-title     → full title shown in modal
+          data-category  → label shown in modal (e.g. "Feature Article")
+          data-date      → e.g. "December 2025"
+          data-image     → path to image, e.g. "images/guadalupe.jpg"
+          data-desc      → full description shown in modal
+          data-skills    → comma-separated skills shown as tags
+          data-link      → URL for the "Open" button (or leave "#")
+          data-link-text → button label e.g. "Read Article" or "View Design"
+      -->
+
+      <div class="port-card" data-cat="articles"
+        data-title="The National Shrine of Our Lady of Guadalupe"
+        data-category="Feature Article"
+        data-date="December 2025"
+        data-image="images/guadalupe.jpg"
+        data-skills="Feature Writing,Reporting,Interviewing"
+        data-link="#"
+        data-link-text="Read Article">
+        <div class="port-article">
+          <p>The National Shrine of Our Lady of Guadalupe just celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King. Its late afternoon interval between the masses was quiet with only a small number of devotees kneeling on the pews. Some had troubled expressions. Some were too concentrated in their prayers.</p>
+          <p>Beyond the Parish exists a larger religious reality. 85.6 million Filipinos are Roman Catholics, ranking third among the world's largest Catholic populations based on the World Population Review. Even on regular days, people visit the Church and each one carries a silent weight.</p>
+          <p>During the pandemic, these halls barely felt the footsteps of people. Only the sun peers and filters through the windows during downtime. In 2022, Metro Manila was officially declared under Alert Level 1 therefore capacity caps or quarantine classifications were no longer present. However, the country was still under a State of Public Health Emergency. The Church underwent societal reintegration to adjust to the new normal.</p>
+          <p>The Archdiocese of Manila appointed Rev. Fr. Carlos P. Reyes as Rector of the Church on October 13, 2022. "Many of our volunteers are poor. And now, we're only finding out about the volunteers that caught the virus [...] We caught Covid, but we survived. I was nervous at the time, because March arrived [or] July, I had Covid. Another thing, around three people have died. We're just finding out after it happened [...] one volunteer—he had never shown up again. The other one died in their home," Rev. Fr. Reyes said.</p>
+          <p>"The funds [of the Church] diminishes. I've experienced it as well. I resorted to begging," Maria said. Because in her 13 years of servitude to the Church, not once has she received any forms of salary. Between 2018 and 2023, household expenses rose from ₱238,750 annually to ₱258,050 reported by the PSA Family Income and Expenditure survey.</p>
+          <p>"We have never received any amount. We are voluntarily working here. We don't deserve money, [...] It is the money of the people," she said. Layministers, church greeters, collectors, and most of the staff during the mass are not incentivized. Only a handful are compensated with actual wages.</p>
+          <p>Rev. Fr. Reyes saw the Church's financial status and found that they weren't breaking even. The Parish resorted to selling columbariums—"a finite resource that would eventually run out." The revenue should've gone to renovations, but instead went into operational expenses.</p>
+          <p>Statistics from the 2025 World Giving Report showed that Filipinos donate about 0.27 percent of their income specifically to religious causes. 30 percent of their charitable donations are directed toward religious organizations or causes. "No one is going to Church, and we only rely on donations," he said.</p>
+          <p>The economic pressure didn't stop at the Church doors.</p>
+          <p>The global market for religious and spiritual products—including items commonly used in ritual practice such as incense, candles, prayer beads, and devotional statues—is projected to grow significantly in the coming years. According to a market research report released via GlobeNewswire, the sector is expected to increase from approximately USD 5.5 billion in 2024 to USD 15.7 billion by 2034.</p>
+          <p>Nicole Flores Hernandez handcrafts her products. As a stay-at-home mother, Regina Pacis Crafts is an online Catholic arts and crafts store which enabled her to help her husband with the household finances. She assembles the beads and chain links together with pliers to make rosaries, bracelets and earrings. Other items she sold included laced estampitas and pocket altars.</p>
+          <p>Her products each have a special type of crucifix which customers can choose. Some of which are a Pardon Crucifix, a Pardon Crucifix with the St. Benedict's Medal and a Miraculous Medal, a Fleur De Lis crucifix and a Scroll Crucifix, with faux crystal beads or semi-precious stones, bronze tone metals, a center medal with a rosary pouch.</p>
+          <p>"There's less sales compared to previous years," she said and that inflation "affected her customers' ability to buy" her products. Hernandez increased her prices by 10-15% to sustain her business.</p>
+          <p>Pio Antiquina, a 22-year old college student, spent three days a week managing his small business. Tolle, Lege. Book and Supplies is an online Catholic bookstore based in Cebu. Pictures of products are posted online along with its prices on the captions. His parents financially support him. Yet he still pursues his self-described sideline for his savings and to have the ability to buy necessities or non-essential items for himself.</p>
+          <p>Antiquina would privately message people who are part of Catholic Facebook groups, peddling Catholic textbooks, crucifixes, rosaries, and scapulars. He even resorted to exporting books, although at a smaller scale. His clients are OFWs (Overseas Filipino Workers) that are working in the Middle East and don't have easy access to Christian books.</p>
+          <p>"Maybe my friends and acquaintances want to order books because they are in areas that are, for example—they're in the Middle East [...] So, I do my best to source out the books and deliver it to them," said Antiquina.</p>
+          <p>While inflation doesn't heavily affect his operations, he had to make a 5% increase to his products. "It's easy for me to adjust [...] the money because there is a demand," Antiquina said.</p>
+          <p>Both Hernandez and Antiquina have a similar market: individual Catholics who do not buy in bulk, and not churches.</p>
+          <p>"I haven't had an experience in which they [churches] saw the need to purchase [a] particular book from the bookstore. I think it's because churches don't really have [a] need for books," Antiquina said.</p>
+          <p>"Nonetheless, there's really divine providence," Rev. Fr. Reyes said. Money randomly comes into the Church's financial accounts. Donors without revealing their names would leave large sums. "An example is the 250,000 pesos we used. I don't know where it came from," he added.</p>
+          <p>Maria gestured to the flower arrangement by the altar. "We never ask for flowers. People willingly give," she said. Candles and incense are common examples of non-monetary donations, often coming in bulk and sustaining the clerical operations.</p>
+          <p>The funds enabled architectural developments that encouraged devotees to attend mass. Aircons, sound systems, functioning TVs, online streaming of each Eucharistic celebration. However, running the Church—paying for electricity, water, and keeping the building in good shape—costs more, just like it does for families at home. In November 2025, overall prices rose slowly, but the cost of basic essentials climbed faster. Housing, water, electricity, gas, and other utilities increased by 2.9 percent.</p>
+          <p>It is the generosity of parishioners that sustains this faith. "We haven't gotten to a point where poverty hinders people from donating to the Church," Rev. Fr. Reyes said.</p>
+          <p>Maria busied herself by looking through a bag of assorted medicine personally delivered to her. She didn't buy it nor did she ask for it. Blessings come uninvited yet are welcomed. Hence, it's innate to have a sense of indebtedness and share the graces she comes across. "It was given to me, but I'll share and give it back to the church, so I wouldn't be its sole receiver," she said.</p>
+          <p>"[Volunteerism] isn't for myself," Maria said. "I pray for my enemies. I pray for those in envy. [...] I do not pray for myself. Perhaps that is the reason I am blessed. Even if you do not have money, there's nothing worth comparing to the love of Jesus Christ."</p>
+        </div>
+        <div class="port-thumb">
+          <!-- ✏️ <img src="images/guadalupe.jpg" alt="Guadalupe Shrine"> -->
+          Article Image
+        </div>
+        <div class="port-body">
+          <p class="port-cat">Articles</p>
+          <h3 class="port-title">The National Shrine of Our Lady of Guadalupe</h3>
+          <p class="port-desc">Feature article covering the parish's 74th anniversary and the Solemnity of Christ the King.</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      </div>
+
+      <!-- ✏️ PUBMAT EXAMPLE — replace with your real work -->
+      <div class="port-card" data-cat="pubmats"
+        data-title="Pubmat Title"
+        data-category="Publication Material"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe what this pubmat was for, which org or event, and what you were trying to communicate visually."
+        data-skills="Graphic Design,Canva,Visual Communication"
+        data-link="#"
+        data-link-text="View Design">
+        <div class="port-thumb">Pubmat image</div>
+        <div class="port-body">
+          <p class="port-cat">Pubmats</p>
+          <h3 class="port-title">Campaign or Event Name</h3>
+          <p class="port-desc">Designed for [org/event]. Context about what this was for.</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      </div>
+
+      <!-- ✏️ PROJECT EXAMPLE -->
+      <div class="port-card" data-cat="projects"
+        data-title="Project Name"
+        data-category="Student Project"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe the project — what it was, your role, the challenges, and the outcome."
+        data-skills="Project Management,Event Planning,Leadership"
+        data-link="#"
+        data-link-text="Learn More">
+        <div class="port-thumb">Project photo</div>
+        <div class="port-body">
+          <p class="port-cat">Projects</p>
+          <h3 class="port-title">Project / Event Name</h3>
+          <p class="port-desc">Your role and what was achieved.</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      </div>
+
+      <!-- ✏️ EXCEL EXAMPLE -->
+      <div class="port-card" data-cat="excel"
+        data-title="Tracker Title"
+        data-category="Excel & Data"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe what the tracker does, what data it handles, and why it was useful for your org or event."
+        data-skills="Microsoft Excel,Data Organization,Formulas & Functions"
+        data-link="#"
+        data-link-text="View File">
+        <div class="port-thumb">Tracker screenshot</div>
+        <div class="port-body">
+          <p class="port-cat">Excel & Data</p>
+          <h3 class="port-title">Event / Budget / Attendance Tracker</h3>
+          <p class="port-desc">Built to manage [what]. Features formulas, charts, or dashboards.</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <h3 class="section-heading">About Me</h3>
+    <div class="about-panel">
+      <div class="about-photo">
+        <!-- ✏️ <img src="your-photo.jpg" alt="Christine Jade Del Rosario"> -->
+        Your photo here
+      </div>
+      <div class="about-body">
+        <h2>Hi, I'm Rio.</h2>
+        <p>I'm a journalism student with a love for telling stories that matter. Whether it's a feature article, a well-designed poster, or a spreadsheet that actually makes sense, I care about doing things carefully and with purpose.</p>
+        <p>Outside writing, I've taken on student leadership roles that taught me how to manage projects, coordinate people, and keep things running even when things get chaotic. I bring that same structure to everything I make.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Journalism</span>
+          <span class="skill-tag">Content Writing</span>
+          <span class="skill-tag">Student Leadership</span>
+          <span class="skill-tag">Graphic Design</span>
+          <span class="skill-tag">Event Management</span>
+          <span class="skill-tag">Excel & Data</span>
+          <span class="skill-tag">Administrative Work</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    &copy; 2026 Christine Jade Del Rosario. Built with HTML &amp; intention.
+  </footer>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-cover" id="modalCover">
+        <!-- image injected by JS -->
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span class="modal-cat" id="modalCategory"></span>
+          <span class="modal-date" id="modalDate"></span>
+        </div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-divider"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <p class="modal-skills-label">Skills & Tools</p>
+        <div class="modal-skills" id="modalSkills"></div>
+        <a class="modal-link" id="modalLink" href="#" target="_blank">Open ↗</a>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== CONFIG =====
-    const STORAGE_KEY = 'portfolio_entries';
+    // ---- Filter tabs ----
+    const ftabs = document.querySelectorAll('.ftab');
+    const cards = document.querySelectorAll('.port-card[data-cat]');
 
-    // ===== HARDCODED ENTRIES =====
-    const hardcodedEntries = [
-      {
-        id: 'hc-guadalupe',
-        cat: 'articles',
-        title: 'The National Shrine of Our Lady of Guadalupe',
-        category: 'Feature Article',
-        date: 'December 2025',
-        image: 'images/guadalupe.jpg',
-        preview: 'Feature article covering the parish\'s 74th anniversary and the Solemnity of Christ the King.',
-        content: '<p>The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King.</p><p>This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society.</p>',
-        skills: 'Feature Writing,Reporting,Interviewing',
-        link: '#',
-        linkText: 'Read Article'
-      }
-    ];
-
-    let allEntries = [];
-    let currentFilter = 'all';
-
-    // ===== LOAD ENTRIES =====
-    function loadEntries() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        const adminEntries = stored ? JSON.parse(stored) : [];
-        allEntries = [...hardcodedEntries, ...adminEntries];
-      } catch (e) {
-        console.error('Failed to load entries:', e);
-        allEntries = [...hardcodedEntries];
-      }
-      renderPortfolio();
-    }
-
-    // ===== RENDER PORTFOLIO =====
-    function renderPortfolio() {
-      const grid = document.getElementById('portfolioGrid');
-      const filtered = allEntries.filter(entry => 
-        currentFilter === 'all' || entry.cat === currentFilter
-      );
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 2rem;">No entries yet in this category.</p>';
-        return;
-      }
-
-      grid.innerHTML = filtered.map(entry => `
-        <div class="portfolio-card" onclick="openModal('${entry.id}')">
-          <div class="portfolio-image">
-            ${entry.image ? `<img src="${escapeHtml(entry.image)}" alt="${escapeHtml(entry.title)}">` : '📄'}
-          </div>
-          <div class="portfolio-content">
-            <div class="portfolio-cat">${escapeHtml(entry.cat)}</div>
-            <div class="portfolio-title">${escapeHtml(entry.title)}</div>
-            <div class="portfolio-text">${escapeHtml(entry.preview)}</div>
-            <div class="portfolio-date">${escapeHtml(entry.date)}</div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // ===== MODAL =====
-    function openModal(entryId) {
-      const entry = allEntries.find(e => e.id === entryId);
-      if (!entry) return;
-
-      document.getElementById('modalCat').textContent = entry.cat.toUpperCase();
-      document.getElementById('modalTitle').textContent = entry.title;
-      document.getElementById('modalDate').textContent = entry.date;
-      document.getElementById('modalCategory').textContent = entry.category;
-      document.getElementById('modalBody').innerHTML = entry.content;
-
-      const modalLink = document.getElementById('modalLink');
-      if (entry.link && entry.link !== '#') {
-        modalLink.href = entry.link;
-        modalLink.style.display = 'flex';
-        modalLink.textContent = (entry.linkText || 'Open') + ' ↗';
-      } else {
-        modalLink.style.display = 'none';
-      }
-
-      const skillsDiv = document.getElementById('modalSkills');
-      if (entry.skills) {
-        const skills = entry.skills.split(',').map(s => s.trim());
-        skillsDiv.innerHTML = skills.map(skill => 
-          `<span class="skill-tag">${escapeHtml(skill)}</span>`
-        ).join('');
-      } else {
-        skillsDiv.innerHTML = '';
-      }
-
-      document.getElementById('modal').classList.add('open');
-    }
-
-    function closeModal() {
-      document.getElementById('modal').classList.remove('open');
-    }
-
-    // ===== FILTERS =====
-    document.querySelectorAll('.filter-btn').forEach(btn => {
+    ftabs.forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        ftabs.forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderPortfolio();
+        const f = btn.dataset.filter;
+        cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
       });
     });
 
-    // ===== UTILITY =====
-    function escapeHtml(text) {
-      const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      };
-      return text.replace(/[&<>"']/g, m => map[m]);
+    // ---- Modal ----
+    const overlay  = document.getElementById('modalOverlay');
+    const modal    = document.getElementById('modal');
+    const closeBtn = document.getElementById('modalClose');
+
+    function openModal(card) {
+      const d = card.dataset;
+
+      document.getElementById('modalCategory').textContent = d.category || '';
+      document.getElementById('modalDate').textContent     = d.date     || '';
+      document.getElementById('modalTitle').textContent    = d.title    || '';
+
+      // Article content — reads from hidden .port-article div inside the card
+      const articleEl = card.querySelector('.port-article');
+      document.getElementById('modalDesc').innerHTML = articleEl
+        ? articleEl.innerHTML
+        : (d.desc || '');
+
+      // Skills as tags
+      const skillsEl = document.getElementById('modalSkills');
+      skillsEl.innerHTML = '';
+      (d.skills || '').split(',').forEach(s => {
+        const tag = document.createElement('span');
+        tag.className = 'modal-skill-tag';
+        tag.textContent = s.trim();
+        skillsEl.appendChild(tag);
+      });
+
+      // Cover image
+      const cover = document.getElementById('modalCover');
+      cover.innerHTML = d.image
+        ? `<img src="${d.image}" alt="${d.title}">`
+        : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
+
+      // Link button
+      const link = document.getElementById('modalLink');
+      link.href = d.link || '#';
+      link.textContent = (d.linkText || 'Open') + ' ↗';
+
+      overlay.classList.add('active');
+      modal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
     }
 
-    // ===== INIT =====
-    loadEntries();
+    function closeModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
 
-    // Reload entries when localStorage changes (from admin.html)
-    window.addEventListener('storage', loadEntries);
+    // Attach open to every card and its read-more button
+    cards.forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.tagName === 'A') return; // let real links through
+        openModal(card);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
   </script>
 
 </body>
