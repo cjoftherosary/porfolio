@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cjoftherosary— Portfolio</title>
+  <title>cjoftherosary — Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -66,8 +66,8 @@
       border: 1px solid var(--caramel);
       border-radius: 100px; padding: 0.3rem 0.9rem; font-weight: 500;
     }
-    
-    /* ===== HERO BANNER ===== */
+
+    /* ===== HERO ===== */
     .hero-banner {
       margin: 1.2rem 5vw;
       border-radius: 18px;
@@ -105,13 +105,11 @@
       font-family: var(--serif); font-style: italic;
       font-size: 0.85rem; color: var(--text-dim);
       text-align: center; padding: 1rem;
-      /* ✏️ CHANGE THIS: Replace entire div with <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> */
     }
 
     .hero-content {
       position: relative; z-index: 2;
-      padding: 2rem 2.2rem 2.4rem;
-      max-width: 55%;
+      padding: 2rem 2.2rem 2.4rem; max-width: 55%;
     }
 
     .hero-brand {
@@ -119,15 +117,9 @@
       margin-bottom: 1rem; opacity: 0.6;
     }
 
-    .hero-brand-dot {
-      width: 18px; height: 18px; border-radius: 4px;
-      background: var(--tan); opacity: 0.7;
-    }
+    .hero-brand-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--tan); opacity: 0.7; }
 
-    .hero-brand span {
-      font-size: 0.72rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--tan);
-    }
+    .hero-brand span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tan); }
 
     .hero-name {
       font-family: var(--serif);
@@ -144,31 +136,24 @@
 
     .hero-read-more {
       display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.85rem; font-weight: 500;
-      color: var(--cream); text-decoration: none;
-      border-bottom: 1px solid var(--tan); padding-bottom: 2px;
-      transition: color 0.2s; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; font-family: var(--sans);
+      font-size: 0.85rem; font-weight: 500; color: var(--cream);
+      background: none; border: none; border-bottom: 1px solid var(--tan);
+      padding-bottom: 2px; cursor: pointer; font-family: var(--sans);
+      transition: color 0.2s;
     }
 
     .hero-read-more:hover { color: var(--tan); }
 
-    }
-
-    .hero-dot.active { background: var(--tan); width: 40px; }
-
     /* ===== MAIN GRID ===== */
     .main-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1.2fr 1.1fr;
-      gap: 1.2rem;
-      padding: 1.2rem 5vw 0;
+      display: grid; grid-template-columns: 1.1fr 1.2fr 1.1fr;
+      gap: 1.2rem; padding: 1.2rem 5vw 0;
     }
 
     .panel {
       background: rgba(107,68,35,0.18);
       border: 1px solid rgba(200,154,106,0.18);
-      border-radius: var(--radius);
-      padding: 1.3rem;
+      border-radius: var(--radius); padding: 1.3rem;
     }
 
     .panel-title {
@@ -185,22 +170,16 @@
 
     .panel-title button:hover { text-decoration: underline; }
 
-    /* Highlights */
-    .highlights-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 0.7rem; margin-bottom: 0.9rem;
-    }
+    .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.9rem; }
 
     .highlight-card {
       border-radius: 8px; overflow: hidden;
       position: relative; aspect-ratio: 1 / 0.8;
-      background: var(--bark);
-      border: 1px solid rgba(200,154,106,0.15);
+      background: var(--bark); border: 1px solid rgba(200,154,106,0.15);
       cursor: pointer; transition: transform 0.18s;
     }
 
     .highlight-card:hover { transform: scale(1.03); }
-
     .highlight-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .highlight-placeholder {
@@ -218,32 +197,24 @@
     }
 
     .view-more-btn {
-      display: block; width: 100%; text-align: center;
-      padding: 0.7rem;
-      border: 1px solid rgba(200,154,106,0.3);
-      border-radius: 8px; color: var(--tan);
-      font-size: 0.85rem; font-weight: 500;
-      background: none; cursor: pointer;
-      font-family: var(--sans); transition: background 0.18s;
+      display: block; width: 100%; text-align: center; padding: 0.7rem;
+      border: 1px solid rgba(200,154,106,0.3); border-radius: 8px;
+      color: var(--tan); font-size: 0.85rem; font-weight: 500;
+      background: none; cursor: pointer; font-family: var(--sans); transition: background 0.18s;
     }
 
     .view-more-btn:hover { background: rgba(200,154,106,0.1); }
 
-    /* Linked accounts */
     .account-list { display: flex; flex-direction: column; gap: 0.75rem; }
 
     .account-row {
       display: flex; align-items: center; gap: 0.7rem;
-      background: rgba(26,0,5,0.35);
-      border: 1px solid rgba(200,154,106,0.12);
-      border-radius: 8px; padding: 1.2rem 0.8rem;
+      background: rgba(26,0,5,0.35); border: 1px solid rgba(200,154,106,0.12);
+      border-radius: 8px; padding: 0.75rem 0.8rem;
       text-decoration: none; transition: background 0.18s, border-color 0.18s;
     }
 
-    .account-row:hover {
-      background: rgba(139,0,0,0.25);
-      border-color: rgba(200,154,106,0.3);
-    }
+    .account-row:hover { background: rgba(139,0,0,0.25); border-color: rgba(200,154,106,0.3); }
 
     .acc-icon {
       width: 28px; height: 28px; border-radius: 6px;
@@ -253,26 +224,19 @@
     }
 
     .acc-label { font-size: 0.88rem; color: var(--text-main); }
+    .acc-url { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); opacity: 0.7; }
 
-    .acc-url {
-      margin-left: auto; font-size: 0.72rem;
-      color: var(--text-dim); opacity: 0.7;
-    }
-
-    /* Info cards */
     .info-cards { display: flex; flex-direction: column; gap: 0.6rem; }
 
     .info-card {
       display: flex; align-items: flex-start; gap: 0.75rem;
-      background: rgba(26,0,5,0.4);
-      border: 1px solid rgba(200,154,106,0.15);
+      background: rgba(26,0,5,0.4); border: 1px solid rgba(200,154,106,0.15);
       border-radius: 10px; padding: 0.85rem 1rem;
     }
 
     .info-icon {
       width: 36px; height: 36px; border-radius: 8px;
-      background: rgba(139,0,0,0.45);
-      border: 1px solid rgba(200,154,106,0.2);
+      background: rgba(139,0,0,0.45); border: 1px solid rgba(200,154,106,0.2);
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; flex-shrink: 0;
     }
@@ -280,84 +244,27 @@
     .info-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
     .info-text p  { font-size: 0.75rem; color: var(--text-dim); font-weight: 300; line-height: 1.5; }
 
-    /* ===== SECTION DIVIDER ===== */
+    /* ===== SECTION HEADING ===== */
     .section-heading {
-      font-family: var(--serif);
-      font-size: 1.3rem; font-weight: 600;
-      color: var(--cream);
-      display: flex; align-items: center; gap: 0.6rem;
-      margin-bottom: 1.4rem;
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--cream);
+      display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem;
     }
 
-    .section-heading::after {
-      content: ''; flex: 1; height: 1px;
-      background: rgba(200,154,106,0.2);
-    }
+    .section-heading::after { content: ''; flex: 1; height: 1px; background: rgba(200,154,106,0.2); }
 
-    /* ===== ABOUT ===== */
-    #about {
-      padding: 3rem 5vw 0;
-    }
-
-    .about-panel {
-      background: rgba(107,68,35,0.15);
-      border: 1px solid rgba(200,154,106,0.15);
-      border-radius: var(--radius);
-      padding: 2rem 2.4rem;
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .about-photo {
-      aspect-ratio: 3/4; border-radius: 10px;
-      background: var(--bark);
-      border: 1px solid rgba(200,154,106,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-style: italic; font-size: 0.82rem;
-      color: var(--text-dim); text-align: center; padding: 1rem;
-      overflow: hidden;
-      /* ✏️ CHANGE THIS: Add <img src="your-photo.jpg" alt="Your Name" style="width:100%;height:100%;object-fit:cover"> */
-    }
-
-    .about-body h2 {
-      font-family: var(--serif);
-      font-size: 1.8rem; font-weight: 600;
-      color: var(--cream); margin-bottom: 1rem;
-    }
-
-    .about-body p {
-      font-size: 0.92rem; color: var(--text-dim);
-      font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem;
-    }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
-
-    .skill-tag {
-      background: rgba(139,0,0,0.3);
-      border: 1px solid rgba(200,154,106,0.25);
-      color: var(--tan); border-radius: 100px;
-      padding: 0.3rem 0.85rem;
-      font-size: 0.78rem; font-weight: 500;
-    }
-
-    /* ===== PORTFOLIO ===== */
+    /* ===== PORTFOLIO SECTION ===== */
     #portfolio { padding: 3rem 5vw 0; }
 
     .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
 
     .ftab {
-      background: rgba(26,0,5,0.5);
-      border: 1px solid rgba(200,154,106,0.2);
+      background: rgba(26,0,5,0.5); border: 1px solid rgba(200,154,106,0.2);
       color: var(--text-dim); border-radius: 100px;
       padding: 0.4rem 1rem; font-size: 0.82rem;
       font-family: var(--sans); cursor: pointer; transition: all 0.18s;
     }
 
-    .ftab.active, .ftab:hover {
-      background: var(--crimson); border-color: var(--crimson); color: var(--cream);
-    }
+    .ftab.active, .ftab:hover { background: var(--crimson); border-color: var(--crimson); color: var(--cream); }
 
     .portfolio-grid {
       display: grid;
@@ -365,14 +272,17 @@
       gap: 1rem;
     }
 
+    /* ===== PORTFOLIO CARD ===== */
     .port-card {
       background: rgba(107,68,35,0.2);
       border: 1px solid rgba(200,154,106,0.16);
       border-radius: var(--radius); overflow: hidden;
       transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
     }
 
     .port-card:hover { transform: translateY(-3px); border-color: rgba(200,154,106,0.4); }
+    .port-card.hidden { display: none; }
 
     .port-thumb {
       width: 100%; aspect-ratio: 16/9; background: var(--bark);
@@ -396,12 +306,6 @@
     }
 
     .port-desc { font-size: 0.8rem; color: var(--text-dim); font-weight: 300; line-height: 1.6; }
-
-    .port-link {
-      display: inline-block; margin-top: 0.8rem;
-      font-size: 0.78rem; font-weight: 500;
-      color: var(--tan); text-decoration: none;
-    }
 
     .port-read-more {
       display: inline-flex; align-items: center; gap: 0.3rem;
@@ -499,12 +403,74 @@
       font-weight: 300; line-height: 1.85; margin-bottom: 1.4rem;
     }
 
+    .modal-skills-label {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--tan); margin-bottom: 0.6rem;
+    }
+
+    .modal-skills {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.6rem;
+    }
+
+    .modal-skill-tag {
+      background: rgba(107,68,35,0.35);
+      border: 1px solid rgba(200,154,106,0.2);
+      color: var(--text-main); border-radius: 100px;
+      padding: 0.25rem 0.75rem; font-size: 0.78rem;
+    }
+
+    .modal-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--crimson); color: var(--cream);
+      text-decoration: none; border-radius: 8px;
+      padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 500;
+      transition: background 0.18s;
+    }
+
+    .modal-link:hover { background: #6d0000; }
+
+    /* ===== ABOUT ===== */
+    #about { padding: 3rem 5vw 0; }
+
+    .about-panel {
+      background: rgba(107,68,35,0.15);
+      border: 1px solid rgba(200,154,106,0.15);
+      border-radius: var(--radius); padding: 2rem 2.4rem;
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 3rem; align-items: start;
+    }
+
+    .about-photo {
+      aspect-ratio: 3/4; border-radius: 10px;
+      background: var(--bark); border: 1px solid rgba(200,154,106,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-style: italic; font-size: 0.82rem;
+      color: var(--text-dim); text-align: center; padding: 1rem; overflow: hidden;
+    }
+
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+
+    .about-body h2 {
+      font-family: var(--serif); font-size: 1.8rem;
+      font-weight: 600; color: var(--cream); margin-bottom: 1rem;
+    }
+
+    .about-body p { font-size: 0.92rem; color: var(--text-dim); font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem; }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+
+    .skill-tag {
+      background: rgba(139,0,0,0.3);
+      border: 1px solid rgba(200,154,106,0.25);
+      color: var(--tan); border-radius: 100px;
+      padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500;
+    }
+
     /* ===== FOOTER ===== */
     footer {
       border-top: 1px solid rgba(200,154,106,0.12);
       text-align: center; margin-top: 4rem;
-      padding: 1.4rem 5vw;
-      font-size: 0.78rem; color: var(--text-dim);
+      padding: 1.4rem 5vw; font-size: 0.78rem; color: var(--text-dim);
     }
 
     /* ===== RESPONSIVE ===== */
@@ -530,47 +496,40 @@
   <!-- ===== NAV ===== -->
   <nav>
     <div class="nav-left">
-      <div class="nav-avatar">
-        <!-- ✏️ CHANGE THIS: Your initials, or add <img src="photo.jpg" style="width:100%;height:100%;object-fit:cover"> -->
-        YN
-      </div>
+      <div class="nav-avatar">CJ</div>
     </div>
     <ul class="nav-links">
       <li><a href="#">Home</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#about">About</a></li>
     </ul>
-    <!-- ✏️ CHANGE THIS: Your handle -->
-    <span class="nav-handle">@yourhandle</span>
+    <span class="nav-handle">@cjoftherosary</span>
   </nav>
 
-  <!-- ===== HERO BANNER ===== -->
+  <!-- ===== HERO ===== -->
   <div class="hero-banner">
     <div class="hero-photo-slot">
       <div class="hero-photo-placeholder">
-        <!-- ✏️ CHANGE THIS: Replace this div's contents with:
-             <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> -->
+        <!-- ✏️ Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> -->
         Your photo<br>goes here
       </div>
     </div>
-
     <div class="hero-content">
       <div class="hero-brand">
         <div class="hero-brand-dot"></div>
         <!-- ✏️ CHANGE THIS: Your school and course -->
         <span>University Name · Journalism</span>
       </div>
-      <!-- ✏️ CHANGE THIS: Your name -->
       <h1 class="hero-name">Christine Jade Del Rosario</h1>
-      <!-- ✏️ CHANGE THIS: Your one-liner bio -->
       <p class="hero-desc">
         Journalism student, student leader, and maker of things. I write stories, design materials, lead teams, and build trackers — sometimes all before noon.
       </p>
       <button class="hero-read-more" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
         Read More →
       </button>
+    </div>
   </div>
-</div>
+
   <!-- ===== 3-COL GRID ===== -->
   <div class="main-grid">
 
@@ -581,7 +540,7 @@
         <button onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View All ›</button>
       </div>
       <div class="highlights-grid">
-        <!-- ✏️ CHANGE THIS: Replace .highlight-placeholder with <img src="your-image.jpg" alt=""> in each card -->
+        <!-- ✏️ Replace highlight-placeholder contents with <img src="..."> for real images -->
         <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
           <div class="highlight-placeholder">Pubmat</div>
           <div class="highlight-overlay">Pubmat</div>
@@ -604,17 +563,16 @@
       </button>
     </div>
 
-    <!-- MIDDLE: Linked Accounts -->
+    <!-- MIDDLE: Contact -->
     <div class="panel">
       <div class="panel-title">Contact</div>
       <div class="account-list">
-        <!-- ✏️ CHANGE THIS: Replace href values with your actual links -->
-        <a class="account-row" href="mailto:youremail@example.com">
+        <a class="account-row" href="mailto:christinejade1234@gmail.com">
           <div class="acc-icon">✉️</div>
           <span class="acc-label">Email</span>
           <span class="acc-url">christinejade1234@gmail.com</span>
         </a>
-        <a class="account-row" href="#" target="_blank">
+        <a class="account-row" href="https://linkedin.com/in/cjoftherosary" target="_blank">
           <div class="acc-icon">💼</div>
           <span class="acc-label">LinkedIn</span>
           <span class="acc-url">linkedin.com/in/cjoftherosary</span>
@@ -690,9 +648,7 @@
           data-link-text → button label e.g. "Read Article" or "View Design"
       -->
 
-      <!-- ✏️ CHANGE THIS: Replace each card with your real work. Copy any block to add more. -->
-
- <div class="port-card" data-cat="articles"
+      <div class="port-card" data-cat="articles"
         data-title="The National Shrine of Our Lady of Guadalupe"
         data-category="Feature Article"
         data-date="December 2025"
@@ -704,8 +660,7 @@
         <div class="port-thumb">
           <!-- ✏️ <img src="images/guadalupe.jpg" alt="Guadalupe Shrine"> -->
           Article Image
-</div>
-
+        </div>
         <div class="port-body">
           <p class="port-cat">Articles</p>
           <h3 class="port-title">The National Shrine of Our Lady of Guadalupe</h3>
@@ -714,33 +669,60 @@
         </div>
       </div>
 
-      <div class="port-card" data-cat="pubmats">
+      <!-- ✏️ PUBMAT EXAMPLE — replace with your real work -->
+      <div class="port-card" data-cat="pubmats"
+        data-title="Pubmat Title"
+        data-category="Publication Material"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe what this pubmat was for, which org or event, and what you were trying to communicate visually."
+        data-skills="Graphic Design,Canva,Visual Communication"
+        data-link="#"
+        data-link-text="View Design">
         <div class="port-thumb">Pubmat image</div>
         <div class="port-body">
           <p class="port-cat">Pubmats</p>
           <h3 class="port-title">Campaign or Event Name</h3>
           <p class="port-desc">Designed for [org/event]. Context about what this was for.</p>
-          <a class="port-link" href="#" target="_blank">View design →</a>
+          <button class="port-read-more">Read More →</button>
         </div>
       </div>
 
-      <div class="port-card" data-cat="projects">
+      <!-- ✏️ PROJECT EXAMPLE -->
+      <div class="port-card" data-cat="projects"
+        data-title="Project Name"
+        data-category="Student Project"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe the project — what it was, your role, the challenges, and the outcome."
+        data-skills="Project Management,Event Planning,Leadership"
+        data-link="#"
+        data-link-text="Learn More">
         <div class="port-thumb">Project photo</div>
         <div class="port-body">
           <p class="port-cat">Projects</p>
           <h3 class="port-title">Project / Event Name</h3>
           <p class="port-desc">Your role and what was achieved.</p>
-          <a class="port-link" href="#" target="_blank">Learn more →</a>
+          <button class="port-read-more">Read More →</button>
         </div>
       </div>
 
-      <div class="port-card" data-cat="excel">
+      <!-- ✏️ EXCEL EXAMPLE -->
+      <div class="port-card" data-cat="excel"
+        data-title="Tracker Title"
+        data-category="Excel & Data"
+        data-date="2025"
+        data-image=""
+        data-desc="Describe what the tracker does, what data it handles, and why it was useful for your org or event."
+        data-skills="Microsoft Excel,Data Organization,Formulas & Functions"
+        data-link="#"
+        data-link-text="View File">
         <div class="port-thumb">Tracker screenshot</div>
         <div class="port-body">
           <p class="port-cat">Excel & Data</p>
           <h3 class="port-title">Event / Budget / Attendance Tracker</h3>
           <p class="port-desc">Built to manage [what]. Features formulas, charts, or dashboards.</p>
-          <a class="port-link" href="#" target="_blank">View file →</a>
+          <button class="port-read-more">Read More →</button>
         </div>
       </div>
 
@@ -752,16 +734,14 @@
     <h3 class="section-heading">About Me</h3>
     <div class="about-panel">
       <div class="about-photo">
-        <!-- ✏️ CHANGE THIS: <img src="your-photo.jpg" alt="Your Name"> -->
+        <!-- ✏️ <img src="your-photo.jpg" alt="Christine Jade Del Rosario"> -->
         Your photo here
       </div>
       <div class="about-body">
-        <!-- ✏️ CHANGE THIS: Your name and bio paragraphs -->
         <h2>Hi, I'm Rio.</h2>
         <p>I'm a journalism student with a love for telling stories that matter. Whether it's a feature article, a well-designed poster, or a spreadsheet that actually makes sense, I care about doing things carefully and with purpose.</p>
         <p>Outside writing, I've taken on student leadership roles that taught me how to manage projects, coordinate people, and keep things running even when things get chaotic. I bring that same structure to everything I make.</p>
         <div class="skill-tags">
-          <!-- ✏️ CHANGE THIS: Add/remove to match your actual skills -->
           <span class="skill-tag">Journalism</span>
           <span class="skill-tag">Content Writing</span>
           <span class="skill-tag">Student Leadership</span>
@@ -776,11 +756,33 @@
 
   <!-- ===== FOOTER ===== -->
   <footer>
-    <!-- ✏️ CHANGE THIS: Your name -->
     &copy; 2026 Christine Jade Del Rosario. Built with HTML &amp; intention.
   </footer>
 
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-cover" id="modalCover">
+        <!-- image injected by JS -->
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span class="modal-cat" id="modalCategory"></span>
+          <span class="modal-date" id="modalDate"></span>
+        </div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-divider"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <p class="modal-skills-label">Skills & Tools</p>
+        <div class="modal-skills" id="modalSkills"></div>
+        <a class="modal-link" id="modalLink" href="#" target="_blank">Open ↗</a>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ---- Filter tabs ----
     const ftabs = document.querySelectorAll('.ftab');
     const cards = document.querySelectorAll('.port-card[data-cat]');
 
@@ -789,10 +791,9 @@
         ftabs.forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
         const f = btn.dataset.filter;
-        cards.forEach(c => {
-          c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
-        });
-         });
+        cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
+      });
+    });
 
     // ---- Modal ----
     const overlay  = document.getElementById('modalOverlay');
@@ -845,7 +846,7 @@
         openModal(card);
       });
     });
-    
+
     closeBtn.addEventListener('click', closeModal);
 
     overlay.addEventListener('click', e => {
