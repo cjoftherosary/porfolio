@@ -358,6 +358,13 @@
       border-color: rgba(200,154,106,0.4);
     }
 
+    .entry-item.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .entry-item.locked .entry-actions { display: none; }
+
     .entry-cat {
       font-size: 0.68rem;
       font-weight: 500;
@@ -378,6 +385,16 @@
     .entry-date {
       font-size: 0.78rem;
       color: var(--text-dim);
+    }
+
+    .entry-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      color: #fff;
+      background: rgba(139,0,0,0.4);
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      margin-left: 0.5rem;
     }
 
     .entry-actions {
@@ -603,6 +620,23 @@
     const STORAGE_KEY = 'portfolio_entries';
     const SESSION_KEY = 'admin_session_';
 
+    // ===== HARDCODED ENTRIES (for reference) =====
+    const hardcodedEntries = [
+      {
+        id: 'hc-guadalupe',
+        cat: 'articles',
+        title: 'The National Shrine of Our Lady of Guadalupe',
+        category: 'Feature Article',
+        date: 'December 2025',
+        image: 'images/guadalupe.jpg',
+        preview: 'Feature article covering the parish\'s 74th anniversary and the Solemnity of Christ the King.',
+        content: '<p>The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King.</p><p>This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society.</p>',
+        skills: 'Feature Writing,Reporting,Interviewing',
+        link: '#',
+        linkText: 'Read Article'
+      }
+    ];
+
     // ===== STATE =====
     let entries = [];
     let currentEditId = null;
@@ -637,20 +671,20 @@
     async function loadEntries() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          entries = JSON.parse(stored);
-        } else {
-          entries = [];
-        }
+        const adminEntries = stored ? JSON.parse(stored) : [];
+        // Show BOTH hardcoded + admin entries, but only admin ones are editable
+        entries = [...hardcodedEntries, ...adminEntries];
       } catch (e) {
         console.error('Failed to load entries:', e);
-        entries = [];
+        entries = [...hardcodedEntries];
       }
     }
 
     async function saveEntries() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        // Only save admin entries (filter out hardcoded ones)
+        const adminEntries = entries.filter(e => !e.id.startsWith('hc-'));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(adminEntries));
       } catch (e) {
         console.error('Failed to save entries:', e);
         showStatus('Failed to save entries', 'error');
@@ -760,6 +794,12 @@
     }
 
     function editEntry(id) {
+      // Prevent editing hardcoded entries
+      if (id.startsWith('hc-')) {
+        showStatus('Hardcoded entries cannot be edited here. Edit index.html directly.', 'error');
+        return;
+      }
+
       const entry = entries.find(e => e.id === id);
       if (!entry) return;
 
@@ -782,6 +822,12 @@
     }
 
     async function deleteEntry(id) {
+      // Prevent deleting hardcoded entries
+      if (id.startsWith('hc-')) {
+        showStatus('Hardcoded entries cannot be deleted here. Edit index.html directly.', 'error');
+        return;
+      }
+
       if (confirm('Delete this entry? This cannot be undone.')) {
         entries = entries.filter(e => e.id !== id);
         await saveEntries();
@@ -797,17 +843,20 @@
         return;
       }
 
-      entriesList.innerHTML = entries.map(entry => `
-        <div class="entry-item ${entry.id === currentEditId ? 'active' : ''}">
-          <div class="entry-cat">${entry.cat}</div>
+      entriesList.innerHTML = entries.map(entry => {
+        const isHardcoded = entry.id.startsWith('hc-');
+        return `
+        <div class="entry-item ${entry.id === currentEditId ? 'active' : ''} ${isHardcoded ? 'locked' : ''}">
+          <div class="entry-cat">${entry.cat} ${isHardcoded ? '<span class="entry-badge">Template</span>' : ''}</div>
           <div class="entry-title">${escapeHtml(entry.title)}</div>
           <div class="entry-date">${escapeHtml(entry.date)}</div>
           <div class="entry-actions">
-            <button class="btn-small btn-edit" onclick="editEntry('${entry.id}')">Edit</button>
-            <button class="btn-small btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button>
+            <button class="btn-small btn-edit" onclick="editEntry('${entry.id}')">${isHardcoded ? 'View' : 'Edit'}</button>
+            ${!isHardcoded ? `<button class="btn-small btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button>` : ''}
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     // ===== UTILITY =====
