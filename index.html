@@ -407,8 +407,6 @@
     .modal-desc p { margin-bottom: 1.1rem; }
     .modal-desc p:last-child { margin-bottom: 0; }
 
-    .port-article { display: none; }
-
     .modal-skills-label {
       font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--tan); margin-bottom: 0.6rem;
@@ -638,105 +636,8 @@
       <button class="ftab" data-filter="excel">Excel & Data</button>
     </div>
 
-    <div class="portfolio-grid">
-
-      <!--
-        HOW TO ADD A CARD:
-        Copy one block below. Fill in:
-          data-cat       → articles | pubmats | projects | excel
-          data-title     → full title shown in modal
-          data-category  → label shown in modal (e.g. "Feature Article")
-          data-date      → e.g. "December 2025"
-          data-image     → path to image, e.g. "images/guadalupe.jpg"
-          data-desc      → full description shown in modal
-          data-skills    → comma-separated skills shown as tags
-          data-link      → URL for the "Open" button (or leave "#")
-          data-link-text → button label e.g. "Read Article" or "View Design"
-      -->
-
-      <div class="port-card" data-cat="articles"
-        data-title="The National Shrine of Our Lady of Guadalupe"
-        data-category="Feature Article"
-        data-date="December 2025"
-        data-image="images/guadalupe.jpg"
-        data-skills="Feature Writing,Reporting,Interviewing"
-        data-link="#"
-        data-link-text="Read Article">
-        <!-- ✏️ HIDDEN ARTICLE CONTENT — write your full article here using <p> tags -->
-        <div class="port-article">
-          <p>The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King.</p>
-          <p>This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society.</p>
-          <!-- ✏️ Add as many <p> tags as you need for your full article -->
-        </div>
-        <div class="port-thumb">
-          <!-- ✏️ <img src="images/guadalupe.jpg" alt="Guadalupe Shrine"> -->
-          Article Image
-        </div>
-        <div class="port-body">
-          <p class="port-cat">Articles</p>
-          <h3 class="port-title">The National Shrine of Our Lady of Guadalupe</h3>
-          <p class="port-desc">Feature article covering the parish's 74th anniversary and the Solemnity of Christ the King.</p>
-          <button class="port-read-more">Read More →</button>
-        </div>
-      </div>
-
-      <!-- ✏️ PUBMAT EXAMPLE — replace with your real work -->
-      <div class="port-card" data-cat="pubmats"
-        data-title="Pubmat Title"
-        data-category="Publication Material"
-        data-date="2025"
-        data-image=""
-        data-desc="Describe what this pubmat was for, which org or event, and what you were trying to communicate visually."
-        data-skills="Graphic Design,Canva,Visual Communication"
-        data-link="#"
-        data-link-text="View Design">
-        <div class="port-thumb">Pubmat image</div>
-        <div class="port-body">
-          <p class="port-cat">Pubmats</p>
-          <h3 class="port-title">Campaign or Event Name</h3>
-          <p class="port-desc">Designed for [org/event]. Context about what this was for.</p>
-          <button class="port-read-more">Read More →</button>
-        </div>
-      </div>
-
-      <!-- ✏️ PROJECT EXAMPLE -->
-      <div class="port-card" data-cat="projects"
-        data-title="Project Name"
-        data-category="Student Project"
-        data-date="2025"
-        data-image=""
-        data-desc="Describe the project — what it was, your role, the challenges, and the outcome."
-        data-skills="Project Management,Event Planning,Leadership"
-        data-link="#"
-        data-link-text="Learn More">
-        <div class="port-thumb">Project photo</div>
-        <div class="port-body">
-          <p class="port-cat">Projects</p>
-          <h3 class="port-title">Project / Event Name</h3>
-          <p class="port-desc">Your role and what was achieved.</p>
-          <button class="port-read-more">Read More →</button>
-        </div>
-      </div>
-
-      <!-- ✏️ EXCEL EXAMPLE -->
-      <div class="port-card" data-cat="excel"
-        data-title="Tracker Title"
-        data-category="Excel & Data"
-        data-date="2025"
-        data-image=""
-        data-desc="Describe what the tracker does, what data it handles, and why it was useful for your org or event."
-        data-skills="Microsoft Excel,Data Organization,Formulas & Functions"
-        data-link="#"
-        data-link-text="View File">
-        <div class="port-thumb">Tracker screenshot</div>
-        <div class="port-body">
-          <p class="port-cat">Excel & Data</p>
-          <h3 class="port-title">Event / Budget / Attendance Tracker</h3>
-          <p class="port-desc">Built to manage [what]. Features formulas, charts, or dashboards.</p>
-          <button class="port-read-more">Read More →</button>
-        </div>
-      </div>
-
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Cards dynamically generated from hardcoded + admin entries -->
     </div>
   </section>
 
@@ -750,8 +651,8 @@
       </div>
       <div class="about-body">
         <h2>Hi, I'm Rio.</h2>
-        <p>I'm a journalism student with a love for telling stories that matter. Whether it's a feature article, a well-designed poster, or a spreadsheet that actually makes sense, I care about doing things carefully and with purpose.</p>
-        <p>Outside writing, I've taken on student leadership roles that taught me how to manage projects, coordinate people, and keep things running even when things get chaotic. I bring that same structure to everything I make.</p>
+        <p>I'm a journalism student with a love for telling stories that matter. Whether it's a feature article, a well-designed poster, or a spreadsheet that actually makes sense, I care about doing [...]
+        <p>Outside writing, I've taken on student leadership roles that taught me how to manage projects, coordinate people, and keep things running even when things get chaotic. I bring that same str[...]
         <div class="skill-tags">
           <span class="skill-tag">Journalism</span>
           <span class="skill-tag">Content Writing</span>
@@ -793,41 +694,102 @@
   </div>
 
   <script>
-    // ---- Filter tabs ----
-    const ftabs = document.querySelectorAll('.ftab');
-    const cards = document.querySelectorAll('.port-card[data-cat]');
+    // ===== HARDCODED ENTRIES (for backward compatibility) =====
+    const hardcodedEntries = [
+      {
+        id: 'hc-guadalupe',
+        cat: 'articles',
+        title: 'The National Shrine of Our Lady of Guadalupe',
+        category: 'Feature Article',
+        date: 'December 2025',
+        image: 'images/guadalupe.jpg',
+        preview: 'Feature article covering the parish\'s 74th anniversary and the Solemnity of Christ the King.',
+        content: '<p>The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King.</p><p>This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society.</p>',
+        skills: 'Feature Writing,Reporting,Interviewing',
+        link: '#',
+        linkText: 'Read Article'
+      }
+    ];
 
-    ftabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        ftabs.forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.filter;
-        cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
+    // ===== LOAD ENTRIES FROM STORAGE + HARDCODED =====
+    let allEntries = [];
+
+    function loadEntries() {
+      try {
+        const stored = localStorage.getItem('portfolio_entries');
+        const adminEntries = stored ? JSON.parse(stored) : [];
+        allEntries = [...hardcodedEntries, ...adminEntries];
+      } catch (e) {
+        console.error('Failed to load entries:', e);
+        allEntries = hardcodedEntries;
+      }
+      renderPortfolio();
+    }
+
+    // ===== RENDER PORTFOLIO GRID =====
+    function renderPortfolio() {
+      const grid = document.getElementById('portfolioGrid');
+      grid.innerHTML = allEntries.map(entry => `
+        <div class="port-card" data-cat="${entry.cat}" data-entry-id="${entry.id}">
+          <div class="port-thumb">
+            ${entry.image ? `<img src="${entry.image}" alt="${entry.title}">` : 'Image'}
+          </div>
+          <div class="port-body">
+            <p class="port-cat">${entry.cat}</p>
+            <h3 class="port-title">${escapeHtml(entry.title)}</h3>
+            <p class="port-desc">${escapeHtml(entry.preview)}</p>
+            <button class="port-read-more">Read More →</button>
+          </div>
+        </div>
+      `).join('');
+
+      attachCardListeners();
+      attachFilterListeners();
+    }
+
+    // ===== CARD INTERACTION =====
+    function attachCardListeners() {
+      const cards = document.querySelectorAll('.port-card');
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.tagName === 'A') return;
+          const entryId = card.dataset.entryId;
+          const entry = allEntries.find(e => e.id === entryId);
+          if (entry) openModal(entry);
+        });
       });
-    });
+    }
 
-    // ---- Modal ----
+    // ===== FILTER TABS =====
+    function attachFilterListeners() {
+      const ftabs = document.querySelectorAll('.ftab');
+      const cards = document.querySelectorAll('.port-card[data-cat]');
+
+      ftabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          ftabs.forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
+        });
+      });
+    }
+
+    // ===== MODAL =====
     const overlay  = document.getElementById('modalOverlay');
     const modal    = document.getElementById('modal');
     const closeBtn = document.getElementById('modalClose');
 
-    function openModal(card) {
-      const d = card.dataset;
-
-      document.getElementById('modalCategory').textContent = d.category || '';
-      document.getElementById('modalDate').textContent     = d.date     || '';
-      document.getElementById('modalTitle').textContent    = d.title    || '';
-
-      // Article content — reads from hidden .port-article div inside the card
-      const articleEl = card.querySelector('.port-article');
-      document.getElementById('modalDesc').innerHTML = articleEl
-        ? articleEl.innerHTML
-        : (d.desc || '');
+    function openModal(entry) {
+      document.getElementById('modalCategory').textContent = entry.category || '';
+      document.getElementById('modalDate').textContent = entry.date || '';
+      document.getElementById('modalTitle').textContent = entry.title || '';
+      document.getElementById('modalDesc').innerHTML = entry.content || '';
 
       // Skills as tags
       const skillsEl = document.getElementById('modalSkills');
       skillsEl.innerHTML = '';
-      (d.skills || '').split(',').forEach(s => {
+      (entry.skills || '').split(',').forEach(s => {
         const tag = document.createElement('span');
         tag.className = 'modal-skill-tag';
         tag.textContent = s.trim();
@@ -836,14 +798,14 @@
 
       // Cover image
       const cover = document.getElementById('modalCover');
-      cover.innerHTML = d.image
-        ? `<img src="${d.image}" alt="${d.title}">`
+      cover.innerHTML = entry.image
+        ? `<img src="${entry.image}" alt="${entry.title}">`
         : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
 
       // Link button
       const link = document.getElementById('modalLink');
-      link.href = d.link || '#';
-      link.textContent = (d.linkText || 'Open') + ' ↗';
+      link.href = entry.link || '#';
+      link.textContent = (entry.linkText || 'Open') + ' ↗';
 
       overlay.classList.add('active');
       modal.scrollTop = 0;
@@ -855,23 +817,28 @@
       document.body.style.overflow = '';
     }
 
-    // Attach open to every card and its read-more button
-    cards.forEach(card => {
-      card.addEventListener('click', e => {
-        if (e.target.tagName === 'A') return; // let real links through
-        openModal(card);
-      });
-    });
-
     closeBtn.addEventListener('click', closeModal);
-
     overlay.addEventListener('click', e => {
       if (e.target === overlay) closeModal();
     });
-
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeModal();
     });
+
+    // ===== UTILITY =====
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // ===== INIT =====
+    loadEntries();
   </script>
 
 </body>
