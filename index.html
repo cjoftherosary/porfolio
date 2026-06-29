@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- ✏️ CHANGE THIS: Your name -->
   <title>cjoftherosary— Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -35,30 +34,21 @@
 
     /* ===== NAV ===== */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       background: rgba(26,0,5,0.92);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(139,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5vw;
-      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 58px;
     }
 
     .nav-left { display: flex; align-items: center; gap: 0.8rem; }
 
     .nav-avatar {
-      width: 34px; height: 34px;
-      border-radius: 8px;
-      background: var(--crimson);
-      border: 1px solid var(--caramel);
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--crimson); border: 1px solid var(--caramel);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; color: var(--tan); font-weight: 500;
-      overflow: hidden;
-      /* ✏️ CHANGE THIS: add <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover"> inside */
+      font-size: 0.7rem; color: var(--tan); font-weight: 500; overflow: hidden;
     }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -76,7 +66,7 @@
       border: 1px solid var(--caramel);
       border-radius: 100px; padding: 0.3rem 0.9rem; font-weight: 500;
     }
-
+    
     /* ===== HERO BANNER ===== */
     .hero-banner {
       margin: 1.2rem 5vw;
@@ -84,23 +74,19 @@
       background: linear-gradient(120deg, var(--bark) 0%, #3D1200 40%, #1A0005 100%);
       border: 1px solid rgba(139,0,0,0.4);
       min-height: 300px;
-      display: flex;
-      align-items: flex-end;
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: flex-end;
+      position: relative; overflow: hidden;
     }
 
     .hero-banner::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
         radial-gradient(ellipse 50% 80% at 70% 50%, rgba(139,0,0,0.25) 0%, transparent 70%),
         radial-gradient(ellipse 30% 60% at 20% 80%, rgba(200,154,106,0.12) 0%, transparent 60%);
     }
 
     .hero-banner::after {
-      content: '🍂';
-      position: absolute; top: 1.2rem; right: 1.8rem;
+      content: '🍂'; position: absolute; top: 1.2rem; right: 1.8rem;
       font-size: 2.5rem; opacity: 0.18;
     }
 
@@ -417,8 +403,101 @@
       color: var(--tan); text-decoration: none;
     }
 
-    .port-link:hover { text-decoration: underline; }
-    .port-card.hidden { display: none; }
+    .port-read-more {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      margin-top: 0.9rem; font-size: 0.78rem; font-weight: 500;
+      color: var(--tan); background: none; border: none;
+      font-family: var(--sans); cursor: pointer; padding: 0;
+      transition: color 0.18s;
+    }
+
+    .port-read-more:hover { color: var(--cream); }
+
+    /* ===== NOTION-STYLE MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(10,0,2,0.75);
+      backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #220008;
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 16px;
+      width: 70%;
+      max-width: 860px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.22s ease;
+      scrollbar-width: thin;
+      scrollbar-color: var(--bark) transparent;
+    }
+
+    .modal::-webkit-scrollbar { width: 6px; }
+    .modal::-webkit-scrollbar-thumb { background: var(--bark); border-radius: 3px; }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: sticky; top: 1rem;
+      float: right; margin: 1rem 1rem 0 0;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.07); border: none;
+      color: var(--text-dim); font-size: 1.1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s;
+      z-index: 10;
+    }
+
+    .modal-close:hover { background: rgba(139,0,0,0.5); color: var(--cream); }
+
+    .modal-cover {
+      width: 100%; aspect-ratio: 16/7; overflow: hidden;
+      background: var(--bark);
+      display: flex; align-items: center; justify-content: center;
+      font-style: italic; color: var(--text-dim); font-size: 0.85rem;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .modal-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-body { padding: 2rem 2.4rem 3rem; }
+
+    .modal-meta {
+      display: flex; align-items: center; gap: 0.8rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+
+    .modal-cat {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--tan); background: rgba(139,0,0,0.3);
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 100px; padding: 0.25rem 0.75rem;
+    }
+
+    .modal-date { font-size: 0.78rem; color: var(--text-dim); }
+
+    .modal-title {
+      font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 1.2rem;
+    }
+
+    .modal-divider { height: 1px; background: rgba(200,154,106,0.15); margin-bottom: 1.4rem; }
+
+    .modal-desc {
+      font-size: 0.92rem; color: var(--text-dim);
+      font-weight: 300; line-height: 1.85; margin-bottom: 1.4rem;
+    }
 
     /* ===== FOOTER ===== */
     footer {
@@ -432,6 +511,7 @@
     @media (max-width: 900px) {
       .main-grid { grid-template-columns: 1fr 1fr; }
       .main-grid > .panel:last-child { grid-column: 1 / -1; }
+      .modal { width: 90%; }
     }
 
     @media (max-width: 600px) {
@@ -440,6 +520,8 @@
       .hero-photo-slot { display: none; }
       .about-panel { grid-template-columns: 1fr; gap: 1.5rem; }
       .nav-links { display: none; }
+      .modal { width: 95%; max-height: 90vh; }
+      .modal-body { padding: 1.4rem 1.4rem 2rem; }
     }
   </style>
 </head>
@@ -594,60 +676,41 @@
 
     <div class="portfolio-grid">
 
+      <!--
+        HOW TO ADD A CARD:
+        Copy one block below. Fill in:
+          data-cat       → articles | pubmats | projects | excel
+          data-title     → full title shown in modal
+          data-category  → label shown in modal (e.g. "Feature Article")
+          data-date      → e.g. "December 2025"
+          data-image     → path to image, e.g. "images/guadalupe.jpg"
+          data-desc      → full description shown in modal
+          data-skills    → comma-separated skills shown as tags
+          data-link      → URL for the "Open" button (or leave "#")
+          data-link-text → button label e.g. "Read Article" or "View Design"
+      -->
+
       <!-- ✏️ CHANGE THIS: Replace each card with your real work. Copy any block to add more. -->
 
- <div class="portfolio-card"
-     data-title="The National Shrine of Our Lady of Guadalupe"
-     data-category="Feature Article"
-     data-date="December 2025"
-     data-image="images/guadalupe.jpg"
-     data-description="The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King. This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society."
-     data-skills="Feature Writing • Reporting • Interviewing">
-
-    <div class="port-image">
-        <div class="port-placeholder">Article Image</div>
-    </div>
-
-    <div class="port-content">
-        <div class="port-category">ARTICLES</div>
-
-        <h3>The National Shrine of Our Lady of Guadalupe</h3>
-
-        <p>
-            Feature article covering the parish's 74th anniversary celebration and the significance of Christ the King Sunday.
-        </p>
-
-        <button class="port-link" onclick="openProject(this)">
-            View Project →
-        </button>
-    </div>
+ <div class="port-card" data-cat="articles"
+        data-title="The National Shrine of Our Lady of Guadalupe"
+        data-category="Feature Article"
+        data-date="December 2025"
+        data-image="images/guadalupe.jpg"
+        data-desc="The National Shrine of Our Lady of Guadalupe celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King. This feature explores the atmosphere inside the parish and reflects on the role of faith in contemporary Filipino society."
+        data-skills="Feature Writing,Reporting,Interviewing"
+        data-link="#"
+        data-link-text="Read Article">
+        <div class="port-thumb">
+          <!-- ✏️ <img src="images/guadalupe.jpg" alt="Guadalupe Shrine"> -->
+          Article Image
 </div>
 
-      <script>
-function openProject(button) {
-    const card = button.closest(".portfolio-card");
-
-    const modal = document.getElementById("portfolioModal");
-
-    document.getElementById("modalTitle").textContent = card.dataset.title;
-    document.getElementById("modalCategory").textContent = card.dataset.category;
-    document.getElementById("modalDate").textContent = card.dataset.date;
-    document.getElementById("modalDescription").textContent = card.dataset.description;
-    document.getElementById("modalSkills").textContent = card.dataset.skills;
-    document.getElementById("modalImage").src = card.dataset.image;
-
-    modal.classList.add("active");
-}
-</script>
-
-      
-      <div class="port-card" data-cat="articles">
-        <div class="port-thumb"><!-- ✏️ <img src="img.jpg" alt=""> -->Article image</div>
         <div class="port-body">
           <p class="port-cat">Articles</p>
-          <h3 class=rt"po-title">Article Title Here</h3>
-          <p class="port-desc">What this piece is about and where it was published.</p>
-          <a class="port-link" href="#" target="_blank">Read article →</a>
+          <h3 class="port-title">The National Shrine of Our Lady of Guadalupe</h3>
+          <p class="port-desc">Feature article covering the parish's 74th anniversary and the Solemnity of Christ the King.</p>
+          <button class="port-read-more">Read More →</button>
         </div>
       </div>
 
@@ -729,7 +792,68 @@ function openProject(button) {
         cards.forEach(c => {
           c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
         });
+         });
+
+    // ---- Modal ----
+    const overlay  = document.getElementById('modalOverlay');
+    const modal    = document.getElementById('modal');
+    const closeBtn = document.getElementById('modalClose');
+
+    function openModal(card) {
+      const d = card.dataset;
+
+      document.getElementById('modalCategory').textContent = d.category || '';
+      document.getElementById('modalDate').textContent     = d.date     || '';
+      document.getElementById('modalTitle').textContent    = d.title    || '';
+      document.getElementById('modalDesc').textContent     = d.desc     || '';
+
+      // Skills as tags
+      const skillsEl = document.getElementById('modalSkills');
+      skillsEl.innerHTML = '';
+      (d.skills || '').split(',').forEach(s => {
+        const tag = document.createElement('span');
+        tag.className = 'modal-skill-tag';
+        tag.textContent = s.trim();
+        skillsEl.appendChild(tag);
       });
+
+      // Cover image
+      const cover = document.getElementById('modalCover');
+      cover.innerHTML = d.image
+        ? `<img src="${d.image}" alt="${d.title}">`
+        : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
+
+      // Link button
+      const link = document.getElementById('modalLink');
+      link.href = d.link || '#';
+      link.textContent = (d.linkText || 'Open') + ' ↗';
+
+      overlay.classList.add('active');
+      modal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Attach open to every card and its read-more button
+    cards.forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.tagName === 'A') return; // let real links through
+        openModal(card);
+      });
+    });
+    
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
     });
   </script>
 
