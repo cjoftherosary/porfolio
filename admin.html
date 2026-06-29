@@ -191,6 +191,8 @@
       border: 1px solid rgba(200,154,106,0.15);
       border-radius: var(--radius);
       padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .form-panel h2 {
@@ -230,9 +232,13 @@
     }
 
     .form-group textarea {
-      min-height: 120px;
+      min-height: 100px;
       resize: vertical;
       font-family: var(--sans);
+    }
+
+    .form-group textarea.tall {
+      min-height: 150px;
     }
 
     .form-group input:focus,
@@ -260,6 +266,10 @@
       display: flex;
       gap: 0.8rem;
       margin-top: 2rem;
+      position: sticky;
+      bottom: 0;
+      background: rgba(107,68,35,0.15);
+      padding: 1rem 0 0;
     }
 
     .btn {
@@ -311,6 +321,8 @@
       border: 1px solid rgba(200,154,106,0.15);
       border-radius: var(--radius);
       padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .entries-panel h2 {
@@ -464,6 +476,10 @@
       .admin-logout {
         width: 100%;
       }
+
+      .form-panel, .entries-panel {
+        max-height: none;
+      }
     }
   </style>
 </head>
@@ -495,7 +511,7 @@
     <div class="admin-content">
       <!-- ===== FORM (LEFT) ===== -->
       <div class="form-panel">
-        <h2 id="formTitle">New Entry</h2>
+        <h2 id="formHeading">New Entry</h2>
 
         <form id="entryForm">
           <div class="form-group">
@@ -532,9 +548,15 @@
           </div>
 
           <div class="form-group">
-            <label for="formDesc">Description *</label>
-            <textarea id="formDesc" placeholder="Full description shown in modal. For articles, paste the full text here." required></textarea>
-            <p class="form-hint">HTML not supported—use plain text with paragraph breaks.</p>
+            <label for="formPreview">Preview / Short Description *</label>
+            <textarea id="formPreview" placeholder="Brief 1-3 sentence preview shown on portfolio card. e.g. 'Feature article covering the parish's 74th anniversary and the Solemnity of Christ the King.'" required></textarea>
+            <p class="form-hint">This appears on the portfolio grid card.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="formContent">Full Content *</label>
+            <textarea id="formContent" class="tall" placeholder="Complete article text or full description shown in the modal. For articles, paste the entire piece here." required></textarea>
+            <p class="form-hint">This appears when someone clicks to read more. Paste full articles, project details, etc.</p>
           </div>
 
           <div class="form-group">
@@ -579,7 +601,7 @@
     // ===== CONFIG =====
     const ADMIN_PASSWORD = 'christie2026';
     const STORAGE_KEY = 'portfolio_entries';
-    const SESSION_KEY = 'admin_session_'; // key + timestamp
+    const SESSION_KEY = 'admin_session_';
 
     // ===== STATE =====
     let entries = [];
@@ -594,29 +616,26 @@
     const logoutBtn = document.getElementById('logoutBtn');
     const entryForm = document.getElementById('entryForm');
     const entriesList = document.getElementById('entriesList');
-    const formTitle = document.getElementById('formTitle');
+    const formHeading = document.getElementById('formHeading');
     const cancelBtn = document.getElementById('cancelBtn');
     const newBtn = document.getElementById('newBtn');
     const statusMsg = document.getElementById('statusMsg');
 
     // Form inputs
     const formCat = document.getElementById('formCat');
-    const formTitleInput = document.getElementById('formTitle');
+    const formTitle = document.getElementById('formTitle');
     const formCategory = document.getElementById('formCategory');
     const formDate = document.getElementById('formDate');
     const formImage = document.getElementById('formImage');
-    const formDesc = document.getElementById('formDesc');
+    const formPreview = document.getElementById('formPreview');
+    const formContent = document.getElementById('formContent');
     const formSkills = document.getElementById('formSkills');
     const formLink = document.getElementById('formLink');
     const formLinkText = document.getElementById('formLinkText');
 
-    // ===== PERSISTENT STORAGE (DUMMY FOR NOW) =====
-    // In production, this would use Claude's persistent storage or a real backend.
-    // For now, we'll use localStorage as a fallback.
-
+    // ===== PERSISTENT STORAGE =====
     async function loadEntries() {
       try {
-        // Try to load from localStorage first
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
           entries = JSON.parse(stored);
@@ -698,25 +717,24 @@
       const entry = {
         id: currentEditId || Date.now().toString(),
         cat: formCat.value,
-        title: formTitleInput.value,
+        title: formTitle.value,
         category: formCategory.value,
         date: formDate.value,
         image: formImage.value || '',
-        desc: formDesc.value,
+        preview: formPreview.value,
+        content: formContent.value,
         skills: formSkills.value,
         link: formLink.value || '#',
         linkText: formLinkText.value || 'Open',
       };
 
       if (currentEditId) {
-        // Update existing
         const idx = entries.findIndex(e => e.id === currentEditId);
         if (idx !== -1) {
           entries[idx] = entry;
           showStatus('Entry updated!', 'success');
         }
       } else {
-        // Add new
         entries.push(entry);
         showStatus('Entry created!', 'success');
       }
@@ -737,7 +755,7 @@
     function clearForm() {
       entryForm.reset();
       currentEditId = null;
-      formTitle.textContent = 'New Entry';
+      formHeading.textContent = 'New Entry';
       formCat.focus();
     }
 
@@ -746,14 +764,15 @@
       if (!entry) return;
 
       currentEditId = id;
-      formTitle.textContent = 'Edit Entry';
+      formHeading.textContent = 'Edit Entry';
 
       formCat.value = entry.cat;
-      formTitleInput.value = entry.title;
+      formTitle.value = entry.title;
       formCategory.value = entry.category;
       formDate.value = entry.date;
       formImage.value = entry.image;
-      formDesc.value = entry.desc;
+      formPreview.value = entry.preview;
+      formContent.value = entry.content;
       formSkills.value = entry.skills;
       formLink.value = entry.link;
       formLinkText.value = entry.linkText;
