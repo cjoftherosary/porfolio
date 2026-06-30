@@ -20,7 +20,6 @@
       --sans:      'DM Sans', system-ui, sans-serif;
     }
 
-    
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -815,7 +814,84 @@
   </div>
 
   <script>
+    // ---- CMS: Render entries from localStorage ----
+    const STORAGE_KEY = 'cj_portfolio_entries';
+
+    function buildCard(e) {
+      const card = document.createElement('div');
+      card.className = 'port-card';
+      card.dataset.cat      = e.cat      || 'articles';
+      card.dataset.title    = e.title    || '';
+      card.dataset.category = e.category || e.cat || '';
+      card.dataset.date     = e.date     || '';
+      card.dataset.image    = e.image    || '';
+      card.dataset.skills   = e.skills   || '';
+      card.dataset.link     = e.link     || '#';
+      card.dataset.linkText = e.linkText || 'Open';
+      card.dataset.desc     = e.preview  || '';
+
+      const thumbHtml = e.image
+        ? `<img src="${e.image}" alt="${e.title}">`
+        : `<span>${e.category || e.cat || 'Work'}</span>`;
+
+      // Body text: blank lines → <p> tags, or fall back to preview
+      let articleHtml = '';
+      if (e.body && e.body.trim()) {
+        articleHtml = e.body.trim().split(/\n{2,}/).map(p => `<p>${p.trim()}</p>`).join('');
+      } else if (e.preview) {
+        articleHtml = `<p>${e.preview}</p>`;
+      }
+
+      card.innerHTML = `
+        <div class="port-article" style="display:none">${articleHtml}</div>
+        <div class="port-thumb">${thumbHtml}</div>
+        <div class="port-body">
+          <p class="port-cat">${e.category || e.cat || ''}</p>
+          <h3 class="port-title">${e.title || ''}</h3>
+          <p class="port-desc">${e.preview || ''}</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      `;
+
+      card.addEventListener('click', ev => {
+        if (ev.target.tagName === 'A') return;
+        openModal(card);
+      });
+
+      return card;
+    }
+
+    function renderDynamicEntries() {
+      let stored = [];
+      try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch {}
+      if (!stored.length) return;
+      const grid = document.querySelector('.portfolio-grid');
+      stored.forEach(e => grid.appendChild(buildCard(e)));
+    }
+
     // ---- Filter tabs ----
+    // Runs after dynamic entries are injected (called below)
+    function initFilters() {
+      const ftabs = document.querySelectorAll('.ftab');
+      const allCards = document.querySelectorAll('.port-card[data-cat]');
+
+      ftabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          ftabs.forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          allCards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
+          // also handle dynamic cards added after DOMContentLoaded
+          document.querySelectorAll('.port-card[data-cat]').forEach(c =>
+            c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f)
+          );
+        });
+      });
+    }
+
+    // Run CMS render first, then init filters so dynamic cards are included
+    renderDynamicEntries();
+
     const ftabs = document.querySelectorAll('.ftab');
     const cards = document.querySelectorAll('.port-card[data-cat]');
 
@@ -824,7 +900,10 @@
         ftabs.forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
         const f = btn.dataset.filter;
-        cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
+        // Query live so dynamic cards are included
+        document.querySelectorAll('.port-card[data-cat]').forEach(c =>
+          c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f)
+        );
       });
     });
 
@@ -877,7 +956,7 @@
       document.body.style.overflow = '';
     }
 
-    // Attach open to every card and its read-more button
+    // Attach open to every static card and its read-more button
     cards.forEach(card => {
       card.addEventListener('click', e => {
         if (e.target.tagName === 'A') return; // let real links through
