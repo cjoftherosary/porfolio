@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — cjoftherosary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --maroon:    #1A0005;
+      --crimson:   #8B0000;
+      --tan:       #C89A6A;
+      --caramel:   #9B6A42;
+      --bark:      #6B4423;
+      --cream:     #F5E8CC;
+      --text-main: #F0DDB8;
+      --text-dim:  #C4A882;
+      --danger:    #c0392b;
+      --radius:    10px;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--maroon);
+      color: var(--text-main);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== LOGIN ===== */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+
+    .login-box {
+      background: rgba(107,68,35,0.18);
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%; max-width: 380px;
+      text-align: center;
+    }
+
+    .login-logo {
+      font-family: var(--serif);
+      font-size: 2rem; font-weight: 700;
+      color: var(--cream); margin-bottom: 0.3rem;
+    }
+
+    .login-sub { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 2rem; }
+
+    .login-box input {
+      width: 100%;
+      background: rgba(26,0,5,0.5);
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-family: var(--sans); font-size: 0.9rem;
+      margin-bottom: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .login-box input:focus { border-color: var(--tan); }
+
+    .login-error {
+      font-size: 0.8rem; color: #e07070;
+      margin-bottom: 0.9rem; display: none;
+    }
+
+    .btn-primary {
+      width: 100%; padding: 0.75rem;
+      background: var(--crimson);
+      border: none; border-radius: 8px;
+      color: var(--cream); font-family: var(--sans);
+      font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; transition: background 0.18s;
+    }
+
+    .btn-primary:hover { background: #6d0000; }
+
+    /* ===== ADMIN PANEL ===== */
+    #adminPanel { display: none; }
+
+    .admin-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(26,0,5,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(139,0,0,0.3);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 56px;
+    }
+
+    .admin-nav-title {
+      font-family: var(--serif);
+      font-size: 1.1rem; font-weight: 600; color: var(--cream);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+
+    .admin-badge {
+      font-family: var(--sans);
+      font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--crimson); color: var(--cream);
+      border-radius: 4px; padding: 2px 6px;
+    }
+
+    .admin-nav-right { display: flex; align-items: center; gap: 0.7rem; }
+
+    .btn-ghost {
+      background: none;
+      border: 1px solid rgba(200,154,106,0.3);
+      border-radius: 8px; padding: 0.4rem 0.9rem;
+      color: var(--text-dim); font-family: var(--sans);
+      font-size: 0.82rem; cursor: pointer; transition: all 0.18s;
+      text-decoration: none; display: inline-block;
+    }
+
+    .btn-ghost:hover { border-color: var(--tan); color: var(--tan); }
+
+    .btn-danger-ghost {
+      background: none;
+      border: 1px solid rgba(192,57,43,0.4);
+      border-radius: 8px; padding: 0.4rem 0.9rem;
+      color: #e07070; font-family: var(--sans);
+      font-size: 0.82rem; cursor: pointer; transition: all 0.18s;
+    }
+
+    .btn-danger-ghost:hover { background: rgba(192,57,43,0.15); }
+
+    /* MAIN LAYOUT */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 1.5rem;
+      padding: 1.5rem 5vw 4rem;
+      align-items: start;
+    }
+
+    /* ENTRY LIST */
+    .entry-list-panel {
+      background: rgba(107,68,35,0.12);
+      border: 1px solid rgba(200,154,106,0.15);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: sticky; top: 72px;
+    }
+
+    .panel-header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid rgba(200,154,106,0.12);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .panel-header h2 { font-size: 0.9rem; font-weight: 500; color: var(--cream); }
+
+    .panel-header-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+    .btn-add {
+      background: var(--crimson);
+      border: none; border-radius: 6px;
+      padding: 0.35rem 0.8rem;
+      color: var(--cream); font-family: var(--sans);
+      font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; transition: background 0.18s;
+    }
+
+    .btn-add:hover { background: #6d0000; }
+
+    .btn-icon {
+      background: none;
+      border: 1px solid rgba(200,154,106,0.2);
+      border-radius: 6px; padding: 0.3rem 0.55rem;
+      color: var(--text-dim); font-family: var(--sans);
+      font-size: 0.75rem; cursor: pointer; transition: all 0.18s;
+    }
+
+    .btn-icon:hover { border-color: var(--tan); color: var(--tan); }
+
+    #entryList { list-style: none; max-height: calc(100vh - 200px); overflow-y: auto; }
+
+    .entry-item {
+      display: flex; align-items: center;
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid rgba(200,154,106,0.08);
+      cursor: pointer; transition: background 0.15s;
+      gap: 0.75rem;
+    }
+
+    .entry-item:last-child { border-bottom: none; }
+    .entry-item:hover { background: rgba(200,154,106,0.07); }
+    .entry-item.active { background: rgba(139,0,0,0.25); }
+
+    .entry-cat-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .entry-info { flex: 1; min-width: 0; }
+
+    .entry-title {
+      font-size: 0.85rem; color: var(--text-main);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .entry-meta { font-size: 0.72rem; color: var(--text-dim); }
+
+    .entry-del {
+      background: none; border: none;
+      color: var(--text-dim); cursor: pointer;
+      font-size: 0.9rem; padding: 0.2rem 0.4rem;
+      border-radius: 4px; transition: all 0.15s; flex-shrink: 0;
+    }
+
+    .entry-del:hover { background: rgba(192,57,43,0.2); color: #e07070; }
+
+    .entry-list-empty {
+      padding: 2rem 1.2rem; text-align: center;
+      font-size: 0.85rem; color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* COUNT BADGE */
+    .entry-count {
+      font-size: 0.72rem; font-weight: 500;
+      background: rgba(200,154,106,0.15);
+      color: var(--text-dim); border-radius: 100px;
+      padding: 1px 7px;
+    }
+
+    /* FORM */
+    .form-panel {
+      background: rgba(107,68,35,0.12);
+      border: 1px solid rgba(200,154,106,0.15);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .form-panel-header {
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid rgba(200,154,106,0.12);
+    }
+
+    .form-panel-header h2 {
+      font-family: var(--serif);
+      font-size: 1.2rem; font-weight: 600; color: var(--cream);
+    }
+
+    .form-panel-header p { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+    .form-body { padding: 1.4rem; }
+
+    .form-row { margin-bottom: 1.2rem; }
+
+    .form-row label {
+      display: block; font-size: 0.78rem; font-weight: 500;
+      color: var(--tan); letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-row .hint {
+      font-size: 0.72rem; color: var(--text-dim);
+      margin-top: 0.3rem; font-style: italic; text-transform: none; letter-spacing: 0;
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      background: rgba(26,0,5,0.5);
+      border: 1px solid rgba(200,154,106,0.2);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      color: var(--text-main);
+      font-family: var(--sans); font-size: 0.88rem;
+      outline: none; transition: border-color 0.2s;
+      resize: vertical;
+    }
+
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus { border-color: var(--tan); }
+
+    .form-row select option { background: #2a0a10; }
+    .form-row textarea { min-height: 100px; line-height: 1.6; }
+    #articleBody { min-height: 260px; font-size: 0.85rem; line-height: 1.8; }
+
+    .form-row-half {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+    }
+
+    .form-actions {
+      display: flex; gap: 0.7rem; margin-top: 1.4rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(200,154,106,0.12);
+    }
+
+    .btn-save {
+      flex: 1; padding: 0.75rem;
+      background: var(--crimson); border: none; border-radius: 8px;
+      color: var(--cream); font-family: var(--sans);
+      font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; transition: background 0.18s;
+    }
+
+    .btn-save:hover { background: #6d0000; }
+
+    .btn-clear {
+      padding: 0.75rem 1.2rem;
+      background: none;
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 8px; color: var(--text-dim);
+      font-family: var(--sans); font-size: 0.88rem;
+      cursor: pointer; transition: all 0.18s;
+    }
+
+    .btn-clear:hover { border-color: var(--tan); color: var(--tan); }
+
+    /* TOAST */
+    .save-toast {
+      display: none; position: fixed;
+      bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: #2d6a2d; color: #c5f0c5;
+      border-radius: 8px; padding: 0.7rem 1.4rem;
+      font-size: 0.85rem; font-weight: 500;
+      z-index: 999; white-space: nowrap;
+      animation: fadeUp 0.2s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ORDER CONTROLS */
+    .entry-order-btns {
+      display: flex; flex-direction: column; gap: 2px; flex-shrink: 0;
+    }
+
+    .order-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-dim); font-size: 0.65rem;
+      padding: 1px 3px; line-height: 1;
+      transition: color 0.15s;
+    }
+
+    .order-btn:hover { color: var(--tan); }
+
+    /* EXPORT MODAL */
+    .export-overlay {
+      display: none; position: fixed; inset: 0; z-index: 400;
+      background: rgba(10,0,2,0.8); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+    }
+
+    .export-overlay.active { display: flex; }
+
+    .export-box {
+      background: #220008;
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 14px; padding: 1.8rem;
+      width: 90%; max-width: 520px;
+    }
+
+    .export-box h3 {
+      font-family: var(--serif); font-size: 1.2rem;
+      color: var(--cream); margin-bottom: 0.4rem;
+    }
+
+    .export-box p {
+      font-size: 0.8rem; color: var(--text-dim);
+      margin-bottom: 1rem; line-height: 1.6;
+    }
+
+    .export-box textarea {
+      width: 100%;
+      background: rgba(26,0,5,0.6);
+      border: 1px solid rgba(200,154,106,0.2);
+      border-radius: 8px; padding: 0.8rem;
+      color: var(--text-main); font-family: monospace;
+      font-size: 0.78rem; min-height: 140px;
+      resize: vertical; outline: none;
+    }
+
+    .export-actions { display: flex; gap: 0.7rem; margin-top: 1rem; }
+
+    /* cat color dots */
+    .dot-articles  { background: #C89A6A; }
+    .dot-pubmats   { background: #8B4A8B; }
+    .dot-projects  { background: #3A7A5A; }
+    .dot-excel     { background: #3A5A8B; }
+
+    @media (max-width: 768px) {
+      .admin-layout { grid-template-columns: 1fr; }
+      .form-row-half { grid-template-columns: 1fr; }
+      .entry-list-panel { position: static; }
+      #entryList { max-height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOGIN ===== -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <div class="login-logo">cjoftherosary</div>
+      <div class="login-sub">Admin Panel — Portfolio CMS</div>
+      <input type="password" id="passwordInput" placeholder="Enter password" />
+      <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+      <button class="btn-primary" onclick="tryLogin()">Enter →</button>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div id="adminPanel">
+
+    <nav class="admin-nav">
+      <div class="admin-nav-title">
+        Portfolio CMS <span class="admin-badge">Admin</span>
+      </div>
+      <div class="admin-nav-right">
+        <button class="btn-ghost" onclick="openExport()">Export / Import</button>
+        <a class="btn-ghost" href="index.html" target="_blank">View Site ↗</a>
+        <button class="btn-danger-ghost" onclick="logout()">Log out</button>
+      </div>
+    </nav>
+
+    <div class="admin-layout">
+
+      <!-- LEFT: Entry List -->
+      <div class="entry-list-panel">
+        <div class="panel-header">
+          <h2>Portfolio Entries <span class="entry-count" id="entryCount">0</span></h2>
+          <div class="panel-header-actions">
+            <button class="btn-add" onclick="newEntry()">+ New Entry</button>
+          </div>
+        </div>
+        <ul id="entryList">
+          <li class="entry-list-empty" id="emptyMsg">No entries yet. Add your first one →</li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: Form -->
+      <div class="form-panel">
+        <div class="form-panel-header">
+          <h2 id="formTitle">New Entry</h2>
+          <p id="formSubtitle">Fill in the details below. Your entry will appear on the public portfolio.</p>
+        </div>
+        <div class="form-body">
+
+          <div class="form-row">
+            <label>Title *</label>
+            <input type="text" id="fTitle" placeholder="e.g. The National Shrine of Our Lady of Guadalupe" />
+          </div>
+
+          <div class="form-row-half">
+            <div class="form-row" style="margin-bottom:0">
+              <label>Category *</label>
+              <select id="fCat">
+                <option value="articles">Articles</option>
+                <option value="pubmats">Pubmats</option>
+                <option value="projects">Projects</option>
+                <option value="excel">Excel & Data</option>
+              </select>
+            </div>
+            <div class="form-row" style="margin-bottom:0">
+              <label>Category Label</label>
+              <input type="text" id="fCategory" placeholder="e.g. Feature Article" />
+              <span class="hint">Shown as badge in modal</span>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:1.2rem">
+            <label>Date</label>
+            <input type="text" id="fDate" placeholder="e.g. December 2025" />
+          </div>
+
+          <div class="form-row">
+            <label>Card Preview Text *</label>
+            <textarea id="fPreview" rows="2" placeholder="Short 1–2 sentence teaser shown on the card grid."></textarea>
+          </div>
+
+          <div class="form-row">
+            <label>Full Article / Description</label>
+            <textarea id="articleBody" placeholder="Write your full article or description here.
+
+Each blank line between paragraphs will become a new paragraph in the modal — no HTML needed.
+
+Like this."></textarea>
+            <span class="hint">Blank lines = paragraph breaks. No HTML required.</span>
+          </div>
+
+          <div class="form-row">
+            <label>Image URL or Path</label>
+            <input type="text" id="fImage" placeholder="e.g. images/guadalupe.jpg or https://..." />
+            <span class="hint">Upload your image to GitHub first, then paste the path here.</span>
+          </div>
+
+          <div class="form-row">
+            <label>Skills / Tools</label>
+            <input type="text" id="fSkills" placeholder="e.g. Feature Writing, Reporting, Interviewing" />
+            <span class="hint">Comma-separated. Shown as tags in the modal.</span>
+          </div>
+
+          <div class="form-row-half">
+            <div class="form-row" style="margin-bottom:0">
+              <label>External Link</label>
+              <input type="text" id="fLink" placeholder="https://..." />
+            </div>
+            <div class="form-row" style="margin-bottom:0">
+              <label>Link Button Label</label>
+              <input type="text" id="fLinkText" placeholder="e.g. Read Article" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-save" onclick="saveEntry()">Save Entry</button>
+            <button class="btn-clear" onclick="newEntry()">Clear Form</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== EXPORT / IMPORT MODAL ===== -->
+  <div class="export-overlay" id="exportOverlay">
+    <div class="export-box">
+      <h3>Export / Import Entries</h3>
+      <p>
+        Copy this JSON to back up your entries or move them to another browser/device.
+        To import, paste JSON below and click Import.
+      </p>
+      <textarea id="exportArea" spellcheck="false"></textarea>
+      <div class="export-actions">
+        <button class="btn-save" style="flex:none;padding:0.6rem 1.2rem" onclick="copyExport()">Copy</button>
+        <button class="btn-save" style="flex:none;padding:0.6rem 1.2rem;background:var(--caramel)" onclick="importEntries()">Import</button>
+        <button class="btn-clear" onclick="closeExport()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-toast" id="toast">✓ Entry saved!</div>
+
+  <script>
+    // ── CONFIG ───────────────────────────────────────────────────────────────
+    // ✏️ Change this password before deploying
+    const ADMIN_PASSWORD = 'cjoftherosary2025';
+    const STORAGE_KEY = 'cj_portfolio_entries';
+    // ────────────────────────────────────────────────────────────────────────
+
+    let entries = [];
+    let editingId = null;
+
+    // ── LOGIN ────────────────────────────────────────────────────────────────
+    document.getElementById('passwordInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') tryLogin();
+    });
+
+    function tryLogin() {
+      const val = document.getElementById('passwordInput').value;
+      if (val === ADMIN_PASSWORD) {
+        sessionStorage.setItem('cj_admin_auth', '1');
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadEntries();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('cj_admin_auth');
+      location.reload();
+    }
+
+    if (sessionStorage.getItem('cj_admin_auth') === '1') {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadEntries();
+    }
+
+    // ── STORAGE ──────────────────────────────────────────────────────────────
+    function loadEntries() {
+      try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+      catch { entries = []; }
+      renderList();
+    }
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    // ── LIST ─────────────────────────────────────────────────────────────────
+    const catColors = {
+      articles: 'dot-articles',
+      pubmats:  'dot-pubmats',
+      projects: 'dot-projects',
+      excel:    'dot-excel'
+    };
+
+    function renderList() {
+      const ul = document.getElementById('entryList');
+      const empty = document.getElementById('emptyMsg');
+      document.getElementById('entryCount').textContent = entries.length;
+
+      if (entries.length === 0) {
+        ul.innerHTML = '';
+        ul.appendChild(empty);
+        empty.style.display = 'block';
+        return;
+      }
+
+      ul.innerHTML = '';
+      entries.forEach((e, i) => {
+        const li = document.createElement('li');
+        li.className = 'entry-item' + (editingId === e.id ? ' active' : '');
+        li.innerHTML = `
+          <div class="entry-order-btns">
+            <button class="order-btn" title="Move up" onclick="moveEntry(${i},-1,event)">▲</button>
+            <button class="order-btn" title="Move down" onclick="moveEntry(${i},1,event)">▼</button>
+          </div>
+          <span class="entry-cat-dot ${catColors[e.cat] || ''}"></span>
+          <div class="entry-info">
+            <div class="entry-title">${e.title || 'Untitled'}</div>
+            <div class="entry-meta">${e.category || e.cat} · ${e.date || 'No date'}</div>
+          </div>
+          <button class="entry-del" title="Delete" onclick="deleteEntry('${e.id}',event)">✕</button>
+        `;
+        li.addEventListener('click', ev => {
+          if (ev.target.classList.contains('order-btn') || ev.target.classList.contains('entry-del')) return;
+          editEntry(e.id);
+        });
+        ul.appendChild(li);
+      });
+    }
+
+    function moveEntry(i, dir, ev) {
+      ev.stopPropagation();
+      const j = i + dir;
+      if (j < 0 || j >= entries.length) return;
+      [entries[i], entries[j]] = [entries[j], entries[i]];
+      saveToStorage();
+      renderList();
+    }
+
+    // ── FORM ─────────────────────────────────────────────────────────────────
+    const FIELDS = ['fTitle','fCat','fCategory','fDate','fPreview','articleBody','fImage','fSkills','fLink','fLinkText'];
+
+    function newEntry() {
+      editingId = null;
+      document.getElementById('formTitle').textContent = 'New Entry';
+      document.getElementById('formSubtitle').textContent = 'Fill in the details below. Your entry will appear on the public portfolio.';
+      FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el.tagName === 'SELECT') el.value = 'articles';
+        else el.value = '';
+      });
+      renderList();
+      document.getElementById('fTitle').focus();
+    }
+
+    function editEntry(id) {
+      const e = entries.find(x => x.id === id);
+      if (!e) return;
+      editingId = id;
+
+      document.getElementById('formTitle').textContent = 'Edit Entry';
+      document.getElementById('formSubtitle').textContent = 'Editing: ' + (e.title || 'Untitled');
+
+      document.getElementById('fTitle').value      = e.title    || '';
+      document.getElementById('fCat').value        = e.cat      || 'articles';
+      document.getElementById('fCategory').value   = e.category || '';
+      document.getElementById('fDate').value       = e.date     || '';
+      document.getElementById('fPreview').value    = e.preview  || '';
+      document.getElementById('articleBody').value = e.body     || '';
+      document.getElementById('fImage').value      = e.image    || '';
+      document.getElementById('fSkills').value     = e.skills   || '';
+      document.getElementById('fLink').value       = e.link     || '';
+      document.getElementById('fLinkText').value   = e.linkText || '';
+
+      renderList();
+      document.getElementById('fTitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function saveEntry() {
+      const title = document.getElementById('fTitle').value.trim();
+      if (!title) { alert('Please add a title.'); return; }
+
+      const entry = {
+        id:       editingId || ('e_' + Date.now()),
+        title,
+        cat:      document.getElementById('fCat').value,
+        category: document.getElementById('fCategory').value.trim(),
+        date:     document.getElementById('fDate').value.trim(),
+        preview:  document.getElementById('fPreview').value.trim(),
+        body:     document.getElementById('articleBody').value.trim(),
+        image:    document.getElementById('fImage').value.trim(),
+        skills:   document.getElementById('fSkills').value.trim(),
+        link:     document.getElementById('fLink').value.trim(),
+        linkText: document.getElementById('fLinkText').value.trim(),
+      };
+
+      if (editingId) {
+        const idx = entries.findIndex(x => x.id === editingId);
+        if (idx !== -1) entries[idx] = entry;
+      } else {
+        entries.unshift(entry); // new entries go to top
+        editingId = entry.id;
+      }
+
+      saveToStorage();
+      renderList();
+      showToast('✓ Entry saved!');
+    }
+
+    function deleteEntry(id, ev) {
+      ev.stopPropagation();
+      if (!confirm('Delete this entry? This cannot be undone.')) return;
+      entries = entries.filter(x => x.id !== id);
+      if (editingId === id) newEntry();
+      saveToStorage();
+      renderList();
+      showToast('Entry deleted.');
+    }
+
+    // ── EXPORT / IMPORT ──────────────────────────────────────────────────────
+    function openExport() {
+      document.getElementById('exportArea').value = JSON.stringify(entries, null, 2);
+      document.getElementById('exportOverlay').classList.add('active');
+    }
+
+    function closeExport() {
+      document.getElementById('exportOverlay').classList.remove('active');
+    }
+
+    function copyExport() {
+      const ta = document.getElementById('exportArea');
+      ta.select();
+      navigator.clipboard.writeText(ta.value).catch(() => document.execCommand('copy'));
+      showToast('Copied to clipboard!');
+    }
+
+    function importEntries() {
+      try {
+        const parsed = JSON.parse(document.getElementById('exportArea').value);
+        if (!Array.isArray(parsed)) throw new Error('Not an array');
+        if (!confirm(`Import ${parsed.length} entries? This will replace all current entries.`)) return;
+        entries = parsed;
+        saveToStorage();
+        renderList();
+        closeExport();
+        showToast(`✓ Imported ${entries.length} entries.`);
+      } catch {
+        alert('Invalid JSON. Please paste the exported data exactly as copied.');
+      }
+    }
+
+    // ── TOAST ────────────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.style.display = 'none', 2200);
+    }
+
+    // ── KEYBOARD SHORTCUTS ───────────────────────────────────────────────────
+    document.addEventListener('keydown', ev => {
+      if ((ev.ctrlKey || ev.metaKey) && ev.key === 's') {
+        ev.preventDefault();
+        saveEntry();
+      }
+      if (ev.key === 'Escape') closeExport();
+    });
+
+    // Click outside export modal to close
+    document.getElementById('exportOverlay').addEventListener('click', ev => {
+      if (ev.target === document.getElementById('exportOverlay')) closeExport();
+    });
+  </script>
+</body>
+</html>
