@@ -516,7 +516,7 @@
             <label>Full Article / Description</label>
             <div class="editor-toolbar">
               <button type="button" class="toolbar-btn" onclick="insertImageTag()">🖼 Insert image</button>
-              <span class="toolbar-hint">or type <code>[img: path/to/image.jpg]</code> on its own line</span>
+              <span class="toolbar-hint">or type <code>[img: path/to/image.jpg]</code> — add <code> | link</code> to make it clickable</span>
             </div>
             <textarea id="articleBody" placeholder="Write your full article or description here.
 
@@ -543,8 +543,9 @@ Like this."></textarea>
 
           <div class="form-row-half">
             <div class="form-row" style="margin-bottom:0">
-              <label>External Link</label>
+              <label>External Link <span style="text-transform:none;font-weight:400;color:var(--text-dim)">(optional)</span></label>
               <input type="text" id="fLink" placeholder="https://..." />
+              <span class="hint">Leave blank for no button. Only needed for an outside page (e.g. a Drive file).</span>
             </div>
             <div class="form-row" style="margin-bottom:0">
               <label>Link Button Label</label>
@@ -770,8 +771,11 @@ Like this."></textarea>
     function insertImageTag() {
       const path = prompt('Image path or URL (e.g. images/photo.jpg):');
       if (!path) return;
+      const url = prompt('Make this image clickable? Paste a link, or leave blank for no link:');
       const ta = document.getElementById('articleBody');
-      const tag = `[img: ${path.trim()}]`;
+      const tag = url && url.trim()
+        ? `[img: ${path.trim()} | ${url.trim()}]`
+        : `[img: ${path.trim()}]`;
       const start = ta.selectionStart;
       const end = ta.selectionEnd;
       const before = ta.value.slice(0, start);
