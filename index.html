@@ -407,6 +407,16 @@
     .modal-desc p { margin-bottom: 1.1rem; }
     .modal-desc p:last-child { margin-bottom: 0; }
 
+    .port-inline-img {
+      margin: 1.4rem 0; text-align: center;
+    }
+
+    .port-inline-img img {
+      max-width: 100%; border-radius: 10px;
+      border: 1px solid rgba(200,154,106,0.2);
+      display: block; margin: 0 auto;
+    }
+
     .port-article { display: none; }
 
     .modal-skills-label {
@@ -834,10 +844,22 @@
         ? `<img src="${e.image}" alt="${e.title}">`
         : `<span>${e.category || e.cat || 'Work'}</span>`;
 
-      // Body text: blank lines → <p> tags, or fall back to preview
+      // Body text: blank lines → <p> tags, [img: path] → inline <figure><img></figure>
+      function parseBody(text) {
+        return text.trim().split(/\n{2,}/).map(block => {
+          const trimmed = block.trim();
+          const imgMatch = trimmed.match(/^\[img:\s*(.+?)\s*\]$/i);
+          if (imgMatch) {
+            const src = imgMatch[1];
+            return `<figure class="port-inline-img"><img src="${src}" alt=""></figure>`;
+          }
+          return `<p>${trimmed}</p>`;
+        }).join('');
+      }
+
       let articleHtml = '';
       if (e.body && e.body.trim()) {
-        articleHtml = e.body.trim().split(/\n{2,}/).map(p => `<p>${p.trim()}</p>`).join('');
+        articleHtml = parseBody(e.body);
       } else if (e.preview) {
         articleHtml = `<p>${e.preview}</p>`;
       }
