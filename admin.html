@@ -291,6 +291,30 @@
 
     .form-row select option { background: #2a0a10; }
     .form-row textarea { min-height: 100px; line-height: 1.6; }
+
+    .editor-toolbar {
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 0.5rem; flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      background: rgba(200,154,106,0.12);
+      border: 1px solid rgba(200,154,106,0.25);
+      border-radius: 6px; padding: 0.35rem 0.7rem;
+      color: var(--tan); font-family: var(--sans);
+      font-size: 0.78rem; cursor: pointer; transition: all 0.18s;
+    }
+
+    .toolbar-btn:hover { background: rgba(200,154,106,0.22); border-color: var(--tan); }
+
+    .toolbar-hint {
+      font-size: 0.72rem; color: var(--text-dim); font-style: italic;
+    }
+
+    .toolbar-hint code {
+      background: rgba(26,0,5,0.5); border-radius: 3px;
+      padding: 1px 5px; font-style: normal; color: var(--text-main);
+    }
     #articleBody { min-height: 260px; font-size: 0.85rem; line-height: 1.8; }
 
     .form-row-half {
@@ -490,12 +514,19 @@
 
           <div class="form-row">
             <label>Full Article / Description</label>
+            <div class="editor-toolbar">
+              <button type="button" class="toolbar-btn" onclick="insertImageTag()">🖼 Insert image</button>
+              <span class="toolbar-hint">or type <code>[img: path/to/image.jpg]</code> on its own line</span>
+            </div>
             <textarea id="articleBody" placeholder="Write your full article or description here.
 
 Each blank line between paragraphs will become a new paragraph in the modal — no HTML needed.
 
+To drop an image mid-article, put it on its own line:
+[img: images/photo.jpg]
+
 Like this."></textarea>
-            <span class="hint">Blank lines = paragraph breaks. No HTML required.</span>
+            <span class="hint">Blank lines = paragraph breaks. Use the button above (or type the tag yourself) to place images anywhere in the text.</span>
           </div>
 
           <div class="form-row">
@@ -733,6 +764,29 @@ Like this."></textarea>
       saveToStorage();
       renderList();
       showToast('Entry deleted.');
+    }
+
+    // ── EDITOR TOOLBAR ───────────────────────────────────────────────────────
+    function insertImageTag() {
+      const path = prompt('Image path or URL (e.g. images/photo.jpg):');
+      if (!path) return;
+      const ta = document.getElementById('articleBody');
+      const tag = `[img: ${path.trim()}]`;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const before = ta.value.slice(0, start);
+      const after = ta.value.slice(end);
+
+      // Ensure the tag sits on its own line with blank lines around it
+      const needsLeadingBreak = before.length && !before.endsWith('\n\n') ? (before.endsWith('\n') ? '\n' : '\n\n') : '';
+      const needsTrailingBreak = after.length && !after.startsWith('\n\n') ? (after.startsWith('\n') ? '\n' : '\n\n') : '';
+
+      const insertion = needsLeadingBreak + tag + needsTrailingBreak;
+      ta.value = before + insertion + after;
+
+      const cursorPos = (before + insertion).length;
+      ta.focus();
+      ta.setSelectionRange(cursorPos, cursorPos);
     }
 
     // ── EXPORT / IMPORT ──────────────────────────────────────────────────────
