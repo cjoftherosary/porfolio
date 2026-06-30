@@ -844,14 +844,20 @@
         ? `<img src="${e.image}" alt="${e.title}">`
         : `<span>${e.category || e.cat || 'Work'}</span>`;
 
-      // Body text: blank lines → <p> tags, [img: path] → inline <figure><img></figure>
+      // Body text: blank lines → <p> tags, [img: path] or [img: path | url] → inline figure, optionally clickable
       function parseBody(text) {
         return text.trim().split(/\n{2,}/).map(block => {
           const trimmed = block.trim();
           const imgMatch = trimmed.match(/^\[img:\s*(.+?)\s*\]$/i);
           if (imgMatch) {
-            const src = imgMatch[1];
-            return `<figure class="port-inline-img"><img src="${src}" alt=""></figure>`;
+            const inner = imgMatch[1];
+            const parts = inner.split('|').map(s => s.trim());
+            const src = parts[0];
+            const href = parts[1];
+            const imgTag = `<img src="${src}" alt="">`;
+            return href
+              ? `<figure class="port-inline-img"><a href="${href}" target="_blank" rel="noopener">${imgTag}</a></figure>`
+              : `<figure class="port-inline-img">${imgTag}</figure>`;
           }
           return `<p>${trimmed}</p>`;
         }).join('');
@@ -963,10 +969,16 @@
         ? `<img src="${d.image}" alt="${d.title}">`
         : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
 
-      // Link button
+      // Link button — only show if a real link was provided
       const link = document.getElementById('modalLink');
-      link.href = d.link || '#';
-      link.textContent = (d.linkText || 'Open') + ' ↗';
+      const hasLink = d.link && d.link.trim() && d.link.trim() !== '#';
+      if (hasLink) {
+        link.style.display = 'inline-flex';
+        link.href = d.link;
+        link.textContent = (d.linkText || 'Open') + ' ↗';
+      } else {
+        link.style.display = 'none';
+      }
 
       overlay.classList.add('active');
       modal.scrollTop = 0;
