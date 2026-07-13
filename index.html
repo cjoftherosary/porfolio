@@ -396,6 +396,11 @@
       font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 1.2rem;
     }
 
+    .modal-byline {
+      font-size: 0.82rem; font-style: italic; color: var(--text-dim);
+      margin: -0.6rem 0 1.2rem;
+    }
+
     .modal-divider { height: 1px; background: rgba(200,154,106,0.15); margin-bottom: 1.4rem; }
 
     .modal-desc {
@@ -657,6 +662,7 @@
           data-title     → full title shown in modal
           data-category  → label shown in modal (e.g. "Feature Article")
           data-date      → e.g. "December 2025"
+          data-byline    → optional, e.g. "With Iya Santos" — leave off if solo work
           data-image     → path to image, e.g. "images/guadalupe.jpg"
           data-desc      → full description shown in modal
           data-skills    → comma-separated skills shown as tags
@@ -767,6 +773,7 @@
           <span class="modal-date" id="modalDate"></span>
         </div>
         <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-byline" id="modalByline"></p>
         <div class="modal-divider"></div>
         <div class="modal-desc" id="modalDesc"></div>
         <p class="modal-skills-label">Skills & Tools</p>
@@ -787,6 +794,7 @@
       card.dataset.title    = e.title    || '';
       card.dataset.category = e.category || e.cat || '';
       card.dataset.date     = e.date     || '';
+      card.dataset.byline   = e.byline   || '';
       card.dataset.image    = e.image    || '';
       card.dataset.skills   = e.skills   || '';
       card.dataset.link     = e.link     || '#';
@@ -899,6 +907,15 @@
       document.getElementById('modalCategory').textContent = d.category || '';
       document.getElementById('modalDate').textContent     = d.date     || '';
       document.getElementById('modalTitle').textContent    = d.title    || '';
+
+      // Byline — only show if collaborators were specified
+      const bylineEl = document.getElementById('modalByline');
+      if (d.byline && d.byline.trim()) {
+        bylineEl.textContent = d.byline.trim();
+        bylineEl.style.display = 'block';
+      } else {
+        bylineEl.style.display = 'none';
+      }
 
       // Article content — reads from hidden .port-article div inside the card
       const articleEl = card.querySelector('.port-article');
