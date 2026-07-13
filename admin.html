@@ -508,6 +508,12 @@
           </div>
 
           <div class="form-row">
+            <label>Byline / Collaborators <span style="text-transform:none;font-weight:400;color:var(--text-dim)">(optional)</span></label>
+            <input type="text" id="fByline" placeholder="e.g. With Iya Santos, or Co-managed with the TNK Events Team" />
+            <span class="hint">Leave blank if you worked on this solo. Shown under the title in the modal.</span>
+          </div>
+
+          <div class="form-row">
             <label>Card Preview Text *</label>
             <textarea id="fPreview" rows="2" placeholder="Short 1–2 sentence teaser shown on the card grid."></textarea>
           </div>
@@ -688,7 +694,7 @@ Like this."></textarea>
     }
 
     // ── FORM ─────────────────────────────────────────────────────────────────
-    const FIELDS = ['fTitle','fCat','fCategory','fDate','fPreview','articleBody','fImage','fSkills','fLink','fLinkText'];
+    const FIELDS = ['fTitle','fCat','fCategory','fDate','fByline','fPreview','articleBody','fImage','fSkills','fLink','fLinkText'];
 
     function newEntry() {
       editingId = null;
@@ -715,6 +721,7 @@ Like this."></textarea>
       document.getElementById('fCat').value        = e.cat      || 'articles';
       document.getElementById('fCategory').value   = e.category || '';
       document.getElementById('fDate').value       = e.date     || '';
+      document.getElementById('fByline').value     = e.byline   || '';
       document.getElementById('fPreview').value    = e.preview  || '';
       document.getElementById('articleBody').value = e.body     || '';
       document.getElementById('fImage').value      = e.image    || '';
@@ -736,6 +743,7 @@ Like this."></textarea>
         cat:      document.getElementById('fCat').value,
         category: document.getElementById('fCategory').value.trim(),
         date:     document.getElementById('fDate').value.trim(),
+        byline:   document.getElementById('fByline').value.trim(),
         preview:  document.getElementById('fPreview').value.trim(),
         body:     document.getElementById('articleBody').value.trim(),
         image:    document.getElementById('fImage').value.trim(),
