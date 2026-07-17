@@ -7,14 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --maroon:    #1A0005;
-      --crimson:   #8B0000;
-      --tan:       #C89A6A;
-      --caramel:   #9B6A42;
-      --bark:      #6B4423;
-      --cream:     #F5E8CC;
-      --text-main: #F0DDB8;
-      --text-dim:  #C4A882;
+      --brown-dk:  #5C3310;
+      --brown-md:  #8B5A2B;
+      --brown:     #C48A4A;
+      --amber:     #E8C07A;
+      --amber-lt:  #F5DFA0;
+      --cream:     #FDF3DC;
+      --ink:       #3A1F08;
+      --ink-mid:   #6B4020;
+      --text-dim:  #9A7040;
+      --bg:        #FDF3DC;
+      --card-bg:   #FBE9C0;
+      --modal-bg:  #FFFBF0;
+      --border:    rgba(139,90,43,0.2);
+      --border-md: rgba(139,90,43,0.35);
       --radius:    12px;
       --serif:     'Cormorant Garamond', Georgia, serif;
       --sans:      'DM Sans', system-ui, sans-serif;
@@ -25,8 +31,8 @@
 
     body {
       font-family: var(--sans);
-      background: var(--maroon);
-      color: var(--text-main);
+      background: var(--bg);
+      color: var(--ink);
       font-size: 15px;
       line-height: 1.6;
       min-height: 100vh;
@@ -35,9 +41,9 @@
     /* ===== NAV ===== */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(26,0,5,0.92);
+      background: rgba(253,243,220,0.94);
       backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(139,0,0,0.3);
+      border-bottom: 1px solid var(--border-md);
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 5vw; height: 58px;
     }
@@ -46,9 +52,9 @@
 
     .nav-avatar {
       width: 34px; height: 34px; border-radius: 8px;
-      background: var(--crimson); border: 1px solid var(--caramel);
+      background: var(--brown-md); border: 1px solid var(--brown-dk);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; color: var(--tan); font-weight: 500; overflow: hidden;
+      font-size: 0.7rem; color: var(--cream); font-weight: 500; overflow: hidden;
     }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -59,11 +65,11 @@
       transition: color 0.2s; padding-bottom: 2px;
     }
 
-    .nav-links a:hover { color: var(--tan); border-bottom: 1.5px solid var(--tan); }
+    .nav-links a:hover { color: var(--brown-dk); border-bottom: 1.5px solid var(--brown-dk); }
 
     .nav-handle {
-      font-size: 0.82rem; color: var(--tan);
-      border: 1px solid var(--caramel);
+      font-size: 0.82rem; color: var(--brown-md);
+      border: 1px solid var(--border-md);
       border-radius: 100px; padding: 0.3rem 0.9rem; font-weight: 500;
     }
 
@@ -71,8 +77,8 @@
     .hero-banner {
       margin: 1.2rem 5vw;
       border-radius: 18px;
-      background: linear-gradient(120deg, var(--bark) 0%, #3D1200 40%, #1A0005 100%);
-      border: 1px solid rgba(139,0,0,0.4);
+      background: linear-gradient(120deg, var(--brown-dk) 0%, var(--brown-md) 45%, var(--brown) 100%);
+      border: 1px solid var(--brown-dk);
       min-height: 300px;
       display: flex; align-items: flex-end;
       position: relative; overflow: hidden;
@@ -81,13 +87,13 @@
     .hero-banner::before {
       content: ''; position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 50% 80% at 70% 50%, rgba(139,0,0,0.25) 0%, transparent 70%),
-        radial-gradient(ellipse 30% 60% at 20% 80%, rgba(200,154,106,0.12) 0%, transparent 60%);
+        radial-gradient(ellipse 50% 80% at 75% 50%, rgba(245,223,160,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 60% at 10% 80%, rgba(253,243,220,0.08) 0%, transparent 60%);
     }
 
     .hero-banner::after {
-      content: '🍂'; position: absolute; top: 1.2rem; right: 1.8rem;
-      font-size: 2.5rem; opacity: 0.18;
+      content: '✦'; position: absolute; top: 1.4rem; right: 2rem;
+      font-size: 2rem; opacity: 0.2; color: var(--amber-lt);
     }
 
     .hero-photo-slot {
@@ -99,11 +105,11 @@
     .hero-photo-placeholder {
       width: 100%; height: 100%;
       border-radius: 12px 12px 0 0;
-      background: linear-gradient(180deg, rgba(107,68,35,0.3) 0%, rgba(107,68,35,0.6) 100%);
-      border: 1px solid rgba(200,154,106,0.2); border-bottom: none;
+      background: rgba(253,243,220,0.12);
+      border: 1px solid rgba(253,243,220,0.2); border-bottom: none;
       display: flex; align-items: center; justify-content: center;
       font-family: var(--serif); font-style: italic;
-      font-size: 0.85rem; color: var(--text-dim);
+      font-size: 0.85rem; color: rgba(253,243,220,0.6);
       text-align: center; padding: 1rem;
     }
 
@@ -114,12 +120,12 @@
 
     .hero-brand {
       display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 1rem; opacity: 0.6;
+      margin-bottom: 1rem; opacity: 0.75;
     }
 
-    .hero-brand-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--tan); opacity: 0.7; }
+    .hero-brand-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--amber-lt); opacity: 0.9; }
 
-    .hero-brand span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tan); }
+    .hero-brand span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber-lt); }
 
     .hero-name {
       font-family: var(--serif);
@@ -129,7 +135,7 @@
     }
 
     .hero-desc {
-      font-size: 0.92rem; color: var(--text-dim);
+      font-size: 0.92rem; color: rgba(253,243,220,0.82);
       line-height: 1.75; font-weight: 300;
       margin-bottom: 1.4rem; max-width: 420px;
     }
@@ -137,12 +143,12 @@
     .hero-read-more {
       display: inline-flex; align-items: center; gap: 0.4rem;
       font-size: 0.85rem; font-weight: 500; color: var(--cream);
-      background: none; border: none; border-bottom: 1px solid var(--tan);
+      background: none; border: none; border-bottom: 1px solid var(--amber-lt);
       padding-bottom: 2px; cursor: pointer; font-family: var(--sans);
       transition: color 0.2s;
     }
 
-    .hero-read-more:hover { color: var(--tan); }
+    .hero-read-more:hover { color: var(--amber-lt); }
 
     /* ===== MAIN GRID ===== */
     .main-grid {
@@ -151,31 +157,32 @@
     }
 
     .panel {
-      background: rgba(107,68,35,0.18);
-      border: 1px solid rgba(200,154,106,0.18);
+      background: var(--card-bg);
+      border: 1px solid var(--border-md);
       border-radius: var(--radius); padding: 1.3rem;
+      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
     }
 
     .panel-title {
-      font-size: 1rem; font-weight: 500;
-      color: var(--cream); margin-bottom: 1rem;
+      font-size: 0.95rem; font-weight: 500;
+      color: var(--ink); margin-bottom: 1rem;
       display: flex; align-items: center; justify-content: space-between;
     }
 
     .panel-title button {
-      font-size: 0.78rem; color: var(--tan);
+      font-size: 0.78rem; color: var(--brown-md);
       background: none; border: none; cursor: pointer;
       font-family: var(--sans); padding: 0;
     }
 
-    .panel-title button:hover { text-decoration: underline; }
+    .panel-title button:hover { color: var(--brown-dk); text-decoration: underline; }
 
     .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.9rem; }
 
     .highlight-card {
       border-radius: 8px; overflow: hidden;
       position: relative; aspect-ratio: 1 / 0.8;
-      background: var(--bark); border: 1px solid rgba(200,154,106,0.15);
+      background: var(--amber-lt); border: 1px solid var(--border-md);
       cursor: pointer; transition: transform 0.18s;
     }
 
@@ -192,79 +199,79 @@
     .highlight-overlay {
       position: absolute; bottom: 0; left: 0; right: 0;
       padding: 0.5rem 0.6rem;
-      background: linear-gradient(0deg, rgba(26,0,5,0.85) 0%, transparent 100%);
-      font-size: 0.68rem; color: var(--tan); font-weight: 500;
+      background: linear-gradient(0deg, rgba(58,31,8,0.75) 0%, transparent 100%);
+      font-size: 0.68rem; color: var(--amber-lt); font-weight: 500;
     }
 
     .view-more-btn {
       display: block; width: 100%; text-align: center; padding: 0.7rem;
-      border: 1px solid rgba(200,154,106,0.3); border-radius: 8px;
-      color: var(--tan); font-size: 0.85rem; font-weight: 500;
+      border: 1px solid var(--border-md); border-radius: 8px;
+      color: var(--brown-md); font-size: 0.85rem; font-weight: 500;
       background: none; cursor: pointer; font-family: var(--sans); transition: background 0.18s;
     }
 
-    .view-more-btn:hover { background: rgba(200,154,106,0.1); }
+    .view-more-btn:hover { background: var(--amber-lt); }
 
-    .account-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .account-list { display: flex; flex-direction: column; gap: 0.6rem; }
 
     .account-row {
       display: flex; align-items: center; gap: 0.7rem;
-      background: rgba(26,0,5,0.35); border: 1px solid rgba(200,154,106,0.12);
-      border-radius: 8px; padding: 0.75rem 0.8rem;
+      background: var(--amber-lt); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.7rem 0.8rem;
       text-decoration: none; transition: background 0.18s, border-color 0.18s;
     }
 
-    .account-row:hover { background: rgba(139,0,0,0.25); border-color: rgba(200,154,106,0.3); }
+    .account-row:hover { background: var(--amber); border-color: var(--brown); }
 
     .acc-icon {
       width: 28px; height: 28px; border-radius: 6px;
-      background: rgba(139,0,0,0.5);
+      background: var(--amber); border: 1px solid var(--border-md);
       display: flex; align-items: center; justify-content: center;
       font-size: 0.85rem; flex-shrink: 0;
     }
 
-    .acc-label { font-size: 0.88rem; color: var(--text-main); }
-    .acc-url { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); opacity: 0.7; }
+    .acc-label { font-size: 0.88rem; color: var(--ink); }
+    .acc-url { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); }
 
     .info-cards { display: flex; flex-direction: column; gap: 0.6rem; }
 
     .info-card {
       display: flex; align-items: flex-start; gap: 0.75rem;
-      background: rgba(26,0,5,0.4); border: 1px solid rgba(200,154,106,0.15);
+      background: var(--amber-lt); border: 1px solid var(--border);
       border-radius: 10px; padding: 0.85rem 1rem;
     }
 
     .info-icon {
       width: 36px; height: 36px; border-radius: 8px;
-      background: rgba(139,0,0,0.45); border: 1px solid rgba(200,154,106,0.2);
+      background: var(--amber); border: 1px solid var(--border-md);
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; flex-shrink: 0;
     }
 
-    .info-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
-    .info-text p  { font-size: 0.75rem; color: var(--text-dim); font-weight: 300; line-height: 1.5; }
+    .info-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+    .info-text p  { font-size: 0.75rem; color: var(--ink-mid); font-weight: 300; line-height: 1.5; }
 
     /* ===== SECTION HEADING ===== */
     .section-heading {
-      font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--cream);
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--ink);
       display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem;
     }
 
-    .section-heading::after { content: ''; flex: 1; height: 1px; background: rgba(200,154,106,0.2); }
+    .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border-md); }
 
-    /* ===== PORTFOLIO SECTION ===== */
+    /* ===== PORTFOLIO ===== */
     #portfolio { padding: 3rem 5vw 0; }
 
     .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
 
     .ftab {
-      background: rgba(26,0,5,0.5); border: 1px solid rgba(200,154,106,0.2);
-      color: var(--text-dim); border-radius: 100px;
+      background: var(--amber-lt); border: 1px solid var(--border-md);
+      color: var(--ink-mid); border-radius: 100px;
       padding: 0.4rem 1rem; font-size: 0.82rem;
       font-family: var(--sans); cursor: pointer; transition: all 0.18s;
     }
 
-    .ftab.active, .ftab:hover { background: var(--crimson); border-color: var(--crimson); color: var(--cream); }
+    .ftab.active, .ftab:hover { background: var(--brown-md); border-color: var(--brown-md); color: var(--cream); }
 
     .portfolio-grid {
       display: grid;
@@ -274,18 +281,19 @@
 
     /* ===== PORTFOLIO CARD ===== */
     .port-card {
-      background: rgba(107,68,35,0.2);
-      border: 1px solid rgba(200,154,106,0.16);
+      background: var(--card-bg);
+      border: 1px solid var(--border-md);
       border-radius: var(--radius); overflow: hidden;
-      transition: transform 0.2s, border-color 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
       cursor: pointer;
+      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
     }
 
-    .port-card:hover { transform: translateY(-3px); border-color: rgba(200,154,106,0.4); }
+    .port-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,51,16,0.14); }
     .port-card.hidden { display: none; }
 
     .port-thumb {
-      width: 100%; aspect-ratio: 16/9; background: var(--bark);
+      width: 100%; aspect-ratio: 16/9; background: var(--amber-lt);
       display: flex; align-items: center; justify-content: center;
       font-size: 0.75rem; color: var(--text-dim); font-style: italic; overflow: hidden;
     }
@@ -297,31 +305,35 @@
     .port-cat {
       font-size: 0.7rem; font-weight: 500;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--tan); margin-bottom: 0.3rem;
+      color: var(--brown-md); margin-bottom: 0.3rem;
     }
 
     .port-title {
       font-family: var(--serif); font-size: 1.05rem;
-      font-weight: 600; color: var(--cream); margin-bottom: 0.4rem;
+      font-weight: 600; color: var(--ink); margin-bottom: 0.2rem;
     }
 
-    .port-desc { font-size: 0.8rem; color: var(--text-dim); font-weight: 300; line-height: 1.6; }
+    .port-byline {
+      font-size: 0.75rem; color: var(--text-dim);
+      font-style: italic; margin-bottom: 0.4rem;
+    }
+
+    .port-desc { font-size: 0.8rem; color: var(--ink-mid); font-weight: 300; line-height: 1.6; }
 
     .port-read-more {
       display: inline-flex; align-items: center; gap: 0.3rem;
       margin-top: 0.9rem; font-size: 0.78rem; font-weight: 500;
-      color: var(--tan); background: none; border: none;
+      color: var(--brown-md); background: none; border: none;
       font-family: var(--sans); cursor: pointer; padding: 0;
       transition: color 0.18s;
     }
 
-    .port-read-more:hover { color: var(--cream); }
+    .port-read-more:hover { color: var(--brown-dk); }
 
-    /* ===== NOTION-STYLE MODAL ===== */
+    /* ===== MODAL ===== */
     .modal-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(10,0,2,0.75);
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(58,31,8,0.55);
       backdrop-filter: blur(4px);
       align-items: center; justify-content: center;
       padding: 2rem 1rem;
@@ -330,21 +342,20 @@
     .modal-overlay.active { display: flex; }
 
     .modal {
-      background: #220008;
-      border: 1px solid rgba(200,154,106,0.25);
+      background: var(--modal-bg);
+      border: 1px solid var(--border-md);
       border-radius: 16px;
-      width: 70%;
-      max-width: 860px;
-      max-height: 85vh;
-      overflow-y: auto;
+      width: 70%; max-width: 860px;
+      max-height: 85vh; overflow-y: auto;
       position: relative;
       animation: modalIn 0.22s ease;
       scrollbar-width: thin;
-      scrollbar-color: var(--bark) transparent;
+      scrollbar-color: var(--amber) transparent;
+      box-shadow: 0 24px 60px rgba(92,51,16,0.22);
     }
 
     .modal::-webkit-scrollbar { width: 6px; }
-    .modal::-webkit-scrollbar-thumb { background: var(--bark); border-radius: 3px; }
+    .modal::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 3px; }
 
     @keyframes modalIn {
       from { opacity: 0; transform: scale(0.96) translateY(12px); }
@@ -355,18 +366,17 @@
       position: sticky; top: 1rem;
       float: right; margin: 1rem 1rem 0 0;
       width: 32px; height: 32px; border-radius: 8px;
-      background: rgba(255,255,255,0.07); border: none;
-      color: var(--text-dim); font-size: 1.1rem;
+      background: var(--amber-lt); border: none;
+      color: var(--ink-mid); font-size: 1.1rem;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background 0.18s;
-      z-index: 10;
+      transition: background 0.18s; z-index: 10;
     }
 
-    .modal-close:hover { background: rgba(139,0,0,0.5); color: var(--cream); }
+    .modal-close:hover { background: var(--amber); color: var(--ink); }
 
     .modal-cover {
       width: 100%; aspect-ratio: 16/7; overflow: hidden;
-      background: var(--bark);
+      background: var(--amber-lt);
       display: flex; align-items: center; justify-content: center;
       font-style: italic; color: var(--text-dim); font-size: 0.85rem;
       border-radius: 16px 16px 0 0;
@@ -378,14 +388,13 @@
 
     .modal-meta {
       display: flex; align-items: center; gap: 0.8rem;
-      margin-bottom: 1rem; flex-wrap: wrap;
+      margin-bottom: 0.8rem; flex-wrap: wrap;
     }
 
     .modal-cat {
       font-size: 0.72rem; font-weight: 500;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--tan); background: rgba(139,0,0,0.3);
-      border: 1px solid rgba(200,154,106,0.25);
+      color: var(--brown-dk); background: var(--amber);
       border-radius: 100px; padding: 0.25rem 0.75rem;
     }
 
@@ -393,18 +402,18 @@
 
     .modal-title {
       font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 1.2rem;
+      font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 0.5rem;
     }
 
     .modal-byline {
-      font-size: 0.82rem; font-style: italic; color: var(--text-dim);
-      margin: -0.6rem 0 1.2rem;
+      font-size: 0.82rem; color: var(--text-dim);
+      font-style: italic; margin-bottom: 1.1rem;
     }
 
-    .modal-divider { height: 1px; background: rgba(200,154,106,0.15); margin-bottom: 1.4rem; }
+    .modal-divider { height: 1px; background: var(--border-md); margin-bottom: 1.4rem; }
 
     .modal-desc {
-      font-size: 0.92rem; color: var(--text-dim);
+      font-size: 0.92rem; color: var(--ink-mid);
       font-weight: 300; line-height: 1.85; margin-bottom: 1.4rem;
       text-align: justify;
     }
@@ -412,13 +421,11 @@
     .modal-desc p { margin-bottom: 1.1rem; }
     .modal-desc p:last-child { margin-bottom: 0; }
 
-    .port-inline-img {
-      margin: 1.4rem 0; text-align: center;
-    }
+    .port-inline-img { margin: 1.4rem 0; text-align: center; }
 
     .port-inline-img img {
       max-width: 100%; border-radius: 10px;
-      border: 1px solid rgba(200,154,106,0.2);
+      border: 1px solid var(--border-md);
       display: block; margin: 0 auto;
     }
 
@@ -426,44 +433,42 @@
 
     .modal-skills-label {
       font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--tan); margin-bottom: 0.6rem;
+      color: var(--brown-md); margin-bottom: 0.6rem;
     }
 
-    .modal-skills {
-      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.6rem;
-    }
+    .modal-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.6rem; }
 
     .modal-skill-tag {
-      background: rgba(107,68,35,0.35);
-      border: 1px solid rgba(200,154,106,0.2);
-      color: var(--text-main); border-radius: 100px;
-      padding: 0.25rem 0.75rem; font-size: 0.78rem;
+      background: var(--amber-lt); color: var(--brown-dk);
+      border: 1px solid var(--border-md);
+      border-radius: 100px; padding: 0.25rem 0.75rem;
+      font-size: 0.78rem;
     }
 
     .modal-link {
       display: inline-flex; align-items: center; gap: 0.4rem;
-      background: var(--crimson); color: var(--cream);
+      background: var(--brown-md); color: var(--cream);
       text-decoration: none; border-radius: 8px;
       padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 500;
       transition: background 0.18s;
     }
 
-    .modal-link:hover { background: #6d0000; }
+    .modal-link:hover { background: var(--brown-dk); }
 
     /* ===== ABOUT ===== */
     #about { padding: 3rem 5vw 0; }
 
     .about-panel {
-      background: rgba(107,68,35,0.15);
-      border: 1px solid rgba(200,154,106,0.15);
+      background: var(--card-bg); border: 1px solid var(--border-md);
       border-radius: var(--radius); padding: 2rem 2.4rem;
       display: grid; grid-template-columns: 1fr 2fr;
       gap: 3rem; align-items: start;
+      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
     }
 
     .about-photo {
       aspect-ratio: 3/4; border-radius: 10px;
-      background: var(--bark); border: 1px solid rgba(200,154,106,0.2);
+      background: var(--amber-lt); border: 1px solid var(--border-md);
       display: flex; align-items: center; justify-content: center;
       font-style: italic; font-size: 0.82rem;
       color: var(--text-dim); text-align: center; padding: 1rem; overflow: hidden;
@@ -473,23 +478,23 @@
 
     .about-body h2 {
       font-family: var(--serif); font-size: 1.8rem;
-      font-weight: 600; color: var(--cream); margin-bottom: 1rem;
+      font-weight: 600; color: var(--ink); margin-bottom: 1rem;
     }
 
-    .about-body p { font-size: 0.92rem; color: var(--text-dim); font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem; }
+    .about-body p { font-size: 0.92rem; color: var(--ink-mid); font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem; }
 
     .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
 
     .skill-tag {
-      background: rgba(139,0,0,0.3);
-      border: 1px solid rgba(200,154,106,0.25);
-      color: var(--tan); border-radius: 100px;
-      padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500;
+      background: var(--amber); color: var(--brown-dk);
+      border: 1px solid var(--border-md);
+      border-radius: 100px; padding: 0.3rem 0.85rem;
+      font-size: 0.78rem; font-weight: 500;
     }
 
     /* ===== FOOTER ===== */
     footer {
-      border-top: 1px solid rgba(200,154,106,0.12);
+      border-top: 1px solid var(--border-md);
       text-align: center; margin-top: 4rem;
       padding: 1.4rem 5vw; font-size: 0.78rem; color: var(--text-dim);
     }
@@ -514,7 +519,6 @@
 </head>
 <body>
 
-  <!-- ===== NAV ===== -->
   <nav>
     <div class="nav-left">
       <div class="nav-avatar">CJ</div>
@@ -527,7 +531,6 @@
     <span class="nav-handle">@cjoftherosary</span>
   </nav>
 
-  <!-- ===== HERO ===== -->
   <div class="hero-banner">
     <div class="hero-photo-slot">
       <div class="hero-photo-placeholder">
@@ -538,7 +541,6 @@
     <div class="hero-content">
       <div class="hero-brand">
         <div class="hero-brand-dot"></div>
-        <!-- ✏️ CHANGE THIS: Your school and course -->
         <span>University of Santo Tomas · Journalism</span>
       </div>
       <h1 class="hero-name">Christine Jade Del Rosario</h1>
@@ -551,17 +553,14 @@
     </div>
   </div>
 
-  <!-- ===== 3-COL GRID ===== -->
   <div class="main-grid">
 
-    <!-- LEFT: Highlights -->
     <div class="panel">
       <div class="panel-title">
         Highlights
         <button onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View All ›</button>
       </div>
       <div class="highlights-grid">
-        <!-- ✏️ Replace highlight-placeholder contents with <img src="..."> for real images -->
         <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
           <div class="highlight-placeholder">Pubmat</div>
           <div class="highlight-overlay">Pubmat</div>
@@ -584,7 +583,6 @@
       </button>
     </div>
 
-    <!-- MIDDLE: Contact -->
     <div class="panel">
       <div class="panel-title">Contact</div>
       <div class="account-list">
@@ -611,11 +609,9 @@
       </div>
     </div>
 
-    <!-- RIGHT: Quick Info -->
     <div class="panel">
       <div class="panel-title">About Me</div>
       <div class="info-cards">
-        <!-- ✏️ CHANGE THIS: Update to reflect your actual roles -->
         <div class="info-card">
           <div class="info-icon">📰</div>
           <div class="info-text">
@@ -642,7 +638,6 @@
 
   </div>
 
-  <!-- ===== PORTFOLIO ===== -->
   <section id="portfolio">
     <h3 class="section-heading">All Work</h3>
     <div class="filter-tabs">
@@ -655,31 +650,62 @@
 
     <div class="portfolio-grid">
 
-      <!--
-        HOW TO ADD A CARD:
-        Copy one block below. Fill in:
-          data-cat       → articles | pubmats | projects | excel
-          data-title     → full title shown in modal
-          data-category  → label shown in modal (e.g. "Feature Article")
-          data-date      → e.g. "December 2025"
-          data-byline    → optional, e.g. "With Iya Santos" — leave off if solo work
-          data-image     → path to image, e.g. "images/guadalupe.jpg"
-          data-desc      → full description shown in modal
-          data-skills    → comma-separated skills shown as tags
-          data-link      → URL for the "Open" button (or leave "#")
-          data-link-text → button label e.g. "Read Article" or "View Design"
-      -->
+      <div class="port-card" data-cat="articles"
+        data-title="The National Shrine of Our Lady of Guadalupe"
+        data-byline="By Christine Jade Del Rosario"
+        data-category="Feature Article"
+        data-date="December 2025"
+        data-image="images/guadalupe.jpg"
+        data-skills="Feature Writing,Reporting,Interviewing"
+        data-link="#"
+        data-link-text="Read Article">
+        <div class="port-article">
+          <p>The National Shrine of Our Lady of Guadalupe just celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King. Its late afternoon interval between the masses was quiet with only a small number of devotees kneeling on the pews. Some had troubled expressions. Some were too concentrated in their prayers.</p>
+          <p>Beyond the Parish exists a larger religious reality. 85.6 million Filipinos are Roman Catholics, ranking third among the world's largest Catholic populations based on the World Population Review. Even on regular days, people visit the Church and each one carries a silent weight.</p>
+          <p>During the pandemic, these halls barely felt the footsteps of people. Only the sun peers and filters through the windows during downtime. In 2022, Metro Manila was officially declared under Alert Level 1 therefore capacity caps or quarantine classifications were no longer present. However, the country was still under a State of Public Health Emergency. The Church underwent societal reintegration to adjust to the new normal.</p>
+          <p>The Archdiocese of Manila appointed Rev. Fr. Carlos P. Reyes as Rector of the Church on October 13, 2022. "Many of our volunteers are poor. And now, we're only finding out about the volunteers that caught the virus [...] We caught Covid, but we survived. I was nervous at the time, because March arrived [or] July, I had Covid. Another thing, around three people have died. We're just finding out after it happened [...] one volunteer—he had never shown up again. The other one died in their home," Rev. Fr. Reyes said.</p>
+          <p>"The funds [of the Church] diminishes. I've experienced it as well. I resorted to begging," Maria said. Because in her 13 years of servitude to the Church, not once has she received any forms of salary. Between 2018 and 2023, household expenses rose from ₱238,750 annually to ₱258,050 reported by the PSA Family Income and Expenditure survey.</p>
+          <p>"We have never received any amount. We are voluntarily working here. We don't deserve money, [...] It is the money of the people," she said. Layministers, church greeters, collectors, and most of the staff during the mass are not incentivized. Only a handful are compensated with actual wages.</p>
+          <p>Rev. Fr. Reyes saw the Church's financial status and found that they weren't breaking even. The Parish resorted to selling columbariums—"a finite resource that would eventually run out." The revenue should've gone to renovations, but instead went into operational expenses.</p>
+          <p>Statistics from the 2025 World Giving Report showed that Filipinos donate about 0.27 percent of their income specifically to religious causes. 30 percent of their charitable donations are directed toward religious organizations or causes. "No one is going to Church, and we only rely on donations," he said.</p>
+          <p>The economic pressure didn't stop at the Church doors.</p>
+          <p>The global market for religious and spiritual products—including items commonly used in ritual practice such as incense, candles, prayer beads, and devotional statues—is projected to grow significantly in the coming years. According to a market research report released via GlobeNewswire, the sector is expected to increase from approximately USD 5.5 billion in 2024 to USD 15.7 billion by 2034.</p>
+          <p>Nicole Flores Hernandez handcrafts her products. As a stay-at-home mother, Regina Pacis Crafts is an online Catholic arts and crafts store which enabled her to help her husband with the household finances. She assembles the beads and chain links together with pliers to make rosaries, bracelets and earrings. Other items she sold included laced estampitas and pocket altars.</p>
+          <p>Her products each have a special type of crucifix which customers can choose. Some of which are a Pardon Crucifix, a Pardon Crucifix with the St. Benedict's Medal and a Miraculous Medal, a Fleur De Lis crucifix and a Scroll Crucifix, with faux crystal beads or semi-precious stones, bronze tone metals, a center medal with a rosary pouch.</p>
+          <p>"There's less sales compared to previous years," she said and that inflation "affected her customers' ability to buy" her products. Hernandez increased her prices by 10-15% to sustain her business.</p>
+          <p>Pio Antiquina, a 22-year old college student, spent three days a week managing his small business. Tolle, Lege. Book and Supplies is an online Catholic bookstore based in Cebu. Pictures of products are posted online along with its prices on the captions. His parents financially support him. Yet he still pursues his self-described sideline for his savings and to have the ability to buy necessities or non-essential items for himself.</p>
+          <p>Antiquina would privately message people who are part of Catholic Facebook groups, peddling Catholic textbooks, crucifixes, rosaries, and scapulars. He even resorted to exporting books, although at a smaller scale. His clients are OFWs (Overseas Filipino Workers) that are working in the Middle East and don't have easy access to Christian books.</p>
+          <p>"Maybe my friends and acquaintances want to order books because they are in areas that are, for example—they're in the Middle East [...] So, I do my best to source out the books and deliver it to them," said Antiquina.</p>
+          <p>While inflation doesn't heavily affect his operations, he had to make a 5% increase to his products. "It's easy for me to adjust [...] the money because there is a demand," Antiquina said.</p>
+          <p>Both Hernandez and Antiquina have a similar market: individual Catholics who do not buy in bulk, and not churches.</p>
+          <p>"I haven't had an experience in which they [churches] saw the need to purchase [a] particular book from the bookstore. I think it's because churches don't really have [a] need for books," Antiquina said.</p>
+          <p>"Nonetheless, there's really divine providence," Rev. Fr. Reyes said. Money randomly comes into the Church's financial accounts. Donors without revealing their names would leave large sums. "An example is the 250,000 pesos we used. I don't know where it came from," he added.</p>
+          <p>Maria gestured to the flower arrangement by the altar. "We never ask for flowers. People willingly give," she said. Candles and incense are common examples of non-monetary donations, often coming in bulk and sustaining the clerical operations.</p>
+          <p>The funds enabled architectural developments that encouraged devotees to attend mass. Aircons, sound systems, functioning TVs, online streaming of each Eucharistic celebration. However, running the Church—paying for electricity, water, and keeping the building in good shape—costs more, just like it does for families at home. In November 2025, overall prices rose slowly, but the cost of basic essentials climbed faster. Housing, water, electricity, gas, and other utilities increased by 2.9 percent.</p>
+          <p>It is the generosity of parishioners that sustains this faith. "We haven't gotten to a point where poverty hinders people from donating to the Church," Rev. Fr. Reyes said.</p>
+          <p>Maria busied herself by looking through a bag of assorted medicine personally delivered to her. She didn't buy it nor did she ask for it. Blessings come uninvited yet are welcomed. Hence, it's innate to have a sense of indebtedness and share the graces she comes across. "It was given to me, but I'll share and give it back to the church, so I wouldn't be its sole receiver," she said.</p>
+          <p>"[Volunteerism] isn't for myself," Maria said. "I pray for my enemies. I pray for those in envy. [...] I do not pray for myself. Perhaps that is the reason I am blessed. Even if you do not have money, there's nothing worth comparing to the love of Jesus Christ."</p>
+        </div>
+        <div class="port-thumb"><!-- ✏️ <img src="images/guadalupe.jpg" alt="Guadalupe Shrine"> -->Article Image</div>
+        <div class="port-body">
+          <p class="port-cat">Articles</p>
+          <h3 class="port-title">The National Shrine of Our Lady of Guadalupe</h3>
+          <p class="port-byline">By Christine Jade Del Rosario</p>
+          <p class="port-desc">Feature article covering the parish's 74th anniversary and the Solemnity of Christ the King.</p>
+          <button class="port-read-more">Read More →</button>
+        </div>
+      </div>
 
-      <!-- ✏️ PUBMAT EXAMPLE — replace with your real work -->
       <div class="port-card" data-cat="pubmats"
         data-title="Pubmat Title"
+        data-byline=""
         data-category="Publication Material"
         data-date="2025"
         data-image=""
-        data-desc="Describe what this pubmat was for, which org or event, and what you were trying to communicate visually."
         data-skills="Graphic Design,Canva,Visual Communication"
         data-link="#"
         data-link-text="View Design">
+        <div class="port-article"><p>Describe what this pubmat was for, which org or event, and what you were trying to communicate visually.</p></div>
         <div class="port-thumb">Pubmat image</div>
         <div class="port-body">
           <p class="port-cat">Pubmats</p>
@@ -689,16 +715,16 @@
         </div>
       </div>
 
-      <!-- ✏️ PROJECT EXAMPLE -->
       <div class="port-card" data-cat="projects"
         data-title="Project Name"
+        data-byline=""
         data-category="Student Project"
         data-date="2025"
         data-image=""
-        data-desc="Describe the project — what it was, your role, the challenges, and the outcome."
         data-skills="Project Management,Event Planning,Leadership"
         data-link="#"
         data-link-text="Learn More">
+        <div class="port-article"><p>Describe the project — what it was, your role, the challenges, and the outcome.</p></div>
         <div class="port-thumb">Project photo</div>
         <div class="port-body">
           <p class="port-cat">Projects</p>
@@ -708,16 +734,16 @@
         </div>
       </div>
 
-      <!-- ✏️ EXCEL EXAMPLE -->
       <div class="port-card" data-cat="excel"
         data-title="Tracker Title"
+        data-byline=""
         data-category="Excel & Data"
         data-date="2025"
         data-image=""
-        data-desc="Describe what the tracker does, what data it handles, and why it was useful for your org or event."
         data-skills="Microsoft Excel,Data Organization,Formulas & Functions"
         data-link="#"
         data-link-text="View File">
+        <div class="port-article"><p>Describe what the tracker does, what data it handles, and why it was useful for your org or event.</p></div>
         <div class="port-thumb">Tracker screenshot</div>
         <div class="port-body">
           <p class="port-cat">Excel & Data</p>
@@ -730,7 +756,6 @@
     </div>
   </section>
 
-  <!-- ===== ABOUT ===== -->
   <section id="about">
     <h3 class="section-heading">About Me</h3>
     <div class="about-panel">
@@ -740,7 +765,7 @@
       </div>
       <div class="about-body">
         <h2>Hi, I'm Rio.</h2>
-        <p>I chose a program I don’t fit in. My outputs were too metaphorical to be considered as good reporting, and too precise to be considered as good prose. The rules of thumb of journalism handed me a splinter of ambiguity.</p>
+        <p>I chose a program I don't fit in. My outputs were too metaphorical to be considered as good reporting, and too precise to be considered as good prose. The rules of thumb of journalism handed me a splinter of ambiguity.</p>
         <p>I dislike vagueness, often frowning because of it until it ushers me to a hyperfixated need to learn. I operate the way kittens do, mimicking my mentors the way kittens mimic their mothers. I think the felines are onto something with this one. Do you like cats?</p>
         <div class="skill-tags">
           <span class="skill-tag">Journalism</span>
@@ -755,18 +780,14 @@
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
   <footer>
     &copy; 2026 Christine Jade Del Rosario. Built with HTML &amp; intention.
   </footer>
 
-  <!-- ===== MODAL ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
       <button class="modal-close" id="modalClose">✕</button>
-      <div class="modal-cover" id="modalCover">
-        <!-- image injected by JS -->
-      </div>
+      <div class="modal-cover" id="modalCover"></div>
       <div class="modal-body">
         <div class="modal-meta">
           <span class="modal-cat" id="modalCategory"></span>
@@ -784,69 +805,50 @@
   </div>
 
   <script>
-    // ---- CMS: Render entries from localStorage ----
     const STORAGE_KEY = 'cj_portfolio_entries';
+
+    function parseBody(text) {
+      return text.trim().split(/\n{2,}/).map(block => {
+        const trimmed = block.trim();
+        const imgMatch = trimmed.match(/^\[img:\s*(.+?)\s*\]$/i);
+        if (imgMatch) {
+          const parts = imgMatch[1].split('|').map(s => s.trim());
+          const src = parts[0], href = parts[1];
+          const imgTag = `<img src="${src}" alt="">`;
+          return href
+            ? `<figure class="port-inline-img"><a href="${href}" target="_blank">${imgTag}</a></figure>`
+            : `<figure class="port-inline-img">${imgTag}</figure>`;
+        }
+        return `<p>${trimmed}</p>`;
+      }).join('');
+    }
 
     function buildCard(e) {
       const card = document.createElement('div');
       card.className = 'port-card';
       card.dataset.cat      = e.cat      || 'articles';
       card.dataset.title    = e.title    || '';
+      card.dataset.byline   = e.byline   || '';
       card.dataset.category = e.category || e.cat || '';
       card.dataset.date     = e.date     || '';
-      card.dataset.byline   = e.byline   || '';
       card.dataset.image    = e.image    || '';
       card.dataset.skills   = e.skills   || '';
       card.dataset.link     = e.link     || '#';
       card.dataset.linkText = e.linkText || 'Open';
-      card.dataset.desc     = e.preview  || '';
-
-      const thumbHtml = e.image
-        ? `<img src="${e.image}" alt="${e.title}">`
-        : `<span>${e.category || e.cat || 'Work'}</span>`;
-
-      // Body text: blank lines → <p> tags, [img: path] or [img: path | url] → inline figure, optionally clickable
-      function parseBody(text) {
-        return text.trim().split(/\n{2,}/).map(block => {
-          const trimmed = block.trim();
-          const imgMatch = trimmed.match(/^\[img:\s*(.+?)\s*\]$/i);
-          if (imgMatch) {
-            const inner = imgMatch[1];
-            const parts = inner.split('|').map(s => s.trim());
-            const src = parts[0];
-            const href = parts[1];
-            const imgTag = `<img src="${src}" alt="">`;
-            return href
-              ? `<figure class="port-inline-img"><a href="${href}" target="_blank" rel="noopener">${imgTag}</a></figure>`
-              : `<figure class="port-inline-img">${imgTag}</figure>`;
-          }
-          return `<p>${trimmed}</p>`;
-        }).join('');
-      }
-
-      let articleHtml = '';
-      if (e.body && e.body.trim()) {
-        articleHtml = parseBody(e.body);
-      } else if (e.preview) {
-        articleHtml = `<p>${e.preview}</p>`;
-      }
-
+      const thumbHtml = e.image ? `<img src="${e.image}" alt="${e.title}">` : `<span>${e.category || e.cat || 'Work'}</span>`;
+      const articleHtml = e.body && e.body.trim() ? parseBody(e.body) : `<p>${e.preview || ''}</p>`;
+      const bylineHtml = e.byline ? `<p class="port-byline">${e.byline}</p>` : '';
       card.innerHTML = `
         <div class="port-article" style="display:none">${articleHtml}</div>
         <div class="port-thumb">${thumbHtml}</div>
         <div class="port-body">
           <p class="port-cat">${e.category || e.cat || ''}</p>
           <h3 class="port-title">${e.title || ''}</h3>
+          ${bylineHtml}
           <p class="port-desc">${e.preview || ''}</p>
           <button class="port-read-more">Read More →</button>
-        </div>
-      `;
-
-      card.addEventListener('click', ev => {
-        if (ev.target.tagName === 'A') return;
-        openModal(card);
-      });
-
+        </div>`;
+      card.addEventListener('click', ev => { if (ev.target.tagName !== 'A') openModal(card); });
       return card;
     }
 
@@ -858,98 +860,48 @@
       stored.forEach(e => grid.appendChild(buildCard(e)));
     }
 
-    // ---- Filter tabs ----
-    // Runs after dynamic entries are injected (called below)
-    function initFilters() {
-      const ftabs = document.querySelectorAll('.ftab');
-      const allCards = document.querySelectorAll('.port-card[data-cat]');
-
-      ftabs.forEach(btn => {
-        btn.addEventListener('click', () => {
-          ftabs.forEach(t => t.classList.remove('active'));
-          btn.classList.add('active');
-          const f = btn.dataset.filter;
-          allCards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f));
-          // also handle dynamic cards added after DOMContentLoaded
-          document.querySelectorAll('.port-card[data-cat]').forEach(c =>
-            c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f)
-          );
-        });
-      });
-    }
-
-    // Run CMS render first, then init filters so dynamic cards are included
     renderDynamicEntries();
 
-    const ftabs = document.querySelectorAll('.ftab');
-    const cards = document.querySelectorAll('.port-card[data-cat]');
-
-    ftabs.forEach(btn => {
+    document.querySelectorAll('.ftab').forEach(btn => {
       btn.addEventListener('click', () => {
-        ftabs.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
         const f = btn.dataset.filter;
-        // Query live so dynamic cards are included
         document.querySelectorAll('.port-card[data-cat]').forEach(c =>
           c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f)
         );
       });
     });
 
-    // ---- Modal ----
     const overlay  = document.getElementById('modalOverlay');
     const modal    = document.getElementById('modal');
     const closeBtn = document.getElementById('modalClose');
 
     function openModal(card) {
       const d = card.dataset;
-
       document.getElementById('modalCategory').textContent = d.category || '';
       document.getElementById('modalDate').textContent     = d.date     || '';
       document.getElementById('modalTitle').textContent    = d.title    || '';
-
-      // Byline — only show if collaborators were specified
       const bylineEl = document.getElementById('modalByline');
-      if (d.byline && d.byline.trim()) {
-        bylineEl.textContent = d.byline.trim();
-        bylineEl.style.display = 'block';
-      } else {
-        bylineEl.style.display = 'none';
-      }
-
-      // Article content — reads from hidden .port-article div inside the card
+      bylineEl.textContent  = d.byline || '';
+      bylineEl.style.display = d.byline ? 'block' : 'none';
       const articleEl = card.querySelector('.port-article');
-      document.getElementById('modalDesc').innerHTML = articleEl
-        ? articleEl.innerHTML
-        : (d.desc || '');
-
-      // Skills as tags
+      document.getElementById('modalDesc').innerHTML = articleEl ? articleEl.innerHTML : '';
       const skillsEl = document.getElementById('modalSkills');
       skillsEl.innerHTML = '';
       (d.skills || '').split(',').forEach(s => {
+        if (!s.trim()) return;
         const tag = document.createElement('span');
         tag.className = 'modal-skill-tag';
         tag.textContent = s.trim();
         skillsEl.appendChild(tag);
       });
-
-      // Cover image
       const cover = document.getElementById('modalCover');
-      cover.innerHTML = d.image
-        ? `<img src="${d.image}" alt="${d.title}">`
-        : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
-
-      // Link button — only show if a real link was provided
+      cover.innerHTML = d.image ? `<img src="${d.image}" alt="${d.title}">` : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
       const link = document.getElementById('modalLink');
       const hasLink = d.link && d.link.trim() && d.link.trim() !== '#';
-      if (hasLink) {
-        link.style.display = 'inline-flex';
-        link.href = d.link;
-        link.textContent = (d.linkText || 'Open') + ' ↗';
-      } else {
-        link.style.display = 'none';
-      }
-
+      link.style.display = hasLink ? 'inline-flex' : 'none';
+      if (hasLink) { link.href = d.link; link.textContent = (d.linkText || 'Open') + ' ↗'; }
       overlay.classList.add('active');
       modal.scrollTop = 0;
       document.body.style.overflow = 'hidden';
@@ -960,23 +912,13 @@
       document.body.style.overflow = '';
     }
 
-    // Attach open to every static card and its read-more button
-    cards.forEach(card => {
-      card.addEventListener('click', e => {
-        if (e.target.tagName === 'A') return; // let real links through
-        openModal(card);
-      });
+    document.querySelectorAll('.port-card[data-cat]').forEach(card => {
+      card.addEventListener('click', e => { if (e.target.tagName !== 'A') openModal(card); });
     });
 
     closeBtn.addEventListener('click', closeModal);
-
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) closeModal();
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
 
 </body>
