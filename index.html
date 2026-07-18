@@ -720,8 +720,23 @@
     </div>
   </div>
 
-  <script>
-    const STORAGE_KEY = 'cj_portfolio_entries';
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getFirestore, collection, getDocs }
+      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDK4OmS0iG9O2Q2rrRGsEU3h6GKVnsRLPE",
+      authDomain: "portfolio-89e48.firebaseapp.com",
+      projectId: "portfolio-89e48",
+      storageBucket: "portfolio-89e48.firebasestorage.app",
+      messagingSenderId: "502772014035",
+      appId: "1:502772014035:web:6887cf13d00f47a3e4ed26",
+      measurementId: "G-NPXSV64N3E"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
 
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
@@ -768,12 +783,14 @@
       return card;
     }
 
-    function renderDynamicEntries() {
-      let stored = [];
-      try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch {}
-      if (!stored.length) return;
+    async function renderDynamicEntries() {
+      const snap = await getDocs(collection(db, "entries"));
+      const entries = [];
+      snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
+      entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      if (!entries.length) return;
       const grid = document.querySelector('.portfolio-grid');
-      stored.forEach(e => grid.appendChild(buildCard(e)));
+      entries.forEach(e => grid.appendChild(buildCard(e)));
     }
 
     renderDynamicEntries();
