@@ -263,7 +263,11 @@
       display: flex; align-items: flex-start; gap: 0.75rem;
       background: var(--amber-lt); border: 1px solid var(--border);
       border-radius: 10px; padding: 0.85rem 1rem;
+      text-decoration: none; color: inherit;
+      transition: background 0.18s, border-color 0.18s;
     }
+
+    .info-card:hover { background: var(--amber); border-color: var(--brown); }
 
     .info-icon {
       width: 36px; height: 36px; border-radius: 8px;
@@ -666,27 +670,24 @@
     <div class="panel fade-up" style="animation-delay:0.3s">
       <div class="panel-title">Affiliations</div>
       <div class="info-cards">
-        <div class="info-card">
-          <div class="info-icon">🏫</div>
+        <a class="info-card" href="https://manila.ust.edu.ph/osawebapp/" target="_blank" rel="noopener">
           <div class="info-text">
             <h4>UST Office for Student Affairs — Admin Assistant</h4>
-            <p>Oversees campus life, student welfare and discipline, and dormitory facilities for the university.</p>
+            <p>Oversees student welfare, discipline, and dormitory facilities.</p>
           </div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon">🎌</div>
+        </a>
+        <a class="info-card" href="https://www.facebook.com/UST.TNK/" target="_blank" rel="noopener">
           <div class="info-text">
-            <h4>Thomasian Nihon Kyoukai (TNK) — Secretary</h4>
-            <p>The official UST student organization promoting traditional and modern Japanese culture.</p>
+            <h4>Thomasian Nihon Kyoukai — Secretary</h4>
+            <p>UST's official org for traditional and modern Japanese culture.</p>
           </div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon">🖋️</div>
+        </a>
+        <a class="info-card" href="https://www.facebook.com/MEDIARTRIX" target="_blank" rel="noopener">
           <div class="info-text">
-            <h4>Mediartrix-UST — Asst. Assoc. Vice President for Literary Arts</h4>
-            <p>The university-wide, student-run multimedia organization for and by art enthusiasts of UST.</p>
+            <h4>Mediartrix - UST — Literary Head</h4>
+            <p>UST's student-run multimedia org for art enthusiasts.</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
