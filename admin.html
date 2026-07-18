@@ -63,36 +63,25 @@
 
     .login-sub { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 2rem; }
 
-    .login-box input {
-      width: 100%;
-      background: var(--amber-lt);
-      border: 1px solid var(--border-md);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      color: var(--ink);
-      font-family: var(--sans); font-size: 0.9rem;
-      margin-bottom: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .login-box input:focus { border-color: var(--brown-md); }
-
     .login-error {
       font-size: 0.8rem; color: var(--danger);
       margin-bottom: 0.9rem; display: none;
     }
 
-    .btn-primary {
+    .btn-google {
       width: 100%; padding: 0.75rem;
-      background: var(--brown-md);
-      border: none; border-radius: 8px;
-      color: var(--cream); font-family: var(--sans);
+      background: white;
+      border: 1px solid var(--border-md);
+      border-radius: 8px;
+      color: var(--ink); font-family: var(--sans);
       font-size: 0.9rem; font-weight: 500;
       cursor: pointer; transition: background 0.18s;
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
     }
 
-    .btn-primary:hover { background: var(--brown-dk); }
+    .btn-google:hover { background: var(--amber-lt); }
+
+    .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
 
     /* ===== ADMIN PANEL ===== */
     #adminPanel { display: none; }
@@ -198,6 +187,11 @@
       width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
     }
 
+    .dot-articles { background: #8B5A2B; }
+    .dot-pubmats  { background: #C48A4A; }
+    .dot-projects { background: #5C3310; }
+    .dot-excel    { background: #9A7040; }
+
     .entry-info { flex: 1; min-width: 0; }
 
     .entry-title {
@@ -237,27 +231,17 @@
       background: var(--amber-lt);
     }
 
-    .form-panel-header h2 {
-      font-family: var(--serif);
-      font-size: 1.2rem; font-weight: 600; color: var(--ink);
-    }
-
-    .form-panel-header p { font-size: 0.78rem; color: var(--ink-mid); margin-top: 0.2rem; }
+    .form-panel-header h2 { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+    .form-panel-header p  { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
 
     .form-body { padding: 1.4rem; }
 
-    .form-row { margin-bottom: 1.2rem; }
+    .form-row { margin-bottom: 1.1rem; }
 
     .form-row label {
-      display: block; font-size: 0.75rem; font-weight: 500;
-      color: var(--brown-md); letter-spacing: 0.06em; text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-row .hint {
-      font-size: 0.72rem; color: var(--text-dim);
-      margin-top: 0.3rem; font-style: italic;
-      text-transform: none; letter-spacing: 0;
+      display: block; font-size: 0.78rem; font-weight: 500;
+      color: var(--ink-mid); margin-bottom: 0.35rem;
+      letter-spacing: 0.03em;
     }
 
     .form-row input,
@@ -266,32 +250,31 @@
       width: 100%;
       background: var(--amber-lt);
       border: 1px solid var(--border-md);
-      border-radius: 8px;
-      padding: 0.7rem 0.9rem;
+      border-radius: 7px;
+      padding: 0.6rem 0.85rem;
       color: var(--ink);
       font-family: var(--sans); font-size: 0.88rem;
       outline: none; transition: border-color 0.2s;
-      resize: vertical;
     }
 
     .form-row input:focus,
     .form-row select:focus,
     .form-row textarea:focus { border-color: var(--brown-md); }
 
-    .form-row select option { background: var(--cream); }
+    .form-row textarea { resize: vertical; min-height: 90px; }
 
-    .form-row textarea { min-height: 100px; line-height: 1.6; }
+    #articleBody { min-height: 160px; }
 
-    #articleBody { min-height: 260px; font-size: 0.85rem; line-height: 1.8; }
+    .hint { font-size: 0.73rem; color: var(--text-dim); margin-top: 0.3rem; display: block; }
 
     .form-row-half {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-bottom: 1.1rem;
     }
 
     .form-actions {
-      display: flex; gap: 0.7rem; margin-top: 1.4rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--border-md);
+      display: flex; gap: 0.8rem; margin-top: 1.5rem; padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
     }
 
     .btn-save {
@@ -307,76 +290,68 @@
     .btn-clear {
       padding: 0.75rem 1.2rem;
       background: none;
-      border: 1px solid var(--border-md);
-      border-radius: 8px; color: var(--text-dim);
-      font-family: var(--sans); font-size: 0.88rem;
-      cursor: pointer; transition: all 0.18s;
+      border: 1px solid var(--border-md); border-radius: 8px;
+      color: var(--text-dim); font-family: var(--sans);
+      font-size: 0.9rem; cursor: pointer; transition: all 0.18s;
     }
 
     .btn-clear:hover { border-color: var(--brown-md); color: var(--brown-md); }
 
     .save-toast {
-      display: none; position: fixed;
-      bottom: 2rem; left: 50%; transform: translateX(-50%);
-      background: var(--brown-dk); color: var(--amber-lt);
-      border-radius: 8px; padding: 0.7rem 1.4rem;
-      font-size: 0.85rem; font-weight: 500;
-      z-index: 999; white-space: nowrap;
-      box-shadow: 0 4px 16px rgba(92,51,16,0.2);
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--brown-dk); color: var(--cream);
+      padding: 0.6rem 1.2rem; border-radius: 8px;
+      font-size: 0.85rem; display: none;
+      box-shadow: 0 4px 16px rgba(92,51,16,0.25);
+      z-index: 999;
     }
 
-    /* cat dots */
-    .dot-articles  { background: var(--brown-md); }
-    .dot-pubmats   { background: var(--brown); }
-    .dot-projects  { background: var(--amber); }
-    .dot-excel     { background: var(--brown-dk); }
-
-    @media (max-width: 768px) {
-      .admin-layout { grid-template-columns: 1fr; }
-      .form-row-half { grid-template-columns: 1fr; }
+    /* loading overlay */
+    #loadingScreen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 1.2rem; color: var(--text-dim);
     }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div id="loginScreen">
+  <div id="loadingScreen">Loading…</div>
+
+  <div id="loginScreen" style="display:none">
     <div class="login-box">
       <div class="login-logo">cjoftherosary</div>
-      <div class="login-sub">Admin Panel — Portfolio CMS</div>
-      <input type="password" id="passwordInput" placeholder="Enter password" />
-      <div class="login-error" id="loginError">Incorrect password. Try again.</div>
-      <button class="btn-primary" onclick="tryLogin()">Enter →</button>
+      <div class="login-sub">admin panel · sign in to continue</div>
+      <div class="login-error" id="loginError">Access denied. Only the site owner can log in.</div>
+      <button class="btn-google" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+        Sign in with Google
+      </button>
     </div>
   </div>
 
-  <!-- ADMIN PANEL -->
   <div id="adminPanel">
-
     <nav class="admin-nav">
       <div class="admin-nav-title">
-        Portfolio CMS <span class="admin-badge">Admin</span>
+        cjoftherosary <span class="admin-badge">Admin</span>
       </div>
       <div class="admin-nav-right">
-        <a class="btn-ghost" href="index.html" target="_blank">View Site ↗</a>
-        <button class="btn-danger-ghost" onclick="logout()">Log out</button>
+        <a href="index.html" class="btn-ghost" target="_blank">View Site ↗</a>
+        <button class="btn-danger-ghost" onclick="logout()">Sign Out</button>
       </div>
     </nav>
 
     <div class="admin-layout">
-
-      <!-- Entry List -->
       <div class="entry-list-panel">
         <div class="panel-header">
-          <h2>Portfolio Entries</h2>
+          <h2>Entries</h2>
           <button class="btn-add" onclick="newEntry()">+ New Entry</button>
         </div>
         <ul id="entryList">
-          <li class="entry-list-empty" id="emptyMsg">No entries yet. Add your first one →</li>
+          <li class="entry-list-empty" id="emptyMsg">No entries yet. Click + New Entry to start.</li>
         </ul>
       </div>
 
-      <!-- Form -->
       <div class="form-panel">
         <div class="form-panel-header">
           <h2 id="formTitle">New Entry</h2>
@@ -386,13 +361,12 @@
 
           <div class="form-row">
             <label>Title *</label>
-            <input type="text" id="fTitle" placeholder="e.g. The National Shrine of Our Lady of Guadalupe" />
+            <input type="text" id="fTitle" placeholder="e.g. Unpaid Faith, Unexplained Providence" />
           </div>
 
           <div class="form-row">
-            <label>Byline</label>
-            <input type="text" id="fByline" placeholder="e.g. By Rio Del Rosario & Juan Santos" />
-            <span class="hint">Leave blank if sole author and you want to omit the byline.</span>
+            <label>Byline / Collaborators</label>
+            <input type="text" id="fByline" placeholder="e.g. Written by Rio Del Rosario" />
           </div>
 
           <div class="form-row-half">
@@ -466,56 +440,38 @@ To make it a clickable link:
 
         </div>
       </div>
-
     </div>
   </div>
 
   <div class="save-toast" id="toast">✓ Entry saved!</div>
 
-  <script>
-    // ✏️ CHANGE THIS: set your own password
-    const ADMIN_PASSWORD = 'cjoftherosary2025';
-    const STORAGE_KEY    = 'cj_portfolio_entries';
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc }
+      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const ALLOWED_EMAIL = "christinejade1234@gmail.com";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDK4OmS0iG9O2Q2rrRGsEU3h6GKVnsRLPE",
+      authDomain: "portfolio-89e48.firebaseapp.com",
+      projectId: "portfolio-89e48",
+      storageBucket: "portfolio-89e48.firebasestorage.app",
+      messagingSenderId: "502772014035",
+      appId: "1:502772014035:web:6887cf13d00f47a3e4ed26",
+      measurementId: "G-NPXSV64N3E"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
 
     let entries   = [];
     let editingId = null;
 
-    // LOGIN
-    document.getElementById('passwordInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') tryLogin();
-    });
-
-    function tryLogin() {
-      if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-        sessionStorage.setItem('cj_admin_auth', '1');
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('adminPanel').style.display  = 'block';
-        loadEntries();
-      } else {
-        document.getElementById('loginError').style.display = 'block';
-      }
-    }
-
-    function logout() {
-      sessionStorage.removeItem('cj_admin_auth');
-      location.reload();
-    }
-
-    if (sessionStorage.getItem('cj_admin_auth') === '1') {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminPanel').style.display  = 'block';
-      loadEntries();
-    }
-
-    // STORAGE
-    function loadEntries() {
-      try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { entries = []; }
-      renderList();
-    }
-
-    function saveToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
-
-    // LIST
     const catColors = {
       articles: 'dot-articles',
       pubmats:  'dot-pubmats',
@@ -523,6 +479,54 @@ To make it a clickable link:
       excel:    'dot-excel'
     };
 
+    // AUTH STATE
+    onAuthStateChanged(auth, async user => {
+      document.getElementById('loadingScreen').style.display = 'none';
+      if (user && user.email === ALLOWED_EMAIL) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display  = 'block';
+        await loadEntries();
+      } else if (user) {
+        // signed in but wrong account
+        await signOut(auth);
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('loginScreen').style.display = 'flex';
+      } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+      }
+    });
+
+    window.signInWithGoogle = async function() {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    window.logout = async function() {
+      await signOut(auth);
+    };
+
+    // FIRESTORE
+    async function loadEntries() {
+      const snap = await getDocs(collection(db, "entries"));
+      entries = [];
+      snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
+      entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderList();
+    }
+
+    async function saveToFirestore(entry) {
+      await setDoc(doc(db, "entries", entry.id), entry);
+    }
+
+    async function deleteFromFirestore(id) {
+      await deleteDoc(doc(db, "entries", id));
+    }
+
+    // LIST
     function renderList() {
       const ul    = document.getElementById('entryList');
       const empty = document.getElementById('emptyMsg');
@@ -550,7 +554,7 @@ To make it a clickable link:
     }
 
     // FORM
-    function newEntry() {
+    window.newEntry = function() {
       editingId = null;
       document.getElementById('formTitle').textContent    = 'New Entry';
       document.getElementById('formSubtitle').textContent = 'Fill in the details below. Your entry will appear on the public portfolio.';
@@ -559,9 +563,9 @@ To make it a clickable link:
       });
       document.getElementById('fCat').value = 'articles';
       renderList();
-    }
+    };
 
-    function editEntry(id) {
+    window.editEntry = function(id) {
       const e = entries.find(x => x.id === id);
       if (!e) return;
       editingId = id;
@@ -579,14 +583,15 @@ To make it a clickable link:
       document.getElementById('fLink').value       = e.link     || '';
       document.getElementById('fLinkText').value   = e.linkText || '';
       renderList();
-    }
+    };
 
-    function saveEntry() {
+    window.saveEntry = async function() {
       const title = document.getElementById('fTitle').value.trim();
       if (!title) { alert('Please add a title.'); return; }
 
       const entry = {
-        id:       editingId || ('e_' + Date.now()),
+        id:        editingId || ('e_' + Date.now()),
+        createdAt: editingId ? (entries.find(x => x.id === editingId)?.createdAt || Date.now()) : Date.now(),
         title,
         byline:   document.getElementById('fByline').value.trim(),
         cat:      document.getElementById('fCat').value,
@@ -600,33 +605,34 @@ To make it a clickable link:
         linkText: document.getElementById('fLinkText').value.trim(),
       };
 
+      await saveToFirestore(entry);
+
       if (editingId) {
         const idx = entries.findIndex(x => x.id === editingId);
         if (idx !== -1) entries[idx] = entry;
       } else {
-        entries.push(entry);
+        entries.unshift(entry);
         editingId = entry.id;
       }
 
-      saveToStorage();
       renderList();
       showToast('✓ Entry saved!');
-    }
+    };
 
-    function deleteEntry(id, e) {
+    window.deleteEntry = async function(id, e) {
       e.stopPropagation();
       if (!confirm('Delete this entry? This cannot be undone.')) return;
+      await deleteFromFirestore(id);
       entries = entries.filter(x => x.id !== id);
-      if (editingId === id) newEntry();
-      saveToStorage();
+      if (editingId === id) window.newEntry();
       renderList();
       showToast('Entry deleted.');
-    }
+    };
 
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent    = msg;
-      t.style.display  = 'block';
+      t.textContent   = msg;
+      t.style.display = 'block';
       setTimeout(() => t.style.display = 'none', 2200);
     }
   </script>
