@@ -720,23 +720,18 @@
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-    import { getFirestore, collection, getDocs }
-      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-    const firebaseConfig = {
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script>
+    firebase.initializeApp({
       apiKey: "AIzaSyDK4OmS0iG9O2Q2rrRGsEU3h6GKVnsRLPE",
       authDomain: "portfolio-89e48.firebaseapp.com",
       projectId: "portfolio-89e48",
       storageBucket: "portfolio-89e48.firebasestorage.app",
       messagingSenderId: "502772014035",
-      appId: "1:502772014035:web:6887cf13d00f47a3e4ed26",
-      measurementId: "G-NPXSV64N3E"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
+      appId: "1:502772014035:web:6887cf13d00f47a3e4ed26"
+    });
+    var db = firebase.firestore();
 
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
@@ -783,14 +778,17 @@
       return card;
     }
 
-    async function renderDynamicEntries() {
-      const snap = await getDocs(collection(db, "entries"));
-      const entries = [];
-      snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
-      entries.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999) || (b.createdAt || 0) - (a.createdAt || 0));
-      if (!entries.length) return;
-      const grid = document.querySelector('.portfolio-grid');
-      entries.forEach(e => grid.appendChild(buildCard(e)));
+    function renderDynamicEntries() {
+      db.collection('entries').get().then(function(snap) {
+        var entries = [];
+        snap.forEach(function(d) { entries.push(Object.assign({ id: d.id }, d.data())); });
+        entries.sort(function(a, b) {
+          return (a.order != null ? a.order : 9999) - (b.order != null ? b.order : 9999) || (b.createdAt || 0) - (a.createdAt || 0);
+        });
+        if (!entries.length) return;
+        var grid = document.querySelector('.portfolio-grid');
+        entries.forEach(function(e) { grid.appendChild(buildCard(e)); });
+      });
     }
 
     renderDynamicEntries();
