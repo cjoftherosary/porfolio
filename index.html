@@ -787,7 +787,7 @@
       const snap = await getDocs(collection(db, "entries"));
       const entries = [];
       snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
-      entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      entries.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999) || (b.createdAt || 0) - (a.createdAt || 0));
       if (!entries.length) return;
       const grid = document.querySelector('.portfolio-grid');
       entries.forEach(e => grid.appendChild(buildCard(e)));
