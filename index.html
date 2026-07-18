@@ -38,6 +38,30 @@
       min-height: 100vh;
     }
 
+    /* ===== ANIMATION SYSTEM (shared across whole site) ===== */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Elements present on load: animate immediately, stagger via inline animation-delay */
+    .fade-up {
+      opacity: 0;
+      animation: riseIn 0.6s ease forwards;
+    }
+
+    /* Elements below the fold: wait for scroll, then play the same animation */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-up.in-view { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up, .reveal-up, .port-card.card-enter { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+    }
+
     /* ===== NAV ===== */
     nav {
       position: sticky; top: 0; z-index: 100;
@@ -294,12 +318,7 @@
 
     .port-card.card-enter {
       opacity: 0;
-      animation: cardFadeIn 0.6s ease forwards;
-    }
-
-    @keyframes cardFadeIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+      animation: riseIn 0.6s ease forwards;
     }
 
     .port-thumb {
@@ -548,7 +567,7 @@
         <img src= "https://cdn.discordapp.com/attachments/1525560972075339898/1527715154798842016/download_11.jpg?ex=6a5bab1c&is=6a5a599c&hm=5dc0f441257f476c1ada2804d4fb5ae2192f8e5456e44d14fa7b9cc35b0e4526" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0">
       </div>
     </div>
-    <div class="hero-content">
+    <div class="hero-content fade-up" style="animation-delay:0.05s">
       <div class="hero-brand">
         <div class="hero-brand-dot"></div>
         <span>University of Santo Tomas · Journalism</span>
@@ -565,25 +584,50 @@
 
   <div class="main-grid">
 
-    <div class="panel">
+    <div class="panel fade-up" style="animation-delay:0.1s">
       <div class="panel-title">
         Highlights
         <button onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View All ›</button>
       </div>
+      <!--
+        ✏️ EDIT HIGHLIGHTS HERE — each card is fully self-contained (no Firestore involved).
+        Fill in data-title / data-desc / data-image / data-skills as you like.
+        Leave data-image empty to keep the text placeholder look.
+      -->
       <div class="highlights-grid">
-        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+        <div class="highlight-card"
+             data-category="Pubmat"
+             data-title="Pubmat title goes here"
+             data-desc="Short description of this pubmat goes here — what it was for, when, and your role in making it."
+             data-image=""
+             data-skills="Graphic Design, Event Promotion">
           <div class="highlight-placeholder">Pubmat</div>
           <div class="highlight-overlay">Pubmat</div>
         </div>
-        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+        <div class="highlight-card"
+             data-category="Article"
+             data-title="Article title goes here"
+             data-desc="Short description of this article goes here — the story, the angle, and your role."
+             data-image=""
+             data-skills="Journalism, Writing & Reporting">
           <div class="highlight-placeholder">Article</div>
           <div class="highlight-overlay">Article</div>
         </div>
-        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+        <div class="highlight-card"
+             data-category="Project"
+             data-title="Project title goes here"
+             data-desc="Short description of this project goes here — what it was, and what you led or built."
+             data-image=""
+             data-skills="Event Management, Team Leadership">
           <div class="highlight-placeholder">Project</div>
           <div class="highlight-overlay">Project</div>
         </div>
-        <div class="highlight-card" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+        <div class="highlight-card"
+             data-category="Excel"
+             data-title="Excel / data project title"
+             data-desc="Short description of this tracker or dashboard goes here — what it tracked and who used it."
+             data-image=""
+             data-skills="Excel & Data, Administrative Work">
           <div class="highlight-placeholder">Excel</div>
           <div class="highlight-overlay">Excel</div>
         </div>
@@ -593,7 +637,7 @@
       </button>
     </div>
 
-    <div class="panel">
+    <div class="panel fade-up" style="animation-delay:0.2s">
       <div class="panel-title">Contact</div>
       <div class="account-list">
         <a class="account-row" href="mailto:christinejade1234@gmail.com">
@@ -619,28 +663,28 @@
       </div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title">About Me</div>
+    <div class="panel fade-up" style="animation-delay:0.3s">
+      <div class="panel-title">Affiliations</div>
       <div class="info-cards">
         <div class="info-card">
-          <div class="info-icon">📰</div>
+          <div class="info-icon">🏫</div>
           <div class="info-text">
-            <h4>Journalism Student</h4>
-            <p>Writing and reporting for [Publication]. Covers campus news and features.</p>
+            <h4>UST Office for Student Affairs — Admin Assistant</h4>
+            <p>Oversees campus life, student welfare and discipline, and dormitory facilities for the university.</p>
           </div>
         </div>
         <div class="info-card">
-          <div class="info-icon">🏛️</div>
+          <div class="info-icon">🎌</div>
           <div class="info-text">
-            <h4>Student Leader</h4>
-            <p>Held positions in [Org Name]. Led events, teams, and admin projects.</p>
+            <h4>Thomasian Nihon Kyoukai (TNK) — Secretary</h4>
+            <p>The official UST student organization promoting traditional and modern Japanese culture.</p>
           </div>
         </div>
         <div class="info-card">
-          <div class="info-icon">📊</div>
+          <div class="info-icon">🖋️</div>
           <div class="info-text">
-            <h4>Excel & Admin</h4>
-            <p>Built trackers and dashboards for events and org operations.</p>
+            <h4>Mediartrix-UST — Asst. Assoc. Vice President for Literary Arts</h4>
+            <p>The university-wide, student-run multimedia organization for and by art enthusiasts of UST.</p>
           </div>
         </div>
       </div>
@@ -649,8 +693,8 @@
   </div>
 
   <section id="portfolio">
-    <h3 class="section-heading">All Work</h3>
-    <div class="filter-tabs">
+    <h3 class="section-heading reveal-up">All Work</h3>
+    <div class="filter-tabs reveal-up" style="transition-delay:0.08s">
       <button class="ftab active" data-filter="all">All</button>
       <button class="ftab" data-filter="articles">Articles</button>
       <button class="ftab" data-filter="pubmats">Pubmats</button>
@@ -664,8 +708,8 @@
   </section>
 
   <section id="about">
-    <h3 class="section-heading">About Me</h3>
-    <div class="about-panel">
+    <h3 class="section-heading reveal-up">About Me</h3>
+    <div class="about-panel reveal-up" style="transition-delay:0.08s">
       <div class="about-photo">
         <!-- ✏️ <img src="your-photo.jpg" alt="Christine Jade Del Rosario"> -->
         <img src ="https://cdn.discordapp.com/attachments/1525560972075339898/1527720609918881792/photo_corrected.jpg?ex=6a5bb031&is=6a5a5eb1&hm=f922c9eb67efdcd3c2030e9b5229d48218fd4143517a87ed17d2e88ed6ef6f44">
@@ -690,6 +734,24 @@
   <footer>
     &copy; 2026 Christine Jade Del Rosario. Built with HTML &amp; intention.
   </footer>
+
+  <div class="modal-overlay" id="highlightModalOverlay">
+    <div class="modal" id="highlightModal">
+      <button class="modal-close" id="highlightModalClose">✕</button>
+      <div class="modal-cover" id="highlightModalCover"></div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span class="modal-cat" id="highlightModalCategory"></span>
+        </div>
+        <h2 class="modal-title" id="highlightModalTitle"></h2>
+        <div class="modal-divider"></div>
+        <div class="modal-desc" id="highlightModalDesc"></div>
+        <p class="modal-skills-label" id="highlightModalSkillsLabel">Skills & Tools</p>
+        <div class="modal-skills" id="highlightModalSkills"></div>
+        <button class="modal-link" id="highlightModalSeeMore" style="border:none;cursor:pointer;font-family:var(--sans)">See more in Portfolio ↓</button>
+      </div>
+    </div>
+  </div>
 
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
@@ -846,6 +908,64 @@
     closeBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ===== HIGHLIGHT MODAL (independent from the portfolio/Firestore modal) ===== */
+    const hOverlay  = document.getElementById('highlightModalOverlay');
+    const hModal    = document.getElementById('highlightModal');
+    const hCloseBtn = document.getElementById('highlightModalClose');
+    const hSeeMore  = document.getElementById('highlightModalSeeMore');
+
+    function openHighlightModal(card) {
+      const d = card.dataset;
+      document.getElementById('highlightModalCategory').textContent = d.category || '';
+      document.getElementById('highlightModalTitle').textContent    = d.title    || '';
+      document.getElementById('highlightModalDesc').innerHTML = d.desc ? `<p>${d.desc}</p>` : '';
+      const skillsEl = document.getElementById('highlightModalSkills');
+      skillsEl.innerHTML = '';
+      const skillsLabel = document.getElementById('highlightModalSkillsLabel');
+      const skillsList = (d.skills || '').split(',').map(s => s.trim()).filter(Boolean);
+      skillsLabel.style.display = skillsList.length ? 'block' : 'none';
+      skillsList.forEach(s => {
+        const tag = document.createElement('span');
+        tag.className = 'modal-skill-tag';
+        tag.textContent = s;
+        skillsEl.appendChild(tag);
+      });
+      const cover = document.getElementById('highlightModalCover');
+      cover.innerHTML = d.image ? `<img src="${d.image}" alt="${d.title}">` : `<span style="font-style:italic;color:var(--text-dim)">${d.category || 'Highlight'}</span>`;
+      hOverlay.classList.add('active');
+      hModal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeHighlightModal() {
+      hOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.highlight-card').forEach(card => {
+      card.addEventListener('click', () => openHighlightModal(card));
+    });
+
+    hCloseBtn.addEventListener('click', closeHighlightModal);
+    hOverlay.addEventListener('click', e => { if (e.target === hOverlay) closeHighlightModal(); });
+    hSeeMore.addEventListener('click', () => {
+      closeHighlightModal();
+      document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHighlightModal(); });
+
+    /* ===== SCROLL-TRIGGERED REVEAL (keeps below-the-fold animation consistent with above-the-fold) ===== */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
   </script>
 
 </body>
