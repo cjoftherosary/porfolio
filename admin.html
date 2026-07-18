@@ -210,6 +210,22 @@
 
     .entry-del:hover { background: rgba(192,57,43,0.1); color: var(--danger); }
 
+    .drag-handle {
+      color: var(--text-dim); cursor: grab; font-size: 1rem;
+      padding: 0.2rem 0.3rem; flex-shrink: 0; line-height: 1;
+      user-select: none;
+    }
+
+    .drag-handle:active { cursor: grabbing; }
+
+    .entry-item.dragging {
+      opacity: 0.4;
+    }
+
+    .entry-item.drag-over {
+      border-top: 2px solid var(--brown-md);
+    }
+
     .entry-list-empty {
       padding: 2rem 1.2rem; text-align: center;
       font-size: 0.85rem; color: var(--text-dim);
@@ -514,8 +530,14 @@ To make it a clickable link:
       const snap = await getDocs(collection(db, "entries"));
       entries = [];
       snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
-      entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      // sort by manual order first, then createdAt
+      entries.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999) || (b.createdAt || 0) - (a.createdAt || 0));
       renderList();
+    }
+
+    async function saveOrder() {
+      const writes = entries.map((e, i) => setDoc(doc(db, "entries", e.id), { ...e, order: i }));
+      await Promise.all(writes);
     }
 
     async function saveToFirestore(entry) {
@@ -527,6 +549,8 @@ To make it a clickable link:
     }
 
     // LIST
+    let dragSrcId = null;
+
     function renderList() {
       const ul    = document.getElementById('entryList');
       const empty = document.getElementById('emptyMsg');
@@ -540,7 +564,10 @@ To make it a clickable link:
       entries.forEach(e => {
         const li = document.createElement('li');
         li.className = 'entry-item' + (editingId === e.id ? ' active' : '');
+        li.draggable = true;
+        li.dataset.id = e.id;
         li.innerHTML = `
+          <span class="drag-handle" title="Drag to reorder">⠿</span>
           <span class="entry-cat-dot ${catColors[e.cat] || ''}"></span>
           <div class="entry-info">
             <div class="entry-title">${e.title || 'Untitled'}</div>
@@ -548,7 +575,39 @@ To make it a clickable link:
           </div>
           <button class="entry-del" title="Delete" onclick="deleteEntry('${e.id}', event)">✕</button>
         `;
-        li.addEventListener('click', () => editEntry(e.id));
+        li.addEventListener('click', ev => {
+          if (ev.target.classList.contains('entry-del') || ev.target.classList.contains('drag-handle')) return;
+          editEntry(e.id);
+        });
+
+        // drag events
+        li.addEventListener('dragstart', ev => {
+          dragSrcId = e.id;
+          setTimeout(() => li.classList.add('dragging'), 0);
+          ev.dataTransfer.effectAllowed = 'move';
+        });
+        li.addEventListener('dragend', () => {
+          li.classList.remove('dragging');
+          ul.querySelectorAll('.entry-item').forEach(el => el.classList.remove('drag-over'));
+        });
+        li.addEventListener('dragover', ev => {
+          ev.preventDefault();
+          ul.querySelectorAll('.entry-item').forEach(el => el.classList.remove('drag-over'));
+          if (e.id !== dragSrcId) li.classList.add('drag-over');
+        });
+        li.addEventListener('drop', async ev => {
+          ev.preventDefault();
+          li.classList.remove('drag-over');
+          if (!dragSrcId || dragSrcId === e.id) return;
+          const fromIdx = entries.findIndex(x => x.id === dragSrcId);
+          const toIdx   = entries.findIndex(x => x.id === e.id);
+          const [moved] = entries.splice(fromIdx, 1);
+          entries.splice(toIdx, 0, moved);
+          renderList();
+          await saveOrder();
+          showToast('✓ Order saved!');
+        });
+
         ul.appendChild(li);
       });
     }
