@@ -292,6 +292,16 @@
     .port-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,51,16,0.14); }
     .port-card.hidden { display: none; }
 
+    .port-card.card-enter {
+      opacity: 0;
+      animation: cardFadeIn 0.6s ease forwards;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .port-thumb {
       width: 100%; aspect-ratio: 16/9; background: var(--amber-lt);
       display: flex; align-items: center; justify-content: center;
@@ -787,7 +797,12 @@
         });
         if (!entries.length) return;
         var grid = document.querySelector('.portfolio-grid');
-        entries.forEach(function(e) { grid.appendChild(buildCard(e)); });
+        entries.forEach(function(e, i) {
+          var card = buildCard(e);
+          card.classList.add('card-enter');
+          card.style.animationDelay = (i * 0.08) + 's';
+          grid.appendChild(card);
+        });
       });
     }
 
