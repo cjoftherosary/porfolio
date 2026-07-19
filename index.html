@@ -797,6 +797,14 @@
     });
     var db = firebase.firestore();
 
+    function applyInlineFormatting(str) {
+      return str
+        // **bold**
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // *italic* (won't touch the ** pairs above since those are already replaced)
+        .replace(/\*(.+?)\*/g, '<em>$1</em>');
+    }
+
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
         const trimmed = block.trim();
@@ -817,11 +825,11 @@
             return `<figure class="port-inline-img"><a href="${linkMatch[1]}" target="_blank">${imgTag}</a></figure>`;
           }
           if (extra) {
-            return `<figure class="port-inline-img">${imgTag}<figcaption>${extra}</figcaption></figure>`;
+            return `<figure class="port-inline-img">${imgTag}<figcaption>${applyInlineFormatting(extra)}</figcaption></figure>`;
           }
           return `<figure class="port-inline-img">${imgTag}</figure>`;
         }
-        return `<p>${trimmed}</p>`;
+        return `<p>${applyInlineFormatting(trimmed)}</p>`;
       }).join('');
     }
 
