@@ -463,6 +463,16 @@
       display: block; margin: 0 auto;
     }
 
+    .port-inline-img figcaption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      margin-top: 0.6rem;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+
     .port-article { display: none; }
 
     .modal-skills-label {
@@ -790,14 +800,26 @@
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
         const trimmed = block.trim();
-        const imgMatch = trimmed.match(/^\[img:\s*(.+?)\s*\]$/i);
+        // [\s\S] instead of . so the match works across line breaks (e.g. multi-line captions)
+        const imgMatch = trimmed.match(/^\[img:\s*([\s\S]+?)\s*\]\s*\]?$/i);
         if (imgMatch) {
           const parts = imgMatch[1].split('|').map(s => s.trim());
-          const src = parts[0], href = parts[1];
+          const src = parts[0];
+          let extra = parts[1] || '';
+
+          // Strip stray wrapping brackets some editors add around the caption/link
+          extra = extra.replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim();
+
           const imgTag = `<img src="${src}" alt="">`;
-          return href
-            ? `<figure class="port-inline-img"><a href="${href}" target="_blank">${imgTag}</a></figure>`
-            : `<figure class="port-inline-img">${imgTag}</figure>`;
+          const linkMatch = extra.match(/^link:\s*(\S+)/i);
+
+          if (linkMatch) {
+            return `<figure class="port-inline-img"><a href="${linkMatch[1]}" target="_blank">${imgTag}</a></figure>`;
+          }
+          if (extra) {
+            return `<figure class="port-inline-img">${imgTag}<figcaption>${extra}</figcaption></figure>`;
+          }
+          return `<figure class="port-inline-img">${imgTag}</figure>`;
         }
         return `<p>${trimmed}</p>`;
       }).join('');
