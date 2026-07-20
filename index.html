@@ -45,11 +45,13 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Elements present on load: animate immediately, stagger via inline animation-delay */
+    /* Above-the-fold elements: stay hidden until JS reveals them (after the welcome intro finishes) */
     .fade-up {
       opacity: 0;
-      animation: riseIn 0.6s ease forwards;
+      transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
+    .fade-up.in-view { opacity: 1; transform: translateY(0); }
 
     /* Elements below the fold: wait for scroll, then play the same animation */
     .reveal-up {
@@ -625,7 +627,7 @@
         <img src= "https://cdn.discordapp.com/attachments/1525560972075339898/1527715154798842016/download_11.jpg?ex=6a5bab1c&is=6a5a599c&hm=5dc0f441257f476c1ada2804d4fb5ae2192f8e5456e44d14fa7b9cc35b0e4526" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0">
       </div>
     </div>
-    <div class="hero-content fade-up" style="animation-delay:0.05s">
+    <div class="hero-content fade-up" style="transition-delay:0.05s">
       <div class="hero-brand">
         <div class="hero-brand-dot"></div>
         <span>University of Santo Tomas · Journalism</span>
@@ -642,7 +644,7 @@
 
   <div class="main-grid">
 
-    <div class="panel fade-up" style="animation-delay:0.1s">
+    <div class="panel fade-up" style="transition-delay:0.1s">
       <div class="panel-title">
         Highlights
       </div>
@@ -685,7 +687,7 @@
       </button>
     </div>
 
-    <div class="panel fade-up" style="animation-delay:0.2s">
+    <div class="panel fade-up" style="transition-delay:0.2s">
       <div class="panel-title">Contact</div>
       <div class="account-list">
         <a class="account-row" href="mailto:christinejade1234@gmail.com">
@@ -711,7 +713,7 @@
       </div>
     </div>
 
-    <div class="panel fade-up" style="animation-delay:0.3s">
+    <div class="panel fade-up" style="transition-delay:0.3s">
       <div class="panel-title">Affiliations</div>
       <div class="info-cards">
         <a class="info-card" href="https://manila.ust.edu.ph/osawebapp/" target="_blank" rel="noopener">
@@ -1048,11 +1050,21 @@
     /* ===== WELCOME INTRO OVERLAY ===== */
     (function () {
       const welcomeOverlay = document.getElementById('welcomeOverlay');
-      if (!welcomeOverlay) return;
+      const revealPageContent = () => {
+        document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in-view'));
+      };
+
+      if (!welcomeOverlay) {
+        // No overlay on this load (e.g. already removed) — reveal content right away.
+        revealPageContent();
+        return;
+      }
+
       document.body.style.overflow = 'hidden';
       const finishWelcome = () => {
         document.body.style.overflow = '';
         welcomeOverlay.remove();
+        revealPageContent();
       };
       welcomeOverlay.addEventListener('animationend', finishWelcome, { once: true });
       // Fallback in case the animation never fires (e.g. reduced-motion, tab backgrounded)
