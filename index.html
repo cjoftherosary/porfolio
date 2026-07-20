@@ -601,6 +601,8 @@
       .modal-body { padding: 1.4rem 1.4rem 2rem; }
     }
   </style>
+  <!-- Loaded once globally so Flourish embeds inserted anywhere in the page body (even dynamically) still render -->
+  <script src="https://public.flourish.studio/resources/embed.js"></script>
 </head>
 <body>
 
@@ -960,6 +962,25 @@
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
         const trimmed = block.trim();
+
+        // [embed: <raw html> | caption] — for pasting live embed markup (Flourish, etc.)
+        // Splits on the LAST pipe so pipes inside the embed markup itself (rare, but possible
+        // in query strings) don't get mistaken for the caption separator.
+        const embedMatch = trimmed.match(/^\[embed:\s*([\s\S]+)\]\s*$/i);
+        if (embedMatch) {
+          let inner = embedMatch[1];
+          let caption = '';
+          const lastPipe = inner.lastIndexOf('|');
+          if (lastPipe !== -1) {
+            caption = inner.slice(lastPipe + 1).trim();
+            inner = inner.slice(0, lastPipe).trim();
+          }
+          if (caption) {
+            return `<figure class="port-inline-img">${inner}<figcaption>${applyInlineFormatting(caption)}</figcaption></figure>`;
+          }
+          return `<figure class="port-inline-img">${inner}</figure>`;
+        }
+
         // [\s\S] instead of . so the match works across line breaks (e.g. multi-line captions)
         const imgMatch = trimmed.match(/^\[img:\s*([\s\S]+?)\s*\]\s*\]?$/i);
         if (imgMatch) {
