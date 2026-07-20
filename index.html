@@ -61,6 +61,38 @@
 
     @media (prefers-reduced-motion: reduce) {
       .fade-up, .reveal-up, .port-card.card-enter { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+      .welcome-overlay { display: none !important; }
+    }
+
+    /* ===== WELCOME INTRO OVERLAY ===== */
+    .welcome-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(120deg, var(--brown-dk) 0%, var(--brown-md) 45%, var(--brown) 100%);
+      display: flex; align-items: center; justify-content: center;
+      animation: welcomeOverlayFade 1.9s ease forwards;
+    }
+
+    .welcome-overlay .welcome-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: var(--cream);
+      opacity: 0;
+      animation: welcomeTextFade 1.9s ease forwards;
+    }
+
+    @keyframes welcomeOverlayFade {
+      0%   { opacity: 1; }
+      65%  { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; pointer-events: none; }
+    }
+
+    @keyframes welcomeTextFade {
+      0%   { opacity: 0; transform: translateY(10px); }
+      18%  { opacity: 1; transform: translateY(0); }
+      70%  { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-6px); }
     }
 
     /* ===== NAV ===== */
@@ -326,6 +358,13 @@
       animation: riseIn 0.6s ease forwards;
     }
 
+    .port-card.filter-out {
+      opacity: 0 !important;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+
     .port-thumb {
       width: 100%; aspect-ratio: 16/9; background: var(--amber-lt);
       display: flex; align-items: center; justify-content: center;
@@ -562,6 +601,10 @@
   </style>
 </head>
 <body>
+
+  <div id="welcomeOverlay" class="welcome-overlay" aria-hidden="true">
+    <span class="welcome-text">Welcome!</span>
+  </div>
 
   <nav>
     <div class="nav-left">
@@ -873,14 +916,39 @@
 
     renderDynamicEntries();
 
+    const FILTER_FADE_MS = 250;
+
     document.querySelectorAll('.ftab').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
         const f = btn.dataset.filter;
-        document.querySelectorAll('.port-card[data-cat]').forEach(c =>
-          c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f)
-        );
+        const cards = Array.from(document.querySelectorAll('.port-card[data-cat]'));
+        const currentlyVisible = cards.filter(c => !c.classList.contains('hidden'));
+
+        // Step 1: fade OUT every card that's currently on screen, together.
+        currentlyVisible.forEach(c => c.classList.add('filter-out'));
+
+        setTimeout(() => {
+          // Step 2: swap which cards are hidden vs shown for the new filter.
+          cards.forEach(c => {
+            c.classList.remove('filter-out', 'card-enter');
+            c.style.animation = 'none';
+            c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
+          });
+
+          const matching = cards.filter(c => !c.classList.contains('hidden'));
+
+          // Force a reflow so the browser "forgets" the old animation state
+          // and will replay riseIn from scratch for every matching card.
+          void document.querySelector('.portfolio-grid').offsetWidth;
+
+          matching.forEach((c, i) => {
+            c.style.animation = '';
+            c.style.animationDelay = (i * 0.06) + 's';
+            c.classList.add('card-enter');
+          });
+        }, FILTER_FADE_MS);
       });
     });
 
@@ -976,6 +1044,20 @@
       document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHighlightModal(); });
+
+    /* ===== WELCOME INTRO OVERLAY ===== */
+    (function () {
+      const welcomeOverlay = document.getElementById('welcomeOverlay');
+      if (!welcomeOverlay) return;
+      document.body.style.overflow = 'hidden';
+      const finishWelcome = () => {
+        document.body.style.overflow = '';
+        welcomeOverlay.remove();
+      };
+      welcomeOverlay.addEventListener('animationend', finishWelcome, { once: true });
+      // Fallback in case the animation never fires (e.g. reduced-motion, tab backgrounded)
+      setTimeout(finishWelcome, 2200);
+    })();
 
     /* ===== SCROLL-TRIGGERED REVEAL (keeps below-the-fold animation consistent with above-the-fold) ===== */
     const revealObserver = new IntersectionObserver((entries) => {
