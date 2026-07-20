@@ -1052,6 +1052,7 @@
       const welcomeOverlay = document.getElementById('welcomeOverlay');
       const FADE_MS = 400; // keep in sync with the .fade-up transition duration in CSS
       const GAP_MS = 80;   // small breathing room before the next group starts
+      const SESSION_KEY = 'cjPortfolioWelcomeShown';
 
       // Elements sharing the same data-fade-group fade in together;
       // groups themselves play one after another in order.
@@ -1073,11 +1074,22 @@
         revealNext();
       };
 
-      if (!welcomeOverlay) {
-        // No overlay on this load (e.g. already removed) — reveal content right away.
+      // Already seen the welcome intro this session (e.g. refresh, or
+      // navigating back to the page) — skip straight to the content.
+      let alreadyShown = false;
+      try {
+        alreadyShown = sessionStorage.getItem(SESSION_KEY) === '1';
+      } catch (e) {
+        // sessionStorage unavailable (private browsing etc.) — just show it every time.
+      }
+
+      if (!welcomeOverlay || alreadyShown) {
+        if (welcomeOverlay) welcomeOverlay.remove();
         revealSectionsInSequence();
         return;
       }
+
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
 
       document.body.style.overflow = 'hidden';
       const finishWelcome = () => {
