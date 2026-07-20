@@ -66,6 +66,7 @@
     .dot-articles { background: #8B5A2B; }
     .dot-projects { background: #5C3310; }
     .dot-excel    { background: #9A7040; }
+    .dot-creative-writing { background: #7A3B3B; }
     .entry-info { flex: 1; min-width: 0; }
     .entry-title { font-size: 0.85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .entry-meta { font-size: 0.72rem; color: var(--text-dim); }
@@ -155,6 +156,7 @@
               <select id="fCat">
                 <option value="articles">Articles</option>
                 <option value="projects">Projects</option>
+                <option value="creative-writing">Creative Writing</option>
                 <option value="excel">Excel & Data</option>
               </select>
             </div>
@@ -233,7 +235,7 @@
     let editingId = null;
     let dragSrcId = null;
 
-    const catColors = { articles: 'dot-articles', projects: 'dot-projects', excel: 'dot-excel' };
+    const catColors = { articles: 'dot-articles', projects: 'dot-projects', 'creative-writing': 'dot-creative-writing', excel: 'dot-excel' };
 
     // AUTH
     auth.onAuthStateChanged(async function(user) {
