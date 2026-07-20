@@ -601,7 +601,12 @@
       .modal-body { padding: 1.4rem 1.4rem 2rem; }
     }
   </style>
-  <!-- Loaded once globally so Flourish embeds inserted anywhere in the page body (even dynamically) still render -->
+  <!-- Loaded once globally so Flourish embeds render anywhere in the page body.
+       disable_autoload: Flourish's default behavior only scans the page ONCE at load time —
+       it does not watch for embeds added later (e.g. from Firestore, or copied into a modal).
+       Disabling autoload gives us Flourish.loadEmbed(el), which we call manually once an
+       embed is actually visible (see initFlourishEmbeds() below). -->
+  <script>window.Flourish = { disable_autoload: true };</script>
   <script src="https://public.flourish.studio/resources/embed.js"></script>
 </head>
 <body>
@@ -959,6 +964,16 @@
         .replace(/\*(.+?)\*/g, '<em>$1</em>');
     }
 
+    // Manually kicks off any Flourish embeds inside a container. Needed because Flourish's
+    // autoload only scans the page once at load time and won't catch embeds that show up
+    // later (from async Firestore data, or copied into a modal via innerHTML).
+    function initFlourishEmbeds(container) {
+      if (!container || !window.Flourish || typeof window.Flourish.loadEmbed !== 'function') return;
+      container.querySelectorAll('.flourish-embed').forEach(function(el) {
+        window.Flourish.loadEmbed(el);
+      });
+    }
+
     function parseBody(text) {
       return text.trim().split(/\n{2,}/).map(block => {
         const trimmed = block.trim();
@@ -1104,7 +1119,9 @@
       bylineEl.textContent  = d.byline || '';
       bylineEl.style.display = d.byline ? 'block' : 'none';
       const articleEl = card.querySelector('.port-article');
-      document.getElementById('modalDesc').innerHTML = articleEl ? articleEl.innerHTML : '';
+      const modalDescEl = document.getElementById('modalDesc');
+      modalDescEl.innerHTML = articleEl ? articleEl.innerHTML : '';
+      initFlourishEmbeds(modalDescEl);
       const skillsEl = document.getElementById('modalSkills');
       skillsEl.innerHTML = '';
       (d.skills || '').split(',').forEach(s => {
@@ -1153,7 +1170,9 @@
       hBylineEl.textContent  = d.byline || '';
       hBylineEl.style.display = d.byline ? 'block' : 'none';
       const articleEl = card.querySelector('.highlight-article');
-      document.getElementById('highlightModalDesc').innerHTML = articleEl ? articleEl.innerHTML : (d.desc ? `<p>${d.desc}</p>` : '');
+      const highlightModalDescEl = document.getElementById('highlightModalDesc');
+      highlightModalDescEl.innerHTML = articleEl ? articleEl.innerHTML : (d.desc ? `<p>${d.desc}</p>` : '');
+      initFlourishEmbeds(highlightModalDescEl);
       const skillsEl = document.getElementById('highlightModalSkills');
       skillsEl.innerHTML = '';
       const skillsLabel = document.getElementById('highlightModalSkillsLabel');
