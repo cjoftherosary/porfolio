@@ -4,8 +4,8 @@
             filters, welcome overlay, scroll-reveal, Flourish embeds
    =================================================================== */
 
-/* ===== FLOURISH CONFIG ===== */
-window.Flourish = { disable_autoload: true };
+window.Flourish = window.Flourish || {};
+window.Flourish.disable_autoload = true;
 
 /* ===== FIREBASE INIT ===== */
 firebase.initializeApp({
