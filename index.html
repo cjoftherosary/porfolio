@@ -1,620 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cjoftherosary — portfolio</title>
-  <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1525560972075339898/1528093609885306950/icon.png?ex=6a5f05d3&is=6a5db453&hm=12d6e539e2fdf796f194624f38b3d7adbe754705d664280ac81fb905370a5226" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --brown-dk:  #5C3310;
-      --brown-md:  #8B5A2B;
-      --brown:     #C48A4A;
-      --amber:     #E8C07A;
-      --amber-lt:  #F5DFA0;
-      --cream:     #FDF3DC;
-      --ink:       #3A1F08;
-      --ink-mid:   #6B4020;
-      --text-dim:  #9A7040;
-      --bg:        #FDF3DC;
-      --card-bg:   #FBE9C0;
-      --modal-bg:  #FFFBF0;
-      --border:    rgba(139,90,43,0.2);
-      --border-md: rgba(139,90,43,0.35);
-      --radius:    12px;
-      --serif:     'Cormorant Garamond', Georgia, serif;
-      --sans:      'DM Sans', system-ui, sans-serif;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--ink);
-      font-size: 15px;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* ===== ANIMATION SYSTEM (shared across whole site) ===== */
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Above-the-fold elements: stay hidden until JS reveals them (after the welcome intro finishes) */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .fade-up.in-view { opacity: 1; transform: translateY(0); }
-
-    /* Elements below the fold: wait for scroll, then play the same animation */
-    .reveal-up {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal-up.in-view { opacity: 1; transform: translateY(0); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .fade-up, .reveal-up, .port-card.card-enter { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
-      .welcome-overlay { display: none !important; }
-    }
-
-    /* ===== WELCOME INTRO OVERLAY ===== */
-    .welcome-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background: linear-gradient(120deg, var(--brown-dk) 0%, var(--brown-md) 45%, var(--brown) 100%);
-      display: flex; align-items: center; justify-content: center;
-      animation: welcomeOverlayFade 1.9s ease forwards;
-    }
-
-    .welcome-overlay .welcome-text {
-      font-family: var(--serif);
-      font-style: italic;
-      font-weight: 700;
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      color: var(--cream);
-      opacity: 0;
-      animation: welcomeTextFade 1.9s ease forwards;
-    }
-
-    @keyframes welcomeOverlayFade {
-      0%   { opacity: 1; }
-      65%  { opacity: 1; }
-      100% { opacity: 0; visibility: hidden; pointer-events: none; }
-    }
-
-    @keyframes welcomeTextFade {
-      0%   { opacity: 0; transform: translateY(10px); }
-      18%  { opacity: 1; transform: translateY(0); }
-      70%  { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-6px); }
-    }
-
-    /* ===== NAV ===== */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(253,243,220,0.94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border-md);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5vw; height: 58px;
-    }
-
-    .nav-left { display: flex; align-items: center; gap: 0.8rem; }
-
-    .nav-avatar {
-      width: 34px; height: 34px; border-radius: 8px;
-      background: var(--brown-md); border: 1px solid var(--brown-dk);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; color: var(--cream); font-weight: 500; overflow: hidden;
-    }
-
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-
-    .nav-links a {
-      font-size: 0.88rem; font-weight: 400;
-      color: var(--text-dim); text-decoration: none;
-      transition: color 0.2s; padding-bottom: 2px;
-    }
-
-    .nav-links a:hover { color: var(--brown-dk); border-bottom: 1.5px solid var(--brown-dk); }
-
-    .nav-handle {
-      font-size: 0.82rem; color: var(--brown-md);
-      border: 1px solid var(--border-md);
-      border-radius: 100px; padding: 0.3rem 0.9rem; font-weight: 500;
-    }
-
-    /* ===== HERO ===== */
-    .hero-banner {
-      margin: 1.2rem 5vw;
-      border-radius: 18px;
-      background: linear-gradient(120deg, var(--brown-dk) 0%, var(--brown-md) 45%, var(--brown) 100%);
-      border: 1px solid var(--brown-dk);
-      min-height: 300px;
-      display: flex; align-items: flex-end;
-      position: relative; overflow: hidden;
-    }
-
-    .hero-banner::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 50% 80% at 75% 50%, rgba(245,223,160,0.15) 0%, transparent 70%),
-        radial-gradient(ellipse 30% 60% at 10% 80%, rgba(253,243,220,0.08) 0%, transparent 60%);
-    }
-
-    .hero-banner::after {
-      content: '✦'; position: absolute; top: 1.4rem; right: 2rem;
-      font-size: 2rem; opacity: 0.2; color: var(--amber-lt);
-    }
-
-    .hero-photo-slot {
-      position: absolute; right: 10%; bottom: 0;
-      width: 250px; height: 300px; 
-      display: flex; align-items: flex-end; justify-content: center;
-    }
-
-    .hero-photo-placeholder {
-      width: 100%; height: 100%;
-      border-radius: 12px 12px 0 0;
-      background: rgba(253,243,220,0.12);
-      border: 1px solid rgba(253,243,220,0.2); border-bottom: none;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif); font-style: italic;
-      font-size: 0.85rem; color: rgba(253,243,220,0.6);
-      text-align: center; padding: 1rem;
-    }
-
-    .hero-content {
-      position: relative; z-index: 2;
-      padding: 2rem 2.2rem 2.4rem; max-width: 60%;
-    }
-
-    .hero-brand {
-      display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 1rem; opacity: 0.75;
-    }
-
-    .hero-brand-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--amber-lt); opacity: 0.9; }
-
-    .hero-brand span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber-lt); }
-
-    .hero-name {
-      font-family: var(--serif);
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 700; line-height: 1.05;
-      color: var(--cream); margin-bottom: 0.9rem;
-    }
-
-    .hero-desc {
-      font-size: 0.92rem; color: rgba(253,243,220,0.82);
-      line-height: 1.75; font-weight: 300;
-      margin-bottom: 1.4rem; max-width: 420px;
-    }
-
-    .hero-read-more {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.85rem; font-weight: 500; color: var(--cream);
-      background: none; border: none; border-bottom: 1px solid var(--amber-lt);
-      padding-bottom: 2px; cursor: pointer; font-family: var(--sans);
-      transition: color 0.2s;
-    }
-
-    .hero-read-more:hover { color: var(--amber-lt); }
-
-    /* ===== MAIN GRID ===== */
-    .main-grid {
-      display: grid; grid-template-columns: 1.1fr 1.2fr 1.1fr;
-      gap: 1.2rem; padding: 1.2rem 5vw 0;
-    }
-
-    .panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border-md);
-      border-radius: var(--radius); padding: 1.3rem;
-      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
-    }
-
-    .panel-title {
-      font-size: 0.95rem; font-weight: 500;
-      color: var(--ink); margin-bottom: 1rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-
-    .panel-title button {
-      font-size: 0.78rem; color: var(--brown-md);
-      background: none; border: none; cursor: pointer;
-      font-family: var(--sans); padding: 0;
-    }
-
-    .panel-title button:hover { color: var(--brown-dk); text-decoration: underline; }
-
-    .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.9rem; }
-
-    .highlight-card {
-      border-radius: 8px; overflow: hidden;
-      position: relative; aspect-ratio: 1 / 0.8;
-      background: var(--amber-lt); border: 1px solid var(--border-md);
-      cursor: pointer; transition: transform 0.18s;
-    }
-
-    .highlight-card:hover { transform: scale(1.03); }
-    .highlight-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .highlight-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; color: var(--text-dim);
-      font-style: italic; text-align: center; padding: 0.5rem;
-    }
-
-    .highlight-overlay {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 0.5rem 0.6rem;
-      background: linear-gradient(0deg, rgba(58,31,8,0.75) 0%, transparent 100%);
-      font-size: 0.68rem; color: var(--amber-lt); font-weight: 500;
-    }
-
-    .view-more-btn {
-      display: block; width: 100%; text-align: center; padding: 0.7rem;
-      border: 1px solid var(--border-md); border-radius: 8px;
-      color: var(--brown-md); font-size: 0.85rem; font-weight: 500;
-      background: none; cursor: pointer; font-family: var(--sans); transition: background 0.18s;
-    }
-
-    .view-more-btn:hover { background: var(--amber-lt); }
-
-    .account-list { display: flex; flex-direction: column; gap: 0.7rem; }
-
-    .account-row {
-      display: flex; align-items: center; gap: 0.7rem;
-      background: var(--amber-lt); border: 1px solid var(--border);
-      border-radius: 8px; padding: 1rem 0.8rem;
-      text-decoration: none; transition: background 0.18s, border-color 0.18s;
-    }
-
-    .account-row:hover { background: var(--amber); border-color: var(--brown); }
-
-    .acc-icon {
-      width: 28px; height: 28px; border-radius: 6px;
-      background: var(--amber); border: 1px solid var(--border-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; flex-shrink: 0;
-    }
-
-    .acc-label { font-size: 0.88rem; color: var(--ink); }
-    .acc-url { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); }
-
-    .info-cards { display: flex; flex-direction: column; gap: 0.6rem; }
-
-    .info-card {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      background: var(--amber-lt); border: 1px solid var(--border);
-      border-radius: 10px; padding: 0.85rem 1rem;
-      text-decoration: none; color: inherit;
-      transition: background 0.18s, border-color 0.18s;
-    }
-
-    .info-card:hover { background: var(--amber); border-color: var(--brown); }
-
-    .info-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: var(--amber); border: 1px solid var(--border-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
-    }
-
-    .info-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
-    .info-text p  { font-size: 0.75rem; color: var(--ink-mid); font-weight: 300; line-height: 1.5; }
-
-    /* ===== SECTION HEADING ===== */
-    .section-heading {
-      font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--ink);
-      display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem;
-    }
-
-    .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border-md); }
-
-    /* ===== PORTFOLIO ===== */
-    #portfolio { padding: 3rem 5vw 0; }
-
-    .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
-
-    .ftab {
-      background: var(--amber-lt); border: 1px solid var(--border-md);
-      color: var(--ink-mid); border-radius: 100px;
-      padding: 0.4rem 1rem; font-size: 0.82rem;
-      font-family: var(--sans); cursor: pointer; transition: all 0.18s;
-    }
-
-    .ftab.active, .ftab:hover { background: var(--brown-md); border-color: var(--brown-md); color: var(--cream); }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-
-    /* ===== PORTFOLIO CARD ===== */
-    .port-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-md);
-      border-radius: var(--radius); overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
-    }
-
-    .port-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,51,16,0.14); }
-    .port-card.hidden { display: none; }
-
-    .port-card.card-enter {
-      opacity: 0;
-      animation: riseIn 0.6s ease forwards;
-    }
-
-    .port-card.filter-out {
-      opacity: 0 !important;
-      transform: translateY(10px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-
-    .port-thumb {
-      width: 100%; aspect-ratio: 16/9; background: var(--amber-lt);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; color: var(--text-dim); font-style: italic; overflow: hidden;
-    }
-
-    .port-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-    .port-body { padding: 1rem 1.1rem 1.2rem; }
-
-    .port-cat {
-      font-size: 0.7rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--brown-md); margin-bottom: 0.3rem;
-    }
-
-    .port-title {
-      font-family: var(--serif); font-size: 1.05rem;
-      font-weight: 600; color: var(--ink); margin-bottom: 0.2rem;
-    }
-
-    .port-byline {
-      font-size: 0.75rem; color: var(--text-dim);
-      font-style: italic; margin-bottom: 0.4rem;
-    }
-
-    .port-desc { font-size: 0.8rem; color: var(--ink-mid); font-weight: 300; line-height: 1.6; }
-
-    .port-read-more {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      margin-top: 0.9rem; font-size: 0.78rem; font-weight: 500;
-      color: var(--brown-md); background: none; border: none;
-      font-family: var(--sans); cursor: pointer; padding: 0;
-      transition: color 0.18s;
-    }
-
-    .port-read-more:hover { color: var(--brown-dk); }
-
-    /* ===== MODAL ===== */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 500;
-      background: rgba(58,31,8,0.55);
-      backdrop-filter: blur(4px);
-      align-items: center; justify-content: center;
-      padding: 2rem 1rem;
-    }
-
-    .modal-overlay.active { display: flex; }
-
-    .modal {
-      background: var(--modal-bg);
-      border: 1px solid var(--border-md);
-      border-radius: 16px;
-      width: 70%; max-width: 860px;
-      max-height: 85vh; overflow-y: auto;
-      position: relative;
-      animation: modalIn 0.22s ease;
-      scrollbar-width: thin;
-      scrollbar-color: var(--amber) transparent;
-      box-shadow: 0 24px 60px rgba(92,51,16,0.22);
-    }
-
-    .modal::-webkit-scrollbar { width: 6px; }
-    .modal::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 3px; }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.96) translateY(12px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .modal-close {
-      position: sticky; top: 1rem;
-      float: right; margin: 1rem 1rem 0 0;
-      width: 32px; height: 32px; border-radius: 8px;
-      background: var(--amber-lt); border: none;
-      color: var(--ink-mid); font-size: 1.1rem;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background 0.18s; z-index: 10;
-    }
-
-    .modal-close:hover { background: var(--amber); color: var(--ink); }
-
-    .modal-cover {
-      width: 100%; aspect-ratio: 16/7; overflow: hidden;
-      background: var(--amber-lt);
-      display: flex; align-items: center; justify-content: center;
-      font-style: italic; color: var(--text-dim); font-size: 0.85rem;
-      border-radius: 16px 16px 0 0;
-    }
-
-    .modal-cover img { width: 100%; height: 100%; object-fit: cover; }
-
-    .modal-body { padding: 2rem 2.4rem 3rem; }
-
-    .modal-meta {
-      display: flex; align-items: center; gap: 0.8rem;
-      margin-bottom: 0.8rem; flex-wrap: wrap;
-    }
-
-    .modal-cat {
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--brown-dk); background: var(--amber);
-      border-radius: 100px; padding: 0.25rem 0.75rem;
-    }
-
-    .modal-date { font-size: 0.78rem; color: var(--text-dim); }
-
-    .modal-title {
-      font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 0.5rem;
-    }
-
-    .modal-byline {
-      font-size: 0.82rem; color: var(--text-dim);
-      font-style: italic; margin-bottom: 1.1rem;
-    }
-
-    .modal-divider { height: 1px; background: var(--border-md); margin-bottom: 1.4rem; }
-
-    .modal-desc {
-      font-size: 0.92rem; color: var(--ink-mid);
-      font-weight: 300; line-height: 1.85; margin-bottom: 1.4rem;
-      text-align: justify;
-    }
-
-    .modal-desc p { margin-bottom: 1.1rem; }
-    .modal-desc p:last-child { margin-bottom: 0; }
-
-    .port-inline-img { margin: 1.4rem 0; text-align: center; }
-
-    .port-inline-img img {
-      max-width: 100%; border-radius: 10px;
-      border: 1px solid var(--border-md);
-      display: block; margin: 0 auto;
-    }
-
-    .port-inline-img figcaption {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text-dim);
-      margin-top: 0.6rem;
-      padding: 0 1rem;
-      line-height: 1.5;
-    }
-
-    .port-article { display: none; }
-
-    .modal-skills-label {
-      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--brown-md); margin-bottom: 0.6rem;
-    }
-
-    .modal-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.6rem; }
-
-    .modal-skill-tag {
-      background: var(--amber-lt); color: var(--brown-dk);
-      border: 1px solid var(--border-md);
-      border-radius: 100px; padding: 0.25rem 0.75rem;
-      font-size: 0.78rem;
-    }
-
-    .modal-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: var(--brown-md); color: var(--cream);
-      text-decoration: none; border-radius: 8px;
-      padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 500;
-      transition: background 0.18s;
-    }
-
-    .modal-link:hover { background: var(--brown-dk); }
-
-    /* ===== ABOUT ===== */
-    #about { padding: 3rem 5vw 0; }
-
-    .about-panel {
-      background: var(--card-bg); border: 1px solid var(--border-md);
-      border-radius: var(--radius); padding: 2rem 2.4rem;
-      display: grid; grid-template-columns: 1fr 2fr;
-      gap: 3rem; align-items: start;
-      box-shadow: 0 1px 6px rgba(92,51,16,0.08);
-    }
-
-    .about-photo {
-      aspect-ratio: 3/4; border-radius: 10px;
-      background: var(--amber-lt); border: 1px solid var(--border-md);
-      display: flex; align-items: center; justify-content: center;
-      font-style: italic; font-size: 0.82rem;
-      color: var(--text-dim); text-align: center; padding: 1rem; overflow: hidden;
-    }
-
-    .about-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-
-    .about-body h2 {
-      font-family: var(--serif); font-size: 1.8rem;
-      font-weight: 600; color: var(--ink); margin-bottom: 1rem;
-    }
-
-    .about-body p { font-size: 0.92rem; color: var(--ink-mid); font-weight: 300; line-height: 1.85; margin-bottom: 0.85rem; }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
-
-    .skill-tag {
-      background: var(--amber); color: var(--brown-dk);
-      border: 1px solid var(--border-md);
-      border-radius: 100px; padding: 0.3rem 0.85rem;
-      font-size: 0.78rem; font-weight: 500;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      border-top: 1px solid var(--border-md);
-      text-align: center; margin-top: 4rem;
-      padding: 1.4rem 5vw; font-size: 0.78rem; color: var(--text-dim);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .main-grid { grid-template-columns: 1fr 1fr; }
-      .main-grid > .panel:last-child { grid-column: 1 / -1; }
-      .modal { width: 90%; }
-    }
-
-    @media (max-width: 600px) {
-      .main-grid { grid-template-columns: 1fr; }
-      .hero-content { max-width: 100%; }
-      .hero-photo-slot { display: none; }
-      .about-panel { grid-template-columns: 1fr; gap: 1.5rem; }
-      .nav-links { display: none; }
-      .modal { width: 95%; max-height: 90vh; }
-      .modal-body { padding: 1.4rem 1.4rem 2rem; }
-    }
-  </style>
-  <!-- Loaded once globally so Flourish embeds render anywhere in the page body.
-       disable_autoload: Flourish's default behavior only scans the page ONCE at load time —
-       it does not watch for embeds added later (e.g. from Firestore, or copied into a modal).
-       Disabling autoload gives us Flourish.loadEmbed(el), which we call manually once an
-       embed is actually visible (see initFlourishEmbeds() below). -->
-  <script>window.Flourish = { disable_autoload: true };</script>
-  <script src="https://public.flourish.studio/resources/embed.js"></script>
+  <meta name="description"
+    content="Christine Jade Del Rosario — Journalism portfolio. Feature writing, data journalism, creative writing, and student leadership." />
+  <link rel="icon" type="image/png" href="pictures/heart.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
 </head>
+
 <body>
 
+  <!-- ===== WELCOME OVERLAY ===== -->
   <div id="welcomeOverlay" class="welcome-overlay" aria-hidden="true">
     <span class="welcome-text">Welcome!</span>
   </div>
 
+  <!-- ===== NAV ===== -->
   <nav>
     <div class="nav-left">
       <div class="nav-avatar">CJ</div>
@@ -627,11 +34,11 @@
     <span class="nav-handle">@cjoftherosary</span>
   </nav>
 
+  <!-- ===== HERO BANNER ===== -->
   <div class="hero-banner fade-up" data-fade-group="1">
     <div class="hero-photo-slot">
       <div class="hero-photo-placeholder">
-        <!-- ✏️ Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> -->
-        <img src= "https://cdn.discordapp.com/attachments/1525560972075339898/1527715154798842016/download_11.jpg?ex=6a5bab1c&is=6a5a599c&hm=5dc0f441257f476c1ada2804d4fb5ae2192f8e5456e44d14fa7b9cc35b0e4526" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0">
+        <img src="pictures/riopic.jpg" alt="Christine Jade Del Rosario">
       </div>
     </div>
     <div class="hero-content">
@@ -641,7 +48,8 @@
       </div>
       <h1 class="hero-name">Christine Jade Del Rosario</h1>
       <p class="hero-desc">
-        I'm Rio! Your soon-to-be-favorite generalist. I like paperwork, I do paperwork, I live in paperwork. When high on caffeine, I write stories, lead teams, and run events.
+        I'm Rio! Your soon-to-be-favorite generalist. I like paperwork, I do paperwork, I live in paperwork. When high
+        on caffeine, I write stories, lead teams, and run events.
       </p>
       <button class="hero-read-more" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
         Read More →
@@ -649,157 +57,285 @@
     </div>
   </div>
 
+  <!-- ===== MAIN GRID ===== -->
   <div class="main-grid">
 
+    <!-- Highlights Panel -->
     <div class="panel fade-up" data-fade-group="2">
       <div class="panel-title">
         Highlights
       </div>
-      <!--
-        ✏️ EDIT HIGHLIGHTS HERE — each card is fully self-contained (no Firestore involved).
-        Fill in data-title / data-desc / data-image / data-skills as you like.
-        Leave data-image empty to keep the text placeholder look.
-      -->
       <div class="highlights-grid">
 
-        <div class="highlight-card"
-             data-category="Feature Article"
-             data-title="Unpaid Faith, Unexplained Providence"
-             data-byline="Christine Jade Del Rosario"
-             data-date="December 2025"
-             data-image="https://www.dailyartmagazine.com/wp-content/uploads/2025/10/DP-27910-001-3-scaled-e1761665772911-1536x1175.jpg"
-             data-skills="Feature Writing, Reporting, Interviewing, Verification">
-          <img src="https://www.dailyartmagazine.com/wp-content/uploads/2025/10/DP-27910-001-3-scaled-e1761665772911-1536x1175.jpg" alt="Unpaid Faith, Unexplained Providence" loading="lazy">
+        <div class="highlight-card" data-category="Feature Article" data-title="Unpaid Faith, Unexplained Providence"
+          data-byline="Christine Jade Del Rosario" data-date="December 2025" data-image="pictures/womanlooking.jpg"
+          data-skills="Feature Writing, Reporting, Interviewing, Verification">
+          <img src="pictures/womanlooking.jpg" alt="Unpaid Faith, Unexplained Providence" loading="lazy">
           <div class="highlight-overlay">Feature Article</div>
           <div class="highlight-article" style="display:none">
-            <p>The National Shrine of Our Lady of Guadalupe just celebrated its 74th anniversary alongside the centenary Eucharistic celebration of the Solemnity of Christ the King. Its late afternoon interval between the masses was quiet with only a small number of devotees kneeling on the pews. Some had troubled expressions. Some were too concentrated in their prayers.</p>
-            <p>Beyond the Parish exists a larger religious reality. 85.6 million Filipinos are Roman Catholics, ranking third among the world's largest Catholic populations based on the World Population Review. Even on regular days, people visit the Church and each one carries a silent weight.</p>
-            <p>During the pandemic, these halls barely felt the footsteps of people. Only the sun peers and filters through the windows during downtime. In 2022, Metro Manila was officially declared under Alert Level 1 therefore capacity caps or quarantine classifications were no longer present. However, the country was still under a State of Public Health Emergency. The Church underwent societal reintegration to adjust to the new normal.</p>
-            <p>The Archdiocese of Manila appointed Rev. Fr. Carlos P. Reyes as Rector of the Church on October 13, 2022. "Many of our volunteers are poor. And now, we're only finding out about the volunteers that caught the virus. We caught Covid, but we survived. I was nervous at the time, because by July, I had Covid. Another thing, around three people have died. We're just finding out after it happened [...] one volunteer—he had never shown up again. The other one died in their home," Rev. Fr. Reyes said.</p>
-            <p>"The funds diminish. I've experienced it as well. I even resorted to begging," Maria said, name changed to protect the source's identity. In her 13 years of servitude to the Church, not once has she received any form of compensation. Between 2018 and 2023, household expenses rose from ₱238,750 annually to ₱258,050 reported by the PSA Family Income and Expenditure survey.</p>
-            <p>"I don't know any volunteers that resorted to begging," Rev. Fr. Reyes said. "I can't invent data that never reached me," he added.</p>
-            <p>"We have never received any amount. We are voluntarily working here. We don't deserve money, [...] It is the money of the people," she said. Layministers, church greeters, collectors, and most of the staff during the mass are not incentivized. Only a handful are compensated with actual wages.</p>
-            <p>Rev. Fr. Reyes saw the Church's financial status and found that they weren't breaking even. The Parish resorted to selling columbariums—"a finite resource that would eventually run out." The revenue should've gone to renovations, but instead went into operational expenses.</p>
-            <p>Statistics from the 2025 World Giving Report showed that Filipinos donate about 0.27 percent of their income specifically to religious causes. 30 percent of their charitable donations are directed toward religious organizations or causes. "No one is going to Church, and we only rely on donations," he said.</p>
-            <p>"Nonetheless, there's really divine providence," Rev. Fr. Reyes said. Money randomly comes into the Church's financial accounts. Donors without revealing their names would leave large sums. "An example is the 250,000 pesos we used. I don't know where it came from," he added.</p>
-            <p>"The richest church is in Quiapo," Maria said. "They don't know that there's a miracle here too. I have witnessed it myself," she added.</p>
-            <p>Maria gestured to the flower arrangement by the altar. "We never ask for flowers. People willingly give," she said. Candles and incense are common examples of non-monetary donations, often coming in bulk and sustaining the clerical operations.</p>
+            <p>The National Shrine of Our Lady of Guadalupe just celebrated its 74th anniversary alongside the centenary
+              Eucharistic celebration of the Solemnity of Christ the King. Its late afternoon interval between the
+              masses was quiet with only a small number of devotees kneeling on the pews. Some had troubled expressions.
+              Some were too concentrated in their prayers.</p>
+            <p>Beyond the Parish exists a larger religious reality. 85.6 million Filipinos are Roman Catholics, ranking
+              third among the world's largest Catholic populations based on the World Population Review. Even on regular
+              days, people visit the Church and each one carries a silent weight.</p>
+            <p>During the pandemic, these halls barely felt the footsteps of people. Only the sun peers and filters
+              through the windows during downtime. In 2022, Metro Manila was officially declared under Alert Level 1
+              therefore capacity caps or quarantine classifications were no longer present. However, the country was
+              still under a State of Public Health Emergency. The Church underwent societal reintegration to adjust to
+              the new normal.</p>
+            <p>The Archdiocese of Manila appointed Rev. Fr. Carlos P. Reyes as Rector of the Church on October 13, 2022.
+              "Many of our volunteers are poor. And now, we're only finding out about the volunteers that caught the
+              virus. We caught Covid, but we survived. I was nervous at the time, because by July, I had Covid. Another
+              thing, around three people have died. We're just finding out after it happened [...] one volunteer—he had
+              never shown up again. The other one died in their home," Rev. Fr. Reyes said.</p>
+            <p>"The funds diminish. I've experienced it as well. I even resorted to begging," Maria said, name changed
+              to protect the source's identity. In her 13 years of servitude to the Church, not once has she received
+              any form of compensation. Between 2018 and 2023, household expenses rose from ₱238,750 annually to
+              ₱258,050 reported by the PSA Family Income and Expenditure survey.</p>
+            <p>"I don't know any volunteers that resorted to begging," Rev. Fr. Reyes said. "I can't invent data that
+              never reached me," he added.</p>
+            <p>"We have never received any amount. We are voluntarily working here. We don't deserve money, [...] It is
+              the money of the people," she said. Layministers, church greeters, collectors, and most of the staff
+              during the mass are not incentivized. Only a handful are compensated with actual wages.</p>
+            <p>Rev. Fr. Reyes saw the Church's financial status and found that they weren't breaking even. The Parish
+              resorted to selling columbariums—"a finite resource that would eventually run out." The revenue should've
+              gone to renovations, but instead went into operational expenses.</p>
+            <p>Statistics from the 2025 World Giving Report showed that Filipinos donate about 0.27 percent of their
+              income specifically to religious causes. 30 percent of their charitable donations are directed toward
+              religious organizations or causes. "No one is going to Church, and we only rely on donations," he said.
+            </p>
+            <p>"Nonetheless, there's really divine providence," Rev. Fr. Reyes said. Money randomly comes into the
+              Church's financial accounts. Donors without revealing their names would leave large sums. "An example is
+              the 250,000 pesos we used. I don't know where it came from," he added.</p>
+            <p>"The richest church is in Quiapo," Maria said. "They don't know that there's a miracle here too. I have
+              witnessed it myself," she added.</p>
+            <p>Maria gestured to the flower arrangement by the altar. "We never ask for flowers. People willingly give,"
+              she said. Candles and incense are common examples of non-monetary donations, often coming in bulk and
+              sustaining the clerical operations.</p>
             <p>"We're lucky to have a parish priest like Father Caloy—a pilot, an engineer," Maria praised.</p>
-            <p>The funds enabled architectural developments that encouraged devotees to attend mass. Aircons, sound systems, functioning TVs, online streaming of each Eucharistic celebration. However, running the Church—paying for electricity, water, and keeping the building in good shape—costs more, just like it does for families at home. In November 2025, overall prices rose slowly, but the cost of basic essentials climbed faster. Housing, water, electricity, gas, and other utilities increased by 2.9 percent.</p>
-            <p>It is the generosity of parishioners that sustains this faith. "We haven't gotten to a point where poverty hinders people from donating to the Church," Rev. Fr. Reyes said.</p>
-            <p>Maria busied herself by looking through a bag of assorted medicine personally delivered to her. She didn't buy it nor did she ask for it. Blessings come uninvited yet are welcomed. Hence, it's innate to have a sense of indebtedness and share the graces she comes across. "It was given to me, but I'll share and give it back to the church, so I wouldn't be its sole receiver," she said.</p>
-            <p>"[Volunteerism] isn't for myself," Maria said. "I pray for my enemies. I pray for those in envy. [...] I do not pray for myself. Perhaps that is the reason I am blessed. Even if you do not have money, there's nothing worth comparing to the love of Jesus Christ."</p>
+            <p>The funds enabled architectural developments that encouraged devotees to attend mass. Aircons, sound
+              systems, functioning TVs, online streaming of each Eucharistic celebration. However, running the
+              Church—paying for electricity, water, and keeping the building in good shape—costs more, just like it does
+              for families at home. In November 2025, overall prices rose slowly, but the cost of basic essentials
+              climbed faster. Housing, water, electricity, gas, and other utilities increased by 2.9 percent.</p>
+            <p>It is the generosity of parishioners that sustains this faith. "We haven't gotten to a point where
+              poverty hinders people from donating to the Church," Rev. Fr. Reyes said.</p>
+            <p>Maria busied herself by looking through a bag of assorted medicine personally delivered to her. She
+              didn't buy it nor did she ask for it. Blessings come uninvited yet are welcomed. Hence, it's innate to
+              have a sense of indebtedness and share the graces she comes across. "It was given to me, but I'll share
+              and give it back to the church, so I wouldn't be its sole receiver," she said.</p>
+            <p>"[Volunteerism] isn't for myself," Maria said. "I pray for my enemies. I pray for those in envy. [...] I
+              do not pray for myself. Perhaps that is the reason I am blessed. Even if you do not have money, there's
+              nothing worth comparing to the love of Jesus Christ."</p>
           </div>
         </div>
 
-        <div class="highlight-card"
-             data-category="Profile Article"
-             data-title="What a Privilege, to Be an Activist"
-             data-byline="Christine Jade Del Rosario and Jaimielene Calugay"
-             data-date="May 2025"
-             data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg/1280px-El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg"
-             data-skills="Profile Writing, Interview-based Reporting, Long-form Journalism, Translation">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg/1280px-El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg" alt="What a Privilege, to Be an Activist" loading="lazy">
+        <div class="highlight-card" data-category="Profile Article" data-title="What a Privilege, to Be an Activist"
+          data-byline="Christine Jade Del Rosario and Jaimielene Calugay" data-date="May 2025"
+          data-image="pictures/shooting.jpg"
+          data-skills="Profile Writing, Interview-based Reporting, Long-form Journalism, Translation">
+          <img src="pictures/shooting.jpg" alt="What a Privilege, to Be an Activist" loading="lazy">
           <div class="highlight-overlay">Profile Article</div>
           <div class="highlight-article" style="display:none">
-            <p>The desk sat between Annie Nicholle Agon and Asst. Prof. Emelito Sarmago. He gave a string of "It's not like I'm discouraging activism," "Don't use the uniform because it doesn't represent UST," and "UST doesn't like activists" which slid past her.</p>
-            <p>"I was called to his office so he could clear his name," Agon said. Sarmago was the student welfare and development coordinator. Weeks earlier, in front of a class, a student had given a presentation that touched on her. When the student sat down, Sarmago pointed at the photo of Agon and told the class not to be like her.</p>
-            <p>Agon had dealt with administrative backlash before. She's a political science sophomore at the University of Santo Tomas, organizing since grade 11 — first with Kabataan Partylist's regional chapter, now with its UST local chapter.</p>
-            <p>By sophomore year, she received a show-cause order. The Central Student Council was supposed to represent students, but admins filed the case, issued the show-cause, and decided the outcome. "What's the point if the admins are the only ones who get to decide?" Agon said.</p>
-            <p>It wasn't just administrators she had to convince. Her mother worried that Agon's campaign for higher teacher salaries would drive tuition up further, adding to their own family's expenses. "I explained that UST really does have that kind of money," Agon said. "It shouldn't be that they keep selling us our own education — that we need to pay a large sum just to study."</p>
-            <p>The same instinct happens to strangers. At Manila North Harbour, Agon had breakfast with dockworkers. Some of them never got to finish high school. Others had been contracted young by companies like San Miguel Corporation because students who couldn't afford senior high school relied on corporate sponsorship.</p>
-            <p>"One of them, still in senior high, was working part-time for a company. He was taking TechVoc at Don Bosco," Agon said. They don't have to go to college, but they can't pursue other strands like ABM or STEM. "They end up taking technical vocational courses because that's what's in demand with the big companies," Agon said.</p>
-            <p>That same pull took her to a strike center in Cavite — Nexperia. By the time she arrived, it was the last day of the strike and the demands of the workers were finally being addressed.</p>
-            <p>They had spent days locked in without food or medicine, enduring the heat. "They starved us," one worker said. Although still hungry themselves, they chose to feed the student-activists present including Agon.</p>
-            <p>Not every cause offered as clean an ending. During the 2023 Balikatan exercises, Agon stood outside the U.S. Embassy carrying placards and shouting against the presence of American troops in the country. Not long after, sirens blared, prompting them to scatter across the busy road. Agon ran with the others, but looked back in time to see how an FEU student was thrown to the ground and cuffed. "We weren't close, but I knew them [...] I saw how they were caught, how they were dragged by the police," Agon said.</p>
-            <p>A few days later, most of her fellow student activists had been released through the help of paralegals. "They went to update and of course, protect them from the unjustified charges imposed on them by the police. Many activists are framed with false accusations," Agon said.</p>
-            <p>But soon after the protests, the light from the screen would glare at her as the messages from strangers pinged.</p>
-            <p>"I hope you'd been the one shot resisting."<br>"I hope you get raped."<br>"I hope a drug addict gets his hands on you."</p>
-            <p>Then, on Labor Day of 2025, Agon arrived at Liwasang Bonifacio before 7 A.M. Already, the heat pressed down. Vendors hawked cigarettes and bottled water while tarpaulins were being unrolled.</p>
-            <p>Barbed wire stretched across Mendiola Street. Police in full gear stood behind shields scuffed from past protests. Protesters massed at the edge. Students, jeepney drivers, workers in loose shirts and faded caps. Various placards had written: "JUNK JEEPNEY PHASEOUT", "REGULAR JOBS, LIVING WAGE".</p>
-            <p>The chants began low and deep, then swelled: "Makibaka! Huwag matakot!" "Sahod, itaas! Presyo, ibaba!" Bodies surged forward. Riot shields slammed back. Some fell over the wire—gashes opened on knees, arms, but the shouting never stopped.</p>
-            <p>"Some people got hit by the police, some got wounded," Agon said. "It wasn't as bad as the 2024 [protest] where someone was being hauled, but there were bruises and there were people brought to medic," Agon said.</p>
-            <p>While she fights for affordable tuition, the rights of the workers, and the urban poor, her family envisions a different path for her. "Is it worth it for me to go to workers, go to farmers, if I had a comfortable life?" Agon asked. "Since I don't struggle like they do?"</p>
-            <p>Yet, Agon still chose to take up the cudgels of activism. "It's an avenue," she said, "It's not only rationalization about political views, but an avenue to understand yourself as part of the system that we have."</p>
-            <p>She lived near Tayuman Street, and she spent time riding with jeepney drivers. At the terminal, some drivers sat idle in half-empty jeeps, wiping dashboards clean.</p>
-            <p>She rode alongside Kuya Nonong and Kuya Dodong, who used to circle their routes ten times a day. Now they were lucky to manage three. Fuel costs were up, commuters were down, and the threat of phaseout hung in the air like smog.</p>
-            <p>At the height of the jeepney modernization crackdown, even simple conversations with drivers were watched because police loitered near terminals.</p>
-            <p>"There's definitely fear," Agon said. "Sooner or later, the police might come back to them once the [protest] organizer is gone. For the driver, the jeep itself is their livelihood. For [activists], it's just security. But for them—they have children, they have families. If you don't have the jeep, they don't have a job," Agon said.</p>
-            <p>By noon, the protest splintered. There are groups that dispersed, while others regrouped by the overpass. She left the protest sore and fatigued. Still, the work wasn't over because there were debriefs to attend, new actions to plan, and friends to check on.</p>
-            <p>"It still depends on how we look at society," she said. "I don't expect it to change during my time. It might, but not overnight," Agon said.</p>
+            <p>The desk sat between Annie Nicholle Agon and Asst. Prof. Emelito Sarmago. He gave a string of "It's not
+              like I'm discouraging activism," "Don't use the uniform because it doesn't represent UST," and "UST
+              doesn't like activists" which slid past her.</p>
+            <p>"I was called to his office so he could clear his name," Agon said. Sarmago was the student welfare and
+              development coordinator. Weeks earlier, in front of a class, a student had given a presentation that
+              touched on her. When the student sat down, Sarmago pointed at the photo of Agon and told the class not to
+              be like her.</p>
+            <p>Agon had dealt with administrative backlash before. She's a political science sophomore at the University
+              of Santo Tomas, organizing since grade 11 — first with Kabataan Partylist's regional chapter, now with its
+              UST local chapter.</p>
+            <p>By sophomore year, she received a show-cause order. The Central Student Council was supposed to represent
+              students, but admins filed the case, issued the show-cause, and decided the outcome. "What's the point if
+              the admins are the only ones who get to decide?" Agon said.</p>
+            <p>It wasn't just administrators she had to convince. Her mother worried that Agon's campaign for higher
+              teacher salaries would drive tuition up further, adding to their own family's expenses. "I explained that
+              UST really does have that kind of money," Agon said. "It shouldn't be that they keep selling us our own
+              education — that we need to pay a large sum just to study."</p>
+            <p>The same instinct happens to strangers. At Manila North Harbour, Agon had breakfast with dockworkers.
+              Some of them never got to finish high school. Others had been contracted young by companies like San
+              Miguel Corporation because students who couldn't afford senior high school relied on corporate
+              sponsorship.</p>
+            <p>"One of them, still in senior high, was working part-time for a company. He was taking TechVoc at Don
+              Bosco," Agon said. They don't have to go to college, but they can't pursue other strands like ABM or STEM.
+              "They end up taking technical vocational courses because that's what's in demand with the big companies,"
+              Agon said.</p>
+            <p>That same pull took her to a strike center in Cavite — Nexperia. By the time she arrived, it was the last
+              day of the strike and the demands of the workers were finally being addressed.</p>
+            <p>They had spent days locked in without food or medicine, enduring the heat. "They starved us," one worker
+              said. Although still hungry themselves, they chose to feed the student-activists present including Agon.
+            </p>
+            <p>Not every cause offered as clean an ending. During the 2023 Balikatan exercises, Agon stood outside the
+              U.S. Embassy carrying placards and shouting against the presence of American troops in the country. Not
+              long after, sirens blared, prompting them to scatter across the busy road. Agon ran with the others, but
+              looked back in time to see how an FEU student was thrown to the ground and cuffed. "We weren't close, but
+              I knew them [...] I saw how they were caught, how they were dragged by the police," Agon said.</p>
+            <p>A few days later, most of her fellow student activists had been released through the help of paralegals.
+              "They went to update and of course, protect them from the unjustified charges imposed on them by the
+              police. Many activists are framed with false accusations," Agon said.</p>
+            <p>But soon after the protests, the light from the screen would glare at her as the messages from strangers
+              pinged.</p>
+            <p>"I hope you'd been the one shot resisting."<br>"I hope you get raped."<br>"I hope a drug addict gets his
+              hands on you."</p>
+            <p>Then, on Labor Day of 2025, Agon arrived at Liwasang Bonifacio before 7 A.M. Already, the heat pressed
+              down. Vendors hawked cigarettes and bottled water while tarpaulins were being unrolled.</p>
+            <p>Barbed wire stretched across Mendiola Street. Police in full gear stood behind shields scuffed from past
+              protests. Protesters massed at the edge. Students, jeepney drivers, workers in loose shirts and faded
+              caps. Various placards had written: "JUNK JEEPNEY PHASEOUT", "REGULAR JOBS, LIVING WAGE".</p>
+            <p>The chants began low and deep, then swelled: "Makibaka! Huwag matakot!" "Sahod, itaas! Presyo, ibaba!"
+              Bodies surged forward. Riot shields slammed back. Some fell over the wire—gashes opened on knees, arms,
+              but the shouting never stopped.</p>
+            <p>"Some people got hit by the police, some got wounded," Agon said. "It wasn't as bad as the 2024 [protest]
+              where someone was being hauled, but there were bruises and there were people brought to medic," Agon said.
+            </p>
+            <p>While she fights for affordable tuition, the rights of the workers, and the urban poor, her family
+              envisions a different path for her. "Is it worth it for me to go to workers, go to farmers, if I had a
+              comfortable life?" Agon asked. "Since I don't struggle like they do?"</p>
+            <p>Yet, Agon still chose to take up the cudgels of activism. "It's an avenue," she said, "It's not only
+              rationalization about political views, but an avenue to understand yourself as part of the system that we
+              have."</p>
+            <p>She lived near Tayuman Street, and she spent time riding with jeepney drivers. At the terminal, some
+              drivers sat idle in half-empty jeeps, wiping dashboards clean.</p>
+            <p>She rode alongside Kuya Nonong and Kuya Dodong, who used to circle their routes ten times a day. Now they
+              were lucky to manage three. Fuel costs were up, commuters were down, and the threat of phaseout hung in
+              the air like smog.</p>
+            <p>At the height of the jeepney modernization crackdown, even simple conversations with drivers were watched
+              because police loitered near terminals.</p>
+            <p>"There's definitely fear," Agon said. "Sooner or later, the police might come back to them once the
+              [protest] organizer is gone. For the driver, the jeep itself is their livelihood. For [activists], it's
+              just security. But for them—they have children, they have families. If you don't have the jeep, they don't
+              have a job," Agon said.</p>
+            <p>By noon, the protest splintered. There are groups that dispersed, while others regrouped by the overpass.
+              She left the protest sore and fatigued. Still, the work wasn't over because there were debriefs to attend,
+              new actions to plan, and friends to check on.</p>
+            <p>"It still depends on how we look at society," she said. "I don't expect it to change during my time. It
+              might, but not overnight," Agon said.</p>
           </div>
         </div>
 
-        <div class="highlight-card"
-             data-category="Data Journalism"
-             data-title="Dog Type: Stray, Surrendered, Beyond Saving"
-             data-byline="Christine Jade Del Rosario, Yuvshenka Andrea Osea, and Dazel Penaranda"
-             data-date="March 2026"
-             data-image="https://cdn.discordapp.com/attachments/1525560972075339898/1528447318079307967/Goya_Dog_1.JPG?ex=6a5e54fd&is=6a5d037d&hm=dbaa509d662165851e448c33b3a951a65d2196e9a3583b603cb99dd4cb26aa5e"
-             data-skills="Data Journalism, Data Scraping and Categorization, Budget/Statistical Analysis, Interview-Based Reporting">
-          <img src="https://cdn.discordapp.com/attachments/1525560972075339898/1528447318079307967/Goya_Dog_1.JPG?ex=6a5e54fd&is=6a5d037d&hm=dbaa509d662165851e448c33b3a951a65d2196e9a3583b603cb99dd4cb26aa5e" alt="Dog Type: Stray, Surrendered, Beyond Saving" loading="lazy">
+        <div class="highlight-card" data-category="Data Journalism"
+          data-title="Dog Type: Stray, Surrendered, Beyond Saving"
+          data-byline="Christine Jade Del Rosario, Yuvshenka Andrea Osea, and Dazel Penaranda" data-date="March 2026"
+          data-image="pictures/Goya_Dog_1.jpg"
+          data-skills="Data Journalism, Data Scraping and Categorization, Budget/Statistical Analysis, Interview-Based Reporting">
+          <img src="pictures/Goya_Dog_1.jpg" alt="Dog Type: Stray, Surrendered, Beyond Saving" loading="lazy">
           <div class="highlight-overlay">Data Journalism</div>
           <div class="highlight-article" style="display:none">
-            <p>The cages at the Quezon City Animal Pound are filled not just with strays rescued from the streets, but increasingly with pets abandoned by their owners.</p>
-            <p>Dr. Henry Barbero, division chief of the City Veterinary Department (CVD) animal pound, revealed that owner surrenders now make up 60 to 70 percent of the facility's incoming population, with only about 30 percent coming from street rescues.</p>
-            <p>"Ang number one na problema namin [ay kung] paano natin babaguhin 'yung mga tao na ganiyan ang approach do'n sa mga alaga nila, na parang [mga] bagay lang na itatapon sa amin," Barbero said. He cited relocation, condominium restrictions, and financial overextension as the primary reasons owners hand over their pets.</p>
-            <p>With a majority of Filipino households owning pets recorded in a 2024 Kantar Philippines survey, and a local culture in which nearly 66 percent of dogs in Quezon City are given as gifts, according to a 2022 scientific report, city veterinarians say many families simply take on more animals than they can afford.</p>
-            <p>While the pound, which operates at a maximum capacity of roughly 550 to 600 animals, officially accepts surrenders only for severe cases such as terminal illness, extreme aggression, or suspected rabies, the sheer volume of desperate owners often forces the facility's hand.</p>
-            <p>Over the past three years, the local government significantly altered its veterinary budget, with the funding for the city's impounding program nearly slashed in half.</p>
-            <p>Meanwhile, the budget for animal disease prevention and control surged by over 50 percent in the same period, following the Department of Health (DOH)'s report of a record-high 426 rabies-related deaths in 2024.</p>
-            <p>Nearly half of these cases were due to bites from domestic pets rather than strays. In the same year, the Capitol Medical Center in Quezon City alone reported treating over 2,600 new cases.</p>
-            <p>Despite these drastic budget reallocations, the veterinary department has maintained high operational efficiency, consistently utilizing over 92 percent of its allocated funds across both programs.</p>
+            <p>The cages at the Quezon City Animal Pound are filled not just with strays rescued from the streets, but
+              increasingly with pets abandoned by their owners.</p>
+            <p>Dr. Henry Barbero, division chief of the City Veterinary Department (CVD) animal pound, revealed that
+              owner surrenders now make up 60 to 70 percent of the facility's incoming population, with only about 30
+              percent coming from street rescues.</p>
+            <p>"Ang number one na problema namin [ay kung] paano natin babaguhin 'yung mga tao na ganiyan ang approach
+              do'n sa mga alaga nila, na parang [mga] bagay lang na itatapon sa amin," Barbero said. He cited
+              relocation, condominium restrictions, and financial overextension as the primary reasons owners hand over
+              their pets.</p>
+            <p>With a majority of Filipino households owning pets recorded in a 2024 Kantar Philippines survey, and a
+              local culture in which nearly 66 percent of dogs in Quezon City are given as gifts, according to a 2022
+              scientific report, city veterinarians say many families simply take on more animals than they can afford.
+            </p>
+            <p>While the pound, which operates at a maximum capacity of roughly 550 to 600 animals, officially accepts
+              surrenders only for severe cases such as terminal illness, extreme aggression, or suspected rabies, the
+              sheer volume of desperate owners often forces the facility's hand.</p>
+            <p>Over the past three years, the local government significantly altered its veterinary budget, with the
+              funding for the city's impounding program nearly slashed in half.</p>
+            <p>Meanwhile, the budget for animal disease prevention and control surged by over 50 percent in the same
+              period, following the Department of Health (DOH)'s report of a record-high 426 rabies-related deaths in
+              2024.</p>
+            <p>Nearly half of these cases were due to bites from domestic pets rather than strays. In the same year, the
+              Capitol Medical Center in Quezon City alone reported treating over 2,600 new cases.</p>
+            <p>Despite these drastic budget reallocations, the veterinary department has maintained high operational
+              efficiency, consistently utilizing over 92 percent of its allocated funds across both programs.</p>
             <figure class="port-inline-img">
-              <img src="https://cdn.discordapp.com/attachments/1525560972075339898/1528443281417961655/f53b7eea-c8bd-4632-b118-2f749372e301.png?ex=6a5e513b&is=6a5cffbb&hm=75aeaa3e0ac4595bf4852e8e153de5783e4d52da71cc01669cf3640c6873d4a0" alt="Figure 1: Impounding vs. disease prevention budget allocation">
-              <figcaption>Figure 1. From 2023-2025, funds shifted towards disease prevention despite rising animal intake. While both programs maintained high utilization, this suggests growing strains on limited impounding resources.</figcaption>
+              <img src="pictures/graph.png" alt="Figure 1: Impounding vs. disease prevention budget allocation">
+              <figcaption>Figure 1. From 2023-2025, funds shifted towards disease prevention despite rising animal
+                intake. While both programs maintained high utilization, this suggests growing strains on limited
+                impounding resources.</figcaption>
             </figure>
-            <p>Even for animals that make it to the city's Animal Care and Adoption Center, finding a permanent home remains difficult as cultural preference for imported breeds persists.</p>
-            <p>Dr. Isabella Rico, the officer-in-charge at the adoption center, said native dogs or aspins comprise roughly 80 percent of the shelter's population, while purebreds make up 20 percent.</p>
-            <p>However, when they are put up for adoption, purebreds like shih tzus, beagles, and belgian malinois are claimed almost instantly, while aspins take an average of five to 12 months to find a home, if they find one at all.</p>
-            <p>"Sabihin mong mag-post kami ng limang aspin, dalawang beagle, dalawang shih tzu, isang belgian. Alam mo na kung sino 'yung unang lima," Rico said.</p>
-            <p>While the city's budget is funneled toward fighting rabies, the shelter remains desperately focused on adoptions to clear space for the growing number of strays.</p>
-            <p>Apify's Facebook Post Scraper and Gemini's API feature processed 15 months' worth of data, collecting content posted on the ACAC Facebook page. The materials served as the department's main marketing to promote programs such as adoption drives, spay programs, vaccination, and deworming.</p>
+            <p>Even for animals that make it to the city's Animal Care and Adoption Center, finding a permanent home
+              remains difficult as cultural preference for imported breeds persists.</p>
+            <p>Dr. Isabella Rico, the officer-in-charge at the adoption center, said native dogs or aspins comprise
+              roughly 80 percent of the shelter's population, while purebreds make up 20 percent.</p>
+            <p>However, when they are put up for adoption, purebreds like shih tzus, beagles, and belgian malinois are
+              claimed almost instantly, while aspins take an average of five to 12 months to find a home, if they find
+              one at all.</p>
+            <p>"Sabihin mong mag-post kami ng limang aspin, dalawang beagle, dalawang shih tzu, isang belgian. Alam mo
+              na kung sino 'yung unang lima," Rico said.</p>
+            <p>While the city's budget is funneled toward fighting rabies, the shelter remains desperately focused on
+              adoptions to clear space for the growing number of strays.</p>
+            <p>Apify's Facebook Post Scraper and Gemini's API feature processed 15 months' worth of data, collecting
+              content posted on the ACAC Facebook page. The materials served as the department's main marketing to
+              promote programs such as adoption drives, spay programs, vaccination, and deworming.</p>
             <figure class="port-inline-img">
-              <img src="https://cdn.discordapp.com/attachments/1525560972075339898/1528443281711566910/6d2c14b6-40b3-4ad8-9b14-2cbf0417ac1a.png?ex=6a5e513b&is=6a5cffbb&hm=9254fdbecae4645c87f9a76615da46f7923fee4b5fa7281302e5914c6fa93543" alt="Figure 2: ACAC Facebook post category breakdown">
-              <figcaption>Figure 2. ACAC Facebook posts from January 2025 to March 2026 are dominated by adoption, with less emphasis on spay/neuter and vaccination, indicating a focus on rehoming over prevention.</figcaption>
+              <img src="pictures/piechart.png" alt="Figure 2: ACAC Facebook post category breakdown">
+              <figcaption>Figure 2. ACAC Facebook posts from January 2025 to March 2026 are dominated by adoption, with
+                less emphasis on spay/neuter and vaccination, indicating a focus on rehoming over prevention.
+              </figcaption>
             </figure>
-            <p>The highest engagement in 2025 was a promotion for an adoption, featuring several dogs who resided at the center for 106-340 days.</p>
-            <p>Many of the animals are posted with their names and status to win over potential adopters, but there are still cases like Diego, who stayed at the shelter for more than 1,000 days before being officially adopted.</p>
+            <p>The highest engagement in 2025 was a promotion for an adoption, featuring several dogs who resided at the
+              center for 106-340 days.</p>
+            <p>Many of the animals are posted with their names and status to win over potential adopters, but there are
+              still cases like Diego, who stayed at the shelter for more than 1,000 days before being officially
+              adopted.</p>
             <p><strong>The cost of care and weight of letting go</strong></p>
-            <p>For Rico, overseeing the center has shifted from a simple desire for a five-day workweek to a trial of the heart. Unlike private practice, working with the government entailed a different language, especially when it comes to running a veterinary clinic, she said.</p>
-            <p>"'Pag sa government ka kasi, para kang nanay ng lahat," Rico said, noting that in this field, they are required to be patient, diligent, and understanding, as dealing with multiple patients every day was something that took her time to process.</p>
-            <p>She also noted the immense resourcefulness required to run the city's pound and adoption center. Amid the veterinary department's sharp focus on disease control, the divisions are often left to stretch their limited supplies.</p>
-            <p>"Sa amin kasi bilang shelter, kapag nagkulang ka sa gamot, kailangan, tipirin mo lang talaga 'yung stocks mo," she said.</p>
-            <p>Rico also recalled an instance where a canine, already trained to sit, stay, and perform other commands, was adopted by an employee of a construction company, only to be returned to the center after the project concluded.</p>
-            <p>They were able to permanently rehome the dog, but the incident forced Rico to implement stricter screening processes to prevent pets from being treated as disposable tools.</p>
-            <p>As she tries her best to preserve the animals' lives and rehome them, Barbero's hands are tied with the grim reality of the pound's limits, forcing his hand to put down animals that are "beyond saving."</p>
-            <p>"Kasi ang daming bumabagsak do'n sa [pound]… mga buto't balat na, actually hindi na siya mabubuhay. Papatagalin mo lang ang agony ng mga hayop… kaya no choice kailangang magpatulog," Barbero said.</p>
-            <p>When he was in private practice, Barbero reminisced about the time he met a puppy he had personally seen growing up, only to witness it perish in front of him.</p>
-            <p>It was a successful emergency cesarean section. After seven days, its wounds should have healed, but due to neglect, the dog developed self-mutilation as it could not bear the itch around the surgical site.</p>
-            <p>"Pagbalik sa akin, labas ang bituka, labas ang pantog, uwi sa kaniya [ma]ayos, naitahi ko, naayos lahat. Hindi ko alam 'yung mga minute [small] surgery injury niya na nasa loob na… tuloy-tuloy nag-bleed," Barbero said.</p>
-            <p>Barbero knew euthanasia defeated the purpose of being an animal doctor. Whenever he puts an animal to eternal sleep, the burden never gets easier with time.</p>
+            <p>For Rico, overseeing the center has shifted from a simple desire for a five-day workweek to a trial of
+              the heart. Unlike private practice, working with the government entailed a different language, especially
+              when it comes to running a veterinary clinic, she said.</p>
+            <p>"'Pag sa government ka kasi, para kang nanay ng lahat," Rico said, noting that in this field, they are
+              required to be patient, diligent, and understanding, as dealing with multiple patients every day was
+              something that took her time to process.</p>
+            <p>She also noted the immense resourcefulness required to run the city's pound and adoption center. Amid the
+              veterinary department's sharp focus on disease control, the divisions are often left to stretch their
+              limited supplies.</p>
+            <p>"Sa amin kasi bilang shelter, kapag nagkulang ka sa gamot, kailangan, tipirin mo lang talaga 'yung stocks
+              mo," she said.</p>
+            <p>Rico also recalled an instance where a canine, already trained to sit, stay, and perform other commands,
+              was adopted by an employee of a construction company, only to be returned to the center after the project
+              concluded.</p>
+            <p>They were able to permanently rehome the dog, but the incident forced Rico to implement stricter
+              screening processes to prevent pets from being treated as disposable tools.</p>
+            <p>As she tries her best to preserve the animals' lives and rehome them, Barbero's hands are tied with the
+              grim reality of the pound's limits, forcing his hand to put down animals that are "beyond saving."</p>
+            <p>"Kasi ang daming bumabagsak do'n sa [pound]… mga buto't balat na, actually hindi na siya mabubuhay.
+              Papatagalin mo lang ang agony ng mga hayop… kaya no choice kailangang magpatulog," Barbero said.</p>
+            <p>When he was in private practice, Barbero reminisced about the time he met a puppy he had personally seen
+              growing up, only to witness it perish in front of him.</p>
+            <p>It was a successful emergency cesarean section. After seven days, its wounds should have healed, but due
+              to neglect, the dog developed self-mutilation as it could not bear the itch around the surgical site.</p>
+            <p>"Pagbalik sa akin, labas ang bituka, labas ang pantog, uwi sa kaniya [ma]ayos, naitahi ko, naayos lahat.
+              Hindi ko alam 'yung mga minute [small] surgery injury niya na nasa loob na… tuloy-tuloy nag-bleed,"
+              Barbero said.</p>
+            <p>Barbero knew euthanasia defeated the purpose of being an animal doctor. Whenever he puts an animal to
+              eternal sleep, the burden never gets easier with time.</p>
             <p>"Sobrang hirap. Sobrang hirap no'ng pakiramdam."</p>
-            <p>As the country grapples with over 13 million stray animals nationwide, Barbero advocates for a local ordinance requiring an "animal handler certification" that would restrict pet ownership to those who can prove they have the capacity to care for an animal.</p>
-            <p>He argued that it is a necessary step for animal welfare and to address problems caused by irresponsible owners, rabies, overcrowding, and overbreeding.</p>
+            <p>As the country grapples with over 13 million stray animals nationwide, Barbero advocates for a local
+              ordinance requiring an "animal handler certification" that would restrict pet ownership to those who can
+              prove they have the capacity to care for an animal.</p>
+            <p>He argued that it is a necessary step for animal welfare and to address problems caused by irresponsible
+              owners, rabies, overcrowding, and overbreeding.</p>
           </div>
         </div>
 
-        <div class="highlight-card"
-             data-category="Flash Fiction"
-             data-title="Daanan"
-             data-byline="Christine Jade Del Rosario"
-             data-date="November 2022"
-             data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/La_barca_de_Aqueronte.png/960px-La_barca_de_Aqueronte.png"
-             data-skills="Dramatic Irony">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/La_barca_de_Aqueronte.png/960px-La_barca_de_Aqueronte.png" alt="Daanan" loading="lazy">
+        <div class="highlight-card" data-category="Flash Fiction" data-title="Daanan"
+          data-byline="Christine Jade Del Rosario" data-date="November 2022" data-image="pictures/dramaticIrony.png"
+          data-skills="Dramatic Irony">
+          <img src="pictures/dramaticIrony.png" alt="Daanan" loading="lazy">
           <div class="highlight-overlay">100-Word Flash Fiction</div>
           <div class="highlight-article" style="display:none">
-            <p>Walang pinagbago sa aking dinadaan pauwi—madilim, malubak at matarik. Tila isang maling hakbang mo ay magkikita na kayo ni kamatayan.</p>
-            <p>Ngunit sanay na ako sa daan na ito. Alam ko kung ano ang pasikot-sikot, ang tamang laktaw nang hindi nadadapa.</p>
+            <p>Walang pinagbago sa aking dinadaan pauwi—madilim, malubak at matarik. Tila isang maling hakbang mo ay
+              magkikita na kayo ni kamatayan.</p>
+            <p>Ngunit sanay na ako sa daan na ito. Alam ko kung ano ang pasikot-sikot, ang tamang laktaw nang hindi
+              nadadapa.</p>
             <p>Sa malumanay ngunit malamig na yakap ng dumadamping hangin, kikilabutan ka.</p>
             <p>Hindi mo mapapansin, hindi mo makikita—mararamdaman mo nalang.</p>
-            <p>Minsan may hahatak na parang taong nalulunod.<br>Minsan may tutulak parang kaibigan mo na nakikipagbiruan.</p>
-            <p>Mahirap makipagsapalaran sa mga lugar na hindi mo kabisado. Siguro'y dapat magpasalamat nalang ako dahil ito'y kinalakihan ko. Kasi kung hindi, malamang kasama ko narin sila.</p>
+            <p>Minsan may hahatak na parang taong nalulunod.<br>Minsan may tutulak parang kaibigan mo na
+              nakikipagbiruan.</p>
+            <p>Mahirap makipagsapalaran sa mga lugar na hindi mo kabisado. Siguro'y dapat magpasalamat nalang ako dahil
+              ito'y kinalakihan ko. Kasi kung hindi, malamang kasama ko narin sila.</p>
           </div>
         </div>
 
@@ -809,7 +345,8 @@
       </button>
     </div>
 
-    <div class="panel fade-up" data-fade-group="2">
+    <!-- Contact Panel -->
+    <div id="contactPanel" class="panel fade-up" data-fade-group="2">
       <div class="panel-title">Contact</div>
       <div class="account-list">
         <a class="account-row" href="mailto:christinejade1234@gmail.com">
@@ -832,9 +369,15 @@
           <span class="acc-label">Instagram</span>
           <span class="acc-url">@cjoftherosary</span>
         </a>
+        <a class="account-row" href="pictures/DEL ROSARIO_CHRISTINE JADE_CV.pdf" target="_blank">
+          <div class="acc-icon">📑</div>
+          <span class="acc-label">CV</span>
+          <span class="acc-url">DEL ROSARIO_CHRISTINE JADE_CV.pdf</span>
+        </a>
       </div>
     </div>
 
+    <!-- Affiliations Panel -->
     <div class="panel fade-up" data-fade-group="2">
       <div class="panel-title">Affiliations</div>
       <div class="info-cards">
@@ -861,48 +404,65 @@
 
   </div>
 
-  <section id="portfolio">
-    <h3 class="section-heading fade-up" data-fade-group="3">All Work</h3>
-    <div class="filter-tabs fade-up" data-fade-group="3">
+  <!-- ===== PORTFOLIO ===== -->
+  <section id="portfolio" class="reveal-up">
+    <h3 class="section-heading">All Work</h3>
+    <div class="filter-tabs">
       <button class="ftab active" data-filter="all">All</button>
       <button class="ftab" data-filter="articles">Articles</button>
       <button class="ftab" data-filter="projects">Projects</button>
       <button class="ftab" data-filter="creative-writing">Creative Writing</button>
-      <button class="ftab" data-filter="excel">Excel & Data</button>
+      <button class="ftab" data-filter="excel">Excel &amp; Data</button>
     </div>
-
     <div class="portfolio-grid">
-
     </div>
   </section>
 
-  <section id="about">
-    <h3 class="section-heading fade-up" data-fade-group="4">About Me</h3>
-    <div class="about-panel fade-up" data-fade-group="4">
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="reveal-up">
+    <h3 class="section-heading">About Me</h3>
+    <div class="about-panel">
       <div class="about-photo">
-        <!-- ✏️ <img src="your-photo.jpg" alt="Christine Jade Del Rosario"> -->
-        <img src ="https://cdn.discordapp.com/attachments/1525560972075339898/1527720609918881792/photo_corrected.jpg?ex=6a5bb031&is=6a5a5eb1&hm=f922c9eb67efdcd3c2030e9b5229d48218fd4143517a87ed17d2e88ed6ef6f44">
+        <img src="pictures/riopic.jpg" alt="Christine Jade Del Rosario">
       </div>
       <div class="about-body">
         <h2>Hi, I'm Rio.</h2>
-        <p>I chose a program I don't fit in. My outputs were too metaphorical to be considered as good reporting, and too precise to be considered as good prose. The rules of thumb of journalism handed me a splinter of ambiguity.</p>
-        <p>I dislike vagueness, often frowning because of it until it ushers me to a hyperfixated need to learn. I operate the way kittens do, mimicking my mentors the way kittens mimic their mothers. I think the felines are onto something with this one. Do you like cats?</p>
+        <p>I chose a program I don't fit in. My outputs were too metaphorical to be considered as good reporting, and
+          too precise to be considered as good prose. The rules of thumb of journalism handed me a splinter of
+          ambiguity.</p>
+        <p>I dislike vagueness, often frowning because of it until it ushers me to a hyperfixated need to learn. I
+          operate the way kittens do, mimicking my mentors the way kittens mimic their mothers. I think the felines are
+          onto something with this one. Do you like cats?</p>
         <div class="skill-tags">
           <span class="skill-tag">Journalism</span>
           <span class="skill-tag">Content Writing</span>
           <span class="skill-tag">Student Leadership</span>
           <span class="skill-tag">Event Management</span>
-          <span class="skill-tag">Excel & Data</span>
+          <span class="skill-tag">Excel &amp; Data</span>
           <span class="skill-tag">Administrative Work</span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ===== INTERESTED? (CALL TO ACTION) ===== -->
+  <section id="interested" class="reveal-up">
+    <div class="interested-panel">
+      <h3>Interested?</h3>
+      <p>Let's collaborate or chat about journalism, data research, or content creation. Reach out directly using any of
+        my contacts.</p>
+      <button class="interested-btn" id="getInTouchBtn">
+        Get in Touch →
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     &copy; 2026 Christine Jade Del Rosario. Built with HTML &amp; intention.
   </footer>
 
+  <!-- ===== HIGHLIGHT MODAL ===== -->
   <div class="modal-overlay" id="highlightModalOverlay">
     <div class="modal" id="highlightModal">
       <button class="modal-close" id="highlightModalClose">✕</button>
@@ -916,13 +476,15 @@
         <p class="modal-byline" id="highlightModalByline"></p>
         <div class="modal-divider"></div>
         <div class="modal-desc" id="highlightModalDesc"></div>
-        <p class="modal-skills-label" id="highlightModalSkillsLabel">Skills & Tools</p>
+        <p class="modal-skills-label" id="highlightModalSkillsLabel">Skills &amp; Tools</p>
         <div class="modal-skills" id="highlightModalSkills"></div>
-        <button class="modal-link" id="highlightModalSeeMore" style="border:none;cursor:pointer;font-family:var(--sans)">See more in Portfolio ↓</button>
+        <button class="modal-link" id="highlightModalSeeMore"
+          style="border:none;cursor:pointer;font-family:var(--sans)">See more in Portfolio ↓</button>
       </div>
     </div>
   </div>
 
+  <!-- ===== PORTFOLIO MODAL ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
       <button class="modal-close" id="modalClose">✕</button>
@@ -936,351 +498,61 @@
         <p class="modal-byline" id="modalByline"></p>
         <div class="modal-divider"></div>
         <div class="modal-desc" id="modalDesc"></div>
-        <p class="modal-skills-label">Skills & Tools</p>
+        <p class="modal-skills-label">Skills &amp; Tools</p>
         <div class="modal-skills" id="modalSkills"></div>
         <a class="modal-link" id="modalLink" href="#" target="_blank">Open ↗</a>
       </div>
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    firebase.initializeApp({
-      apiKey: "AIzaSyDK4OmS0iG9O2Q2rrRGsEU3h6GKVnsRLPE",
-      authDomain: "portfolio-89e48.firebaseapp.com",
-      projectId: "portfolio-89e48",
-      storageBucket: "portfolio-89e48.firebasestorage.app",
-      messagingSenderId: "502772014035",
-      appId: "1:502772014035:web:6887cf13d00f47a3e4ed26"
-    });
-    var db = firebase.firestore();
+  <!-- ===== CONTACT POPUP MODAL ===== -->
+  <div class="modal-overlay" id="contactModalOverlay">
+    <div class="modal" id="contactModal" style="max-width: 460px;">
+      <button class="modal-close" id="contactModalClose">✕</button>
+      <div class="modal-body" style="padding: 2.5rem 2.2rem 2.2rem;">
+        <h2 class="modal-title"
+          style="font-size: 1.4rem; margin-bottom: 1.4rem; text-align: center; font-family: var(--serif);">Contact &amp;
+          CV</h2>
+        <div class="account-list">
+          <a class="account-row" href="mailto:christinejade1234@gmail.com">
+            <div class="acc-icon">✉️</div>
+            <span class="acc-label">Email</span>
+            <span class="acc-url">christinejade1234@gmail.com</span>
+          </a>
+          <a class="account-row" href="https://linkedin.com/in/cjoftherosary" target="_blank">
+            <div class="acc-icon">💼</div>
+            <span class="acc-label">LinkedIn</span>
+            <span class="acc-url">linkedin.com/in/cjoftherosary</span>
+          </a>
+          <a class="account-row" href="https://www.facebook.com/cjoftherosary" target="_blank">
+            <div class="acc-icon">ⓕ</div>
+            <span class="acc-label">Facebook</span>
+            <span class="acc-url">@cjoftherosary</span>
+          </a>
+          <a class="account-row" href="https://www.instagram.com/cjoftherosary" target="_blank">
+            <div class="acc-icon">📷</div>
+            <span class="acc-label">Instagram</span>
+            <span class="acc-url">@cjoftherosary</span>
+          </a>
+          <a class="account-row" href="pictures/DEL ROSARIO_CHRISTINE JADE_CV.pdf" target="_blank">
+            <div class="acc-icon">📑</div>
+            <span class="acc-label">CV</span>
+            <span class="acc-url">DEL ROSARIO_CHRISTINE JADE_CV.pdf</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    function applyInlineFormatting(str) {
-      return str
-        // **bold**
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        // *italic* (won't touch the ** pairs above since those are already replaced)
-        .replace(/\*(.+?)\*/g, '<em>$1</em>');
-    }
+  <!-- ===== SCRIPTS (deferred for performance) ===== -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
+  <script src="https://public.flourish.studio/resources/embed.js" defer></script>
+  <script src="js/main.js" defer></script>
 
-    // Manually kicks off any Flourish embeds inside a container. Needed because Flourish's
-    // autoload only scans the page once at load time and won't catch embeds that show up
-    // later (from async Firestore data, or copied into a modal via innerHTML).
-    function initFlourishEmbeds(container) {
-      if (!container || !window.Flourish || typeof window.Flourish.loadEmbed !== 'function') return;
-      container.querySelectorAll('.flourish-embed').forEach(function(el) {
-        window.Flourish.loadEmbed(el);
-      });
-    }
-
-    function parseBody(text) {
-      return text.trim().split(/\n{2,}/).map(block => {
-        const trimmed = block.trim();
-
-        // [embed: <raw html> | caption] — for pasting live embed markup (Flourish, etc.)
-        // Splits on the LAST pipe so pipes inside the embed markup itself (rare, but possible
-        // in query strings) don't get mistaken for the caption separator.
-        const embedMatch = trimmed.match(/^\[embed:\s*([\s\S]+)\]\s*$/i);
-        if (embedMatch) {
-          let inner = embedMatch[1];
-          let caption = '';
-          const lastPipe = inner.lastIndexOf('|');
-          if (lastPipe !== -1) {
-            caption = inner.slice(lastPipe + 1).trim();
-            inner = inner.slice(0, lastPipe).trim();
-          }
-          if (caption) {
-            return `<figure class="port-inline-img">${inner}<figcaption>${applyInlineFormatting(caption)}</figcaption></figure>`;
-          }
-          return `<figure class="port-inline-img">${inner}</figure>`;
-        }
-
-        // [\s\S] instead of . so the match works across line breaks (e.g. multi-line captions)
-        const imgMatch = trimmed.match(/^\[img:\s*([\s\S]+?)\s*\]\s*\]?$/i);
-        if (imgMatch) {
-          const parts = imgMatch[1].split('|').map(s => s.trim());
-          const src = parts[0];
-          let extra = parts[1] || '';
-
-          // Strip stray wrapping brackets some editors add around the caption/link
-          extra = extra.replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim();
-
-          const imgTag = `<img src="${src}" alt="">`;
-          const linkMatch = extra.match(/^link:\s*(\S+)/i);
-
-          if (linkMatch) {
-            return `<figure class="port-inline-img"><a href="${linkMatch[1]}" target="_blank">${imgTag}</a></figure>`;
-          }
-          if (extra) {
-            return `<figure class="port-inline-img">${imgTag}<figcaption>${applyInlineFormatting(extra)}</figcaption></figure>`;
-          }
-          return `<figure class="port-inline-img">${imgTag}</figure>`;
-        }
-        return `<p>${applyInlineFormatting(trimmed)}</p>`;
-      }).join('');
-    }
-
-    function buildCard(e) {
-      const card = document.createElement('div');
-      card.className = 'port-card';
-      card.dataset.cat      = e.cat      || 'articles';
-      card.dataset.title    = e.title    || '';
-      card.dataset.byline   = e.byline   || '';
-      card.dataset.category = e.category || e.cat || '';
-      card.dataset.date     = e.date     || '';
-      card.dataset.image    = e.image    || '';
-      card.dataset.skills   = e.skills   || '';
-      card.dataset.link     = e.link     || '#';
-      card.dataset.linkText = e.linkText || 'Open';
-      const thumbHtml = e.image ? `<img src="${e.image}" alt="${e.title}">` : `<span>${e.category || e.cat || 'Work'}</span>`;
-      const articleHtml = e.body && e.body.trim() ? parseBody(e.body) : `<p>${e.preview || ''}</p>`;
-      const bylineHtml = e.byline ? `<p class="port-byline">${e.byline}</p>` : '';
-      card.innerHTML = `
-        <div class="port-article" style="display:none">${articleHtml}</div>
-        <div class="port-thumb">${thumbHtml}</div>
-        <div class="port-body">
-          <p class="port-cat">${e.category || e.cat || ''}</p>
-          <h3 class="port-title">${e.title || ''}</h3>
-          ${bylineHtml}
-          <p class="port-desc">${e.preview || ''}</p>
-          <button class="port-read-more">Read More →</button>
-        </div>`;
-      card.addEventListener('click', ev => { if (ev.target.tagName !== 'A') openModal(card); });
-      return card;
-    }
-
-    function renderDynamicEntries() {
-      db.collection('entries').get().then(function(snap) {
-        var entries = [];
-        snap.forEach(function(d) { entries.push(Object.assign({ id: d.id }, d.data())); });
-        entries.sort(function(a, b) {
-          return (a.order != null ? a.order : 9999) - (b.order != null ? b.order : 9999) || (b.createdAt || 0) - (a.createdAt || 0);
-        });
-        if (!entries.length) return;
-        var grid = document.querySelector('.portfolio-grid');
-        entries.forEach(function(e, i) {
-          var card = buildCard(e);
-          card.classList.add('card-enter');
-          card.style.animationDelay = (i * 0.08) + 's';
-          grid.appendChild(card);
-        });
-      });
-    }
-
-    renderDynamicEntries();
-
-    const FILTER_FADE_MS = 250;
-
-    document.querySelectorAll('.ftab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.filter;
-        const cards = Array.from(document.querySelectorAll('.port-card[data-cat]'));
-        const currentlyVisible = cards.filter(c => !c.classList.contains('hidden'));
-
-        // Step 1: fade OUT every card that's currently on screen, together.
-        currentlyVisible.forEach(c => c.classList.add('filter-out'));
-
-        setTimeout(() => {
-          // Step 2: swap which cards are hidden vs shown for the new filter.
-          cards.forEach(c => {
-            c.classList.remove('filter-out', 'card-enter');
-            c.style.animation = 'none';
-            c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
-          });
-
-          const matching = cards.filter(c => !c.classList.contains('hidden'));
-
-          // Force a reflow so the browser "forgets" the old animation state
-          // and will replay riseIn from scratch for every matching card.
-          void document.querySelector('.portfolio-grid').offsetWidth;
-
-          matching.forEach((c, i) => {
-            c.style.animation = '';
-            c.style.animationDelay = (i * 0.06) + 's';
-            c.classList.add('card-enter');
-          });
-        }, FILTER_FADE_MS);
-      });
-    });
-
-    const overlay  = document.getElementById('modalOverlay');
-    const modal    = document.getElementById('modal');
-    const closeBtn = document.getElementById('modalClose');
-
-    function openModal(card) {
-      const d = card.dataset;
-      document.getElementById('modalCategory').textContent = d.category || '';
-      document.getElementById('modalDate').textContent     = d.date     || '';
-      document.getElementById('modalTitle').textContent    = d.title    || '';
-      const bylineEl = document.getElementById('modalByline');
-      bylineEl.textContent  = d.byline || '';
-      bylineEl.style.display = d.byline ? 'block' : 'none';
-      const articleEl = card.querySelector('.port-article');
-      const modalDescEl = document.getElementById('modalDesc');
-      modalDescEl.innerHTML = articleEl ? articleEl.innerHTML : '';
-      initFlourishEmbeds(modalDescEl);
-      const skillsEl = document.getElementById('modalSkills');
-      skillsEl.innerHTML = '';
-      (d.skills || '').split(',').forEach(s => {
-        if (!s.trim()) return;
-        const tag = document.createElement('span');
-        tag.className = 'modal-skill-tag';
-        tag.textContent = s.trim();
-        skillsEl.appendChild(tag);
-      });
-      const cover = document.getElementById('modalCover');
-      cover.innerHTML = d.image ? `<img src="${d.image}" alt="${d.title}">` : '<span style="font-style:italic;color:var(--text-dim)">No image yet</span>';
-      const link = document.getElementById('modalLink');
-      const hasLink = d.link && d.link.trim() && d.link.trim() !== '#';
-      link.style.display = hasLink ? 'inline-flex' : 'none';
-      if (hasLink) { link.href = d.link; link.textContent = (d.linkText || 'Open') + ' ↗'; }
-      overlay.classList.add('active');
-      modal.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    document.querySelectorAll('.port-card[data-cat]').forEach(card => {
-      card.addEventListener('click', e => { if (e.target.tagName !== 'A') openModal(card); });
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    /* ===== HIGHLIGHT MODAL (independent from the portfolio/Firestore modal) ===== */
-    const hOverlay  = document.getElementById('highlightModalOverlay');
-    const hModal    = document.getElementById('highlightModal');
-    const hCloseBtn = document.getElementById('highlightModalClose');
-    const hSeeMore  = document.getElementById('highlightModalSeeMore');
-
-    function openHighlightModal(card) {
-      const d = card.dataset;
-      document.getElementById('highlightModalCategory').textContent = d.category || '';
-      document.getElementById('highlightModalDate').textContent     = d.date     || '';
-      document.getElementById('highlightModalTitle').textContent    = d.title    || '';
-      const hBylineEl = document.getElementById('highlightModalByline');
-      hBylineEl.textContent  = d.byline || '';
-      hBylineEl.style.display = d.byline ? 'block' : 'none';
-      const articleEl = card.querySelector('.highlight-article');
-      const highlightModalDescEl = document.getElementById('highlightModalDesc');
-      highlightModalDescEl.innerHTML = articleEl ? articleEl.innerHTML : (d.desc ? `<p>${d.desc}</p>` : '');
-      initFlourishEmbeds(highlightModalDescEl);
-      const skillsEl = document.getElementById('highlightModalSkills');
-      skillsEl.innerHTML = '';
-      const skillsLabel = document.getElementById('highlightModalSkillsLabel');
-      const skillsList = (d.skills || '').split(',').map(s => s.trim()).filter(Boolean);
-      skillsLabel.style.display = skillsList.length ? 'block' : 'none';
-      skillsList.forEach(s => {
-        const tag = document.createElement('span');
-        tag.className = 'modal-skill-tag';
-        tag.textContent = s;
-        skillsEl.appendChild(tag);
-      });
-      const cover = document.getElementById('highlightModalCover');
-      cover.innerHTML = d.image ? `<img src="${d.image}" alt="${d.title}">` : `<span style="font-style:italic;color:var(--text-dim)">${d.category || 'Highlight'}</span>`;
-      hOverlay.classList.add('active');
-      hModal.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeHighlightModal() {
-      hOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    document.querySelectorAll('.highlight-card').forEach(card => {
-      card.addEventListener('click', () => openHighlightModal(card));
-    });
-
-    hCloseBtn.addEventListener('click', closeHighlightModal);
-    hOverlay.addEventListener('click', e => { if (e.target === hOverlay) closeHighlightModal(); });
-    hSeeMore.addEventListener('click', () => {
-      closeHighlightModal();
-      document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
-    });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHighlightModal(); });
-
-    /* ===== WELCOME INTRO OVERLAY ===== */
-    (function () {
-      const welcomeOverlay = document.getElementById('welcomeOverlay');
-      const FADE_MS = 400; // keep in sync with the .fade-up transition duration in CSS
-      const GAP_MS = 80;   // small breathing room before the next group starts
-      const SESSION_KEY = 'cjPortfolioWelcomeShown';
-
-      // Elements sharing the same data-fade-group fade in together;
-      // groups themselves play one after another in order.
-      const revealSectionsInSequence = () => {
-        const groups = {};
-        document.querySelectorAll('.fade-up[data-fade-group]').forEach(el => {
-          const key = el.dataset.fadeGroup;
-          (groups[key] = groups[key] || []).push(el);
-        });
-        const orderedKeys = Object.keys(groups).sort((a, b) => a - b);
-
-        let i = 0;
-        const revealNext = () => {
-          if (i >= orderedKeys.length) return;
-          groups[orderedKeys[i]].forEach(el => el.classList.add('in-view'));
-          i++;
-          setTimeout(revealNext, FADE_MS + GAP_MS);
-        };
-        revealNext();
-      };
-
-      // Already seen the welcome intro this session (e.g. refresh, or
-      // navigating back to the page) — skip straight to the content.
-      let alreadyShown = false;
-      try {
-        alreadyShown = sessionStorage.getItem(SESSION_KEY) === '1';
-      } catch (e) {
-        // sessionStorage unavailable (private browsing etc.) — just show it every time.
-      }
-
-      if (!welcomeOverlay || alreadyShown) {
-        if (welcomeOverlay) welcomeOverlay.remove();
-        // Without the welcome overlay's delay, the browser can skip straight to the
-        // final "in-view" styles before it ever paints the initial hidden state,
-        // so the fade-in transition doesn't visually play. Forcing two animation
-        // frames guarantees a paint happens first, so the fade is never skipped.
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => revealSectionsInSequence());
-        });
-        return;
-      }
-
-      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
-
-      document.body.style.overflow = 'hidden';
-      const finishWelcome = () => {
-        document.body.style.overflow = '';
-        welcomeOverlay.remove();
-        revealSectionsInSequence();
-      };
-      welcomeOverlay.addEventListener('animationend', finishWelcome, { once: true });
-      // Fallback in case the animation never fires (e.g. reduced-motion, tab backgrounded)
-      setTimeout(finishWelcome, 2200);
-    })();
-
-    /* ===== SCROLL-TRIGGERED REVEAL (keeps below-the-fold animation consistent with above-the-fold) ===== */
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
-  </script>
+  <!-- ===== BACK TO TOP BUTTON ===== -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 </body>
+
 </html>
