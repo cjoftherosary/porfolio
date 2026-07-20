@@ -458,7 +458,7 @@ nav {
   background: var(--amber-lt);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 1rem 0.8rem;
+  padding: 0.6rem 0.8rem;
   text-decoration: none;
   transition: background 0.18s, border-color 0.18s;
 }
