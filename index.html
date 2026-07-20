@@ -49,7 +49,7 @@
     .fade-up {
       opacity: 0;
       transform: translateY(14px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
     .fade-up.in-view { opacity: 1; transform: translateY(0); }
 
@@ -620,7 +620,7 @@
     <span class="nav-handle">@cjoftherosary</span>
   </nav>
 
-  <div class="hero-banner fade-up">
+  <div class="hero-banner fade-up" data-fade-group="1">
     <div class="hero-photo-slot">
       <div class="hero-photo-placeholder">
         <!-- ✏️ Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"> -->
@@ -644,7 +644,7 @@
 
   <div class="main-grid">
 
-    <div class="panel fade-up">
+    <div class="panel fade-up" data-fade-group="2">
       <div class="panel-title">
         Highlights
       </div>
@@ -687,7 +687,7 @@
       </button>
     </div>
 
-    <div class="panel fade-up">
+    <div class="panel fade-up" data-fade-group="2">
       <div class="panel-title">Contact</div>
       <div class="account-list">
         <a class="account-row" href="mailto:christinejade1234@gmail.com">
@@ -713,7 +713,7 @@
       </div>
     </div>
 
-    <div class="panel fade-up">
+    <div class="panel fade-up" data-fade-group="2">
       <div class="panel-title">Affiliations</div>
       <div class="info-cards">
         <a class="info-card" href="https://manila.ust.edu.ph/osawebapp/" target="_blank" rel="noopener">
@@ -740,8 +740,8 @@
   </div>
 
   <section id="portfolio">
-    <h3 class="section-heading reveal-up">All Work</h3>
-    <div class="filter-tabs reveal-up" style="transition-delay:0.08s">
+    <h3 class="section-heading fade-up" data-fade-group="3">All Work</h3>
+    <div class="filter-tabs fade-up" data-fade-group="3">
       <button class="ftab active" data-filter="all">All</button>
       <button class="ftab" data-filter="articles">Articles</button>
       <button class="ftab" data-filter="projects">Projects</button>
@@ -755,8 +755,8 @@
   </section>
 
   <section id="about">
-    <h3 class="section-heading reveal-up">About Me</h3>
-    <div class="about-panel reveal-up" style="transition-delay:0.08s">
+    <h3 class="section-heading fade-up" data-fade-group="4">About Me</h3>
+    <div class="about-panel fade-up" data-fade-group="4">
       <div class="about-photo">
         <!-- ✏️ <img src="your-photo.jpg" alt="Christine Jade Del Rosario"> -->
         <img src ="https://cdn.discordapp.com/attachments/1525560972075339898/1527720609918881792/photo_corrected.jpg?ex=6a5bb031&is=6a5a5eb1&hm=f922c9eb67efdcd3c2030e9b5229d48218fd4143517a87ed17d2e88ed6ef6f44">
@@ -1050,19 +1050,27 @@
     /* ===== WELCOME INTRO OVERLAY ===== */
     (function () {
       const welcomeOverlay = document.getElementById('welcomeOverlay');
+      const FADE_MS = 400; // keep in sync with the .fade-up transition duration in CSS
+      const GAP_MS = 80;   // small breathing room before the next group starts
 
-      // Reveal each above-the-fold section only after the previous one
-      // has fully finished fading in — a clean one-at-a-time sequence
-      // instead of everything animating on top of each other.
+      // Elements sharing the same data-fade-group fade in together;
+      // groups themselves play one after another in order.
       const revealSectionsInSequence = () => {
-        const sections = Array.from(document.querySelectorAll('.fade-up'));
-        const revealNext = (i) => {
-          if (i >= sections.length) return;
-          const section = sections[i];
-          section.addEventListener('transitionend', () => revealNext(i + 1), { once: true });
-          section.classList.add('in-view');
+        const groups = {};
+        document.querySelectorAll('.fade-up[data-fade-group]').forEach(el => {
+          const key = el.dataset.fadeGroup;
+          (groups[key] = groups[key] || []).push(el);
+        });
+        const orderedKeys = Object.keys(groups).sort((a, b) => a - b);
+
+        let i = 0;
+        const revealNext = () => {
+          if (i >= orderedKeys.length) return;
+          groups[orderedKeys[i]].forEach(el => el.classList.add('in-view'));
+          i++;
+          setTimeout(revealNext, FADE_MS + GAP_MS);
         };
-        revealNext(0);
+        revealNext();
       };
 
       if (!welcomeOverlay) {
